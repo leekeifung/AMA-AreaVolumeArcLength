@@ -1,0 +1,2656 @@
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AMA1702 Calculus — Lecture Notes 10 Interactive Studio | PolyU</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous" />
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"
+          onerror="var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js';document.head.appendChild(s);"></script>
+  <style>
+    :root {
+      --polyu-red: #A6192E;
+      --polyu-red-dark: #7A1020;
+      --polyu-red-light: #FDF2F4;
+      --polyu-gold: #F5B82E;
+      --polyu-gold-soft: #FEF7E6;
+      --polyu-gold-dark: #9A6700;
+      --blue: #1D4ED8;
+      --teal: #0F766E;
+      --success: #15803D;
+      --success-bg: #F0FDF4;
+      --warn: #B45309;
+      --warn-bg: #FFFBEB;
+      --danger: #DC2626;
+      --danger-bg: #FEF2F2;
+      --bg: #F8FAFC;
+      --card: #FFFFFF;
+      --text: #1E293B;
+      --muted: #64748B;
+      --border: #E2E8F0;
+      --radius: 12px;
+      --shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+    }
+    .top-gold-bar {
+      height: 8px;
+      background: linear-gradient(90deg, #F5B82E 0 50%, #F9CF6B 50% 100%);
+    }
+    header.hero {
+      background: linear-gradient(135deg, var(--polyu-red-dark) 0%, var(--polyu-red) 65%, #BE233B 100%);
+      color: #fff;
+      padding: 1.35rem 1.25rem;
+    }
+    .hero-inner {
+      max-width: 1260px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(245, 184, 46, 0.22);
+      border: 1px solid rgba(245, 184, 46, 0.65);
+      color: #FFE49E;
+      font-weight: 700;
+      font-size: 0.76rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.65rem;
+      border-radius: 999px;
+      margin-bottom: 0.35rem;
+    }
+    .hero h1 { margin: 0; font-size: 1.55rem; font-weight: 800; }
+    .hero-sub { margin: 0.2rem 0 0; font-size: 0.92rem; color: rgba(255,255,255,0.92); }
+    .hero-meta {
+      background: rgba(0,0,0,0.22);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 10px;
+      padding: 0.6rem 0.95rem;
+      font-size: 0.83rem;
+      text-align: right;
+    }
+    .hero-meta strong { color: #FFE08A; }
+
+    nav.main-nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: #fff;
+      border-bottom: 2px solid var(--border);
+      box-shadow: 0 2px 8px rgba(15,23,42,0.04);
+    }
+    .nav-inner {
+      max-width: 1260px;
+      margin: 0 auto;
+      display: flex;
+      overflow-x: auto;
+      gap: 0.3rem;
+      padding: 0.45rem 1rem;
+    }
+    .nav-btn {
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 0.88rem;
+      padding: 0.55rem 0.95rem;
+      border-radius: 8px;
+      cursor: pointer;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.15s;
+    }
+    .nav-btn:hover { background: var(--polyu-red-light); color: var(--polyu-red); }
+    .nav-btn.active { background: var(--polyu-red); color: #fff; }
+    .nav-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      font-size: 0.74rem;
+      background: rgba(15,23,42,0.08);
+    }
+    .nav-btn.active .nav-num { background: var(--polyu-gold); color: #1E293B; font-weight: 800; }
+
+    main { max-width: 1260px; margin: 1.35rem auto 2.5rem; padding: 0 1.15rem; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      box-shadow: var(--shadow);
+      margin-bottom: 1.25rem;
+    }
+    .card-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 0.9rem;
+      padding-bottom: 0.65rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .card-title { margin: 0; font-size: 1.15rem; font-weight: 750; color: var(--polyu-red); }
+    .tag {
+      font-size: 0.74rem;
+      font-weight: 700;
+      padding: 0.18rem 0.58rem;
+      border-radius: 999px;
+      background: var(--polyu-gold-soft);
+      color: var(--polyu-gold-dark);
+      border: 1px solid rgba(245,184,46,0.45);
+    }
+
+    .grid-2 { display: grid; grid-template-columns: 1.06fr 0.94fr; gap: 1.25rem; align-items: start; }
+    .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 0.95rem; }
+    @media (max-width: 940px) {
+      .grid-2 { grid-template-columns: 1fr; }
+      .hero-meta { text-align: left; width: 100%; }
+    }
+
+    .theorem-box {
+      background: #FAFAFA;
+      border: 1px solid #CBD5E1;
+      border-left: 5px solid var(--polyu-red);
+      border-radius: 8px;
+      padding: 0.85rem 1.05rem;
+      margin: 0.75rem 0;
+    }
+    .theorem-label {
+      display: inline-block;
+      background: #475569;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.76rem;
+      padding: 0.14rem 0.55rem;
+      border-radius: 4px;
+      margin-bottom: 0.35rem;
+    }
+    .math-display { overflow-x: auto; padding: 0.35rem 0; text-align: center; }
+
+    .control-box {
+      background: #F8FAFC;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.95rem;
+      margin-bottom: 0.95rem;
+    }
+    .control-group { margin-bottom: 0.75rem; }
+    .control-group label {
+      display: block;
+      font-size: 0.81rem;
+      font-weight: 700;
+      color: #334155;
+      margin-bottom: 0.25rem;
+    }
+    select, input[type="number"], input[type="text"], textarea {
+      width: 100%;
+      padding: 0.48rem 0.65rem;
+      border: 1px solid #CBD5E1;
+      border-radius: 7px;
+      font-size: 0.88rem;
+      background: #fff;
+      color: var(--text);
+      font-family: inherit;
+    }
+    textarea { resize: vertical; min-height: 60px; font-size: 0.84rem; }
+    input[type="range"] { width: 100%; accent-color: var(--polyu-red); cursor: pointer; }
+    .inline-row { display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; }
+    .inline-row > * { flex: 1; min-width: 110px; }
+
+    .pill-bar { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.4rem 0 0.85rem; }
+    .pill {
+      border: 1px solid #CBD5E1;
+      background: #F8FAFC;
+      color: #334155;
+      padding: 0.32rem 0.68rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 650;
+      cursor: pointer;
+    }
+    .pill:hover { border-color: var(--polyu-red); color: var(--polyu-red); background: var(--polyu-red-light); }
+    .pill.active { background: var(--polyu-red); color: #fff; border-color: var(--polyu-red); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      border: 1px solid transparent;
+      border-radius: 7px;
+      padding: 0.5rem 0.9rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn-primary { background: var(--polyu-red); color: #fff; }
+    .btn-primary:hover { background: var(--polyu-red-dark); }
+    .btn-gold { background: var(--polyu-gold); color: #1E293B; }
+    .btn-outline { background: #fff; border-color: #CBD5E1; color: #334155; }
+    .btn-outline:hover { border-color: var(--polyu-red); color: var(--polyu-red); }
+    .btn-sm { padding: 0.28rem 0.6rem; font-size: 0.76rem; }
+
+    .canvas-box {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    canvas { display: block; width: 100%; height: auto; }
+    .canvas-caption {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      padding: 0.5rem 0.8rem;
+      background: #F8FAFC;
+      border-top: 1px solid var(--border);
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .status-banner {
+      padding: 0.68rem 0.9rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      margin-bottom: 0.8rem;
+      border: 1px solid transparent;
+    }
+    .status-bounded { background: var(--success-bg); border-color: #86EFAC; color: #14532D; }
+    .status-improper { background: var(--warn-bg); border-color: #FCD34D; color: #78350F; }
+    .status-divergent { background: var(--danger-bg); border-color: #FCA5A5; color: #7F1D1D; }
+
+    .steps-container { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.65rem; }
+    .step-card {
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--blue);
+      background: #FCFDFE;
+      border-radius: 8px;
+      padding: 0.68rem 0.9rem;
+    }
+    .step-card.hidden-step { filter: blur(5px); opacity: 0.4; user-select: none; pointer-events: none; }
+    .step-num { font-size: 0.73rem; font-weight: 800; text-transform: uppercase; color: var(--blue); margin-bottom: 0.2rem; }
+    .step-body { font-size: 0.9rem; overflow-x: auto; }
+
+    .blueprint-card {
+      border: 1px solid var(--border);
+      border-top: 4px solid var(--polyu-red);
+      border-radius: 10px;
+      padding: 1rem;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .blueprint-card h3 { margin: 0.35rem 0; font-size: 1.02rem; color: var(--polyu-red); }
+    .subtle-note { font-size: 0.8rem; color: var(--muted); }
+    .legend-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 4px; }
+
+    .quiz-q-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.05rem;
+      margin-bottom: 0.9rem;
+      background: #fff;
+    }
+    .quiz-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.55rem;
+      margin-top: 0.75rem;
+    }
+    .quiz-opt {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.6rem 0.8rem;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      background: #FAFAFA;
+    }
+    .quiz-opt:hover { border-color: var(--polyu-red); background: var(--polyu-red-light); }
+    .quiz-opt.selected { border-color: var(--polyu-red); background: var(--polyu-red-light); font-weight: 700; }
+    .quiz-opt.correct { border-color: var(--success); background: var(--success-bg); }
+    .quiz-opt.wrong { border-color: var(--danger); background: var(--danger-bg); }
+    .quiz-sol {
+      margin-top: 0.75rem;
+      padding: 0.75rem 0.95rem;
+      border-radius: 8px;
+      background: #F8FAFC;
+      border-left: 4px solid var(--teal);
+      font-size: 0.88rem;
+      display: none;
+    }
+    table.rec-table { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
+    table.rec-table th, table.rec-table td { padding: 0.55rem 0.7rem; border-bottom: 1px solid var(--border); text-align: left; }
+    table.rec-table th { background: #F1F5F9; font-weight: 750; }
+    .footer-bar {
+      background: linear-gradient(90deg, #F5B82E 0 33%, #F7C348 33% 66%, #F9CF6B 66% 100%);
+      color: #1E293B;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.6rem 1rem;
+      text-align: center;
+      border-top: 1px solid #E5A91E;
+    }
+  </style>
+</head>
+<body>
+  <div class="top-gold-bar"></div>
+  <header class="hero">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-badge">The Hong Kong Polytechnic University • AMA</div>
+        <h1>AMA1702 CALCULUS — Lecture Notes 10</h1>
+        <p class="hero-sub">Interactive Pre-Lecture Companion: Area Between Curves • Average Value • Arc Length • Solids of Revolution</p>
+      </div>
+      <div class="hero-meta">
+        <div><strong>Dr. LEE Kei Fung, Charles</strong></div>
+        <div>AMA1702 Subject Leader • PolyU</div>
+        <div>Consultation: <strong>Fri 08:30–10:20 (TU715)</strong></div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="main-nav">
+    <div class="nav-inner">
+      <button class="nav-btn active" data-tab="tab-overview"><span class="nav-num">0</span> Roadmap</button>
+      <button class="nav-btn" data-tab="tab-area"><span class="nav-num">1</span> Area (&amp; Avg Value)</button>
+      <button class="nav-btn" data-tab="tab-arc"><span class="nav-num">2</span> Arc Length</button>
+      <button class="nav-btn" data-tab="tab-volume"><span class="nav-num">3</span> Solids of Revolution</button>
+      <button class="nav-btn" data-tab="tab-quiz"><span class="nav-num">4</span> Overall Quiz</button>
+    </div>
+  </nav>
+
+  <main>
+    <!-- ================= TAB 0: OVERVIEW ================= -->
+    <section id="tab-overview" class="tab-panel active">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Welcome to Lecture Notes 10: The Infinitesimal Slicing Blueprint</h2>
+          <span class="tag">Pre-Lecture Interactive Studio</span>
+        </div>
+        <p style="margin-top:0;">
+          In Chapter 5, the definite integral computed the signed area under a curve. In <strong>Lecture Notes 10</strong>, we generalize integration to measure <strong>any geometric or physical continuum</strong>: slice a shape into infinitesimal elements (<span class="m-in" data-tex="dA, ds, dV"></span>), write down the formula for a single element, and sum via a definite integral!
+        </p>
+        <div class="grid-4">
+          <div class="blueprint-card">
+            <div>
+              <span class="tag">Slides 3–14</span>
+              <h3>1. Area Between Curves</h3>
+              <p class="subtle-note">Sum nonnegative vertical strips <span class="m-in" data-tex="dA = |f_1(x)-f_2(x)|\,dx"></span> or horizontal strips <span class="m-in" data-tex="w(y)\,dy"></span> over finite or unbounded intervals.</p>
+              <div class="math-display m-disp" data-tex="A = \int_a^b |f_1(x)-f_2(x)|\,dx"></div>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="switchTab('tab-area')">Open Area Studio →</button>
+          </div>
+          <div class="blueprint-card">
+            <div>
+              <span class="tag">Slides 15–22</span>
+              <h3>2. Average Value <span class="m-in" data-tex="f_{\text{avg}}"></span></h3>
+              <p class="subtle-note">Generalize discrete averages <span class="m-in" data-tex="\bar{x} = \frac{1}{n}\sum x_i"></span> to continuous functions (such as planetary orbital distance).</p>
+              <div class="math-display m-disp" data-tex="f_{\text{avg}} = \frac{1}{b-a}\int_a^b f(x)\,dx"></div>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="switchTab('tab-area'); document.getElementById('avg-section').scrollIntoView({behavior:'smooth'});">Open Average Value →</button>
+          </div>
+          <div class="blueprint-card">
+            <div>
+              <span class="tag">Slides 23–28</span>
+              <h3>3. Arc Length</h3>
+              <p class="subtle-note">Use <strong>Microstraightness</strong> to scale the infinitesimal right triangle <span class="m-in" data-tex="(dx, dy, ds)"></span> by <span class="m-in" data-tex="dx"></span>.</p>
+              <div class="math-display m-disp" data-tex="s = \int_a^b \sqrt{1+\left(\frac{dy}{dx}\right)^2}\,dx"></div>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="switchTab('tab-arc')">Open Arc Length →</button>
+          </div>
+          <div class="blueprint-card">
+            <div>
+              <span class="tag">Slides 29–44</span>
+              <h3>4. Solids of Revolution</h3>
+              <p class="subtle-note">Revolve 2D regions in 3D space using <strong>Discs/Washers</strong> (<span class="m-in" data-tex="\pi r^2 h"></span>) or <strong>Cylindrical Shells</strong> (<span class="m-in" data-tex="2\pi r h w"></span>).</p>
+              <div class="math-display m-disp" data-tex="V = \int_a^b \pi(f(x))^2\,dx \;\text{ or }\; \int_a^b 2\pi x|f(x)|\,dx"></div>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="switchTab('tab-volume')">Open 3D Volume Studio →</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TAB 1: AREA & AVERAGE VALUE ================= -->
+    <section id="tab-area" class="tab-panel">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">1A. Practical Introduction: Area Between Curves</h2>
+          <span class="tag">Theorem 1.1 • Slides 3–14</span>
+        </div>
+        <p style="margin-top:0;">
+          <strong>Practical Intuition:</strong> Whether measuring the cross-section of an airfoil, net energy surplus between two power curves, or land bounded by two rivers, physical area <span class="m-in" data-tex="A"></span> is never negative. At each <span class="m-in" data-tex="x \in [a,b]"></span>, the strip height is <span class="m-in" data-tex="h(x) = |f_1(x) - f_2(x)| \ge 0"></span>, regardless of whether curves cross or lie below the <span class="m-in" data-tex="x"></span>-axis!
+        </p>
+        <div class="theorem-box">
+          <div class="theorem-label">Theorem ( 1.1 )</div>
+          <div class="math-display m-disp" data-tex="A = \int_a^b dA = \int_a^b |f_1(x) - f_2(x)|\,dx \qquad \Big(\text{or } \int_c^d |g_1(y) - g_2(y)|\,dy \text{ via horizontal width strips}\Big)"></div>
+          <div class="subtle-note"><em>Lecture Note Highlight:</em> The interval <span class="m-in" data-tex="[a,b]"></span> can be <strong>finite or infinite (unbounded)</strong> whenever the integral converges. When curves cross inside <span class="m-in" data-tex="(a,b)"></span>, split the integral at each intersection!</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">1B. Interactive Area &amp; Integral Builder (Bounded &amp; Unbounded Explorer)</h2>
+          <span class="tag">Exercises 1.1–1.5 + Custom Sandbox</span>
+        </div>
+
+        <div class="pill-bar" id="area-presets">
+          <button class="pill active" onclick="loadAreaPreset('ex1_1', this)">Ex 1.1: eˣ &amp; e⁻ˣ on [0, 2]</button>
+          <button class="pill" onclick="loadAreaPreset('ex1_2', this)">Ex 1.2: Bounded y=x &amp; y=x²</button>
+          <button class="pill" onclick="loadAreaPreset('ex1_3', this)">Ex 1.3: sin x &amp; cos x on [0, π/3]</button>
+          <button class="pill" onclick="loadAreaPreset('ex1_4', this)">Ex 1.4: 3 Curves (6−x², x, −5x)</button>
+          <button class="pill" onclick="loadAreaPreset('ex1_5', this)">Ex 1.5: Horizontal dy (x=y²−2, y=x)</button>
+          <button class="pill" onclick="loadAreaPreset('unb_conv', this)">Unbounded [1, ∞): 1/x² (Converges!)</button>
+          <button class="pill" onclick="loadAreaPreset('unb_div', this)">Unbounded [1, ∞): 1/x (Diverges!)</button>
+          <button class="pill" onclick="loadAreaPreset('unb_asymp', this)">Unbounded Height [0,1]: 1/√x (Finite!)</button>
+        </div>
+
+        <div class="grid-2">
+          <div>
+            <div id="area-banner" class="status-banner status-bounded"></div>
+            <div class="canvas-box">
+              <canvas id="area-canvas" width="640" height="400" data-base-w="640" data-base-h="400"></canvas>
+              <div class="canvas-caption">
+                <span id="area-legend">
+                  <span class="legend-dot" style="background:#1D4ED8;"></span>Curve 1 &nbsp;
+                  <span class="legend-dot" style="background:#DC2626;"></span>Curve 2
+                </span>
+                <span id="area-probe-readout" style="font-weight:700; color:#1E293B;"></span>
+              </div>
+            </div>
+            <div class="control-group" style="margin-top:0.75rem;">
+              <label>Drag Infinitesimal Strip (<span id="area-var-lbl">x</span> = <span id="area-probe-num">0.90</span>):</label>
+              <input type="range" id="area-probe" min="0" max="1" step="0.005" value="0.45" oninput="renderArea(false)" />
+            </div>
+          </div>
+
+          <div>
+            <div class="control-box">
+              <div class="control-group">
+                <label for="area-mode">Slicing Orientation</label>
+                <select id="area-mode" onchange="clearPills('area-presets'); onAreaModeChange(true)">
+                  <option value="dx">Vertical Strips: dA = h(x) dx</option>
+                  <option value="dy">Horizontal Strips: dA = w(y) dy (Ex 1.5)</option>
+                  <option value="ex1_4">3-Curve Split: y = 6−x², y = x, y = −5x (Ex 1.4)</option>
+                </select>
+              </div>
+              <div id="area-selectors-wrap">
+                <div class="inline-row" style="margin-bottom:0.65rem;">
+                  <div class="control-group" style="margin-bottom:0;">
+                    <label id="area-f1-lbl" for="area-f1">Curve 1</label>
+                    <select id="area-f1" onchange="clearPills('area-presets'); onAreaCurveSelect()"></select>
+                  </div>
+                  <div class="control-group" style="margin-bottom:0;">
+                    <label id="area-f2-lbl" for="area-f2">Curve 2</label>
+                    <select id="area-f2" onchange="clearPills('area-presets'); onAreaCurveSelect()"></select>
+                  </div>
+                </div>
+                <div class="inline-row" style="margin-bottom:0.5rem;">
+                  <div class="control-group" style="margin-bottom:0;">
+                    <label for="area-a">Lower Bound (a)</label>
+                    <input type="number" id="area-a" step="0.25" value="0" onchange="clearPills('area-presets'); renderArea(true)" />
+                  </div>
+                  <div class="control-group" style="margin-bottom:0;">
+                    <label for="area-b">Upper Bound (b)</label>
+                    <input type="number" id="area-b" step="0.25" value="2" onchange="clearPills('area-presets'); renderArea(true)" />
+                  </div>
+                </div>
+                <div class="inline-row" style="justify-content:space-between; margin-bottom:0.45rem;">
+                  <label style="display:flex; align-items:center; gap:0.35rem; font-size:0.8rem; font-weight:700; cursor:pointer; margin:0;">
+                    <input type="checkbox" id="area-inf" onchange="clearPills('area-presets'); document.getElementById('area-b').disabled = this.checked; renderArea(true)" />
+                    Upper Bound = +∞ (Unbounded)
+                  </label>
+                  <button class="btn btn-outline btn-sm" onclick="autoEncloseArea()">Auto-Enclose Intersections</button>
+                </div>
+                <div>
+                  <span class="subtle-note">Quick bounds: </span>
+                  <button class="btn btn-outline btn-sm" onclick="setAreaBounds(0,1)">[0, 1]</button>
+                  <button class="btn btn-outline btn-sm" onclick="setAreaBounds(0,2)">[0, 2]</button>
+                  <button class="btn btn-outline btn-sm" onclick="setAreaBounds(-1,2)">[−1, 2]</button>
+                  <button class="btn btn-outline btn-sm" onclick="setAreaBounds(0, Math.PI/3)">[0, π/3]</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label for="area-scratch">Student Step-Writing Scratchpad (Draft your integral &amp; antiderivative steps first!):</label>
+              <textarea id="area-scratch" placeholder="e.g., 1) Intersections at x = ...  2) Integral A = ∫ ...  3) Antiderivative = [ ... ] = ..."></textarea>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.4rem;">
+              <strong style="color:var(--polyu-red); font-size:0.92rem;">Constructed Definite Integral &amp; Steps</strong>
+              <div style="display:flex; gap:0.35rem;">
+                <button class="btn btn-outline btn-sm" onclick="stepCtrl('area', 1)">Reveal Next</button>
+                <button class="btn btn-gold btn-sm" onclick="stepCtrl('area', 99)">Show All</button>
+                <button class="btn btn-outline btn-sm" onclick="stepCtrl('area', 0)">Hide Steps</button>
+              </div>
+            </div>
+            <div id="area-steps" class="steps-container"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2 Companion: Average Value -->
+      <div class="card" id="avg-section">
+        <div class="card-header">
+          <h2 class="card-title">1C. Average Value of a Function (<span class="m-in" data-tex="f_{\text{avg}}"></span>)</h2>
+          <span class="tag">Definition 2.1 • Exercises 2.1–2.3</span>
+        </div>
+        <div class="grid-2">
+          <div>
+            <p style="margin-top:0;">
+              <strong>Kepler's Planetary Orbit Motivation:</strong> To average an infinite continuum of values over <span class="m-in" data-tex="[a,b]"></span>, partition <span class="m-in" data-tex="[a,b]"></span> into <span class="m-in" data-tex="n"></span> equal pieces <span class="m-in" data-tex="\Delta x = (b-a)/n"></span> and let <span class="m-in" data-tex="n \to \infty"></span>:
+              <span class="m-in" data-tex="f_{\text{avg}} = \frac{1}{b-a}\int_a^b f(x)\,dx"></span>.
+            </p>
+            <div class="pill-bar" id="avg-presets">
+              <button class="pill active" onclick="loadAvgPreset('ex2_1', this)">Ex 2.1: x² on [0, 1] → 1/3</button>
+              <button class="pill" onclick="loadAvgPreset('ex2_2', this)">Ex 2.2: x² on [−1, 1] → 1/3</button>
+              <button class="pill" onclick="loadAvgPreset('ex2_3', this)">Ex 2.3: sin x on [0, π] → 2/π</button>
+              <button class="pill" onclick="loadAvgPreset('exp_avg', this)">Explore: eˣ on [0, 2]</button>
+            </div>
+            <div id="avg-steps" class="step-card"></div>
+          </div>
+          <div>
+            <div class="canvas-box">
+              <canvas id="avg-canvas" width="540" height="270" data-base-w="540" data-base-h="270"></canvas>
+              <div class="canvas-caption">
+                <span>Blue Area <span class="m-in" data-tex="\int_a^b f(x)\,dx"></span> = Gold Rectangle <span class="m-in" data-tex="f_{\text{avg}}(b-a)"></span></span>
+                <span id="avg-readout" style="font-weight:700;"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TAB 2: ARC LENGTH ================= -->
+    <section id="tab-arc" class="tab-panel">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">2A. Practical Introduction: Microstraightness &amp; Infinitesimal Right Triangles</h2>
+          <span class="tag">Theorem 3.1 • Slides 23–26</span>
+        </div>
+        <div class="grid-2">
+          <div>
+            <p style="margin-top:0;">
+              <strong>Why Not <span class="m-in" data-tex="\sqrt{(dx)^2+(dy)^2} = \sqrt{0+0} = 0"></span>?</strong> By the <em>Microstraightness Property</em>, over <span class="m-in" data-tex="[x, x+dx]"></span> a smooth curve is straight with length <span class="m-in" data-tex="ds"></span>. Dividing all sides of the infinitesimal right triangle <span class="m-in" data-tex="(dx, dy, ds)"></span> by <span class="m-in" data-tex="dx"></span> creates a <strong>similar, noninfinitesimal right triangle</strong> <span class="m-in" data-tex="\left(1, \frac{dy}{dx}, \frac{ds}{dx}\right)"></span>!
+            </p>
+            <div class="theorem-box">
+              <div class="theorem-label">Theorem ( 3.1 )</div>
+              <div class="math-display m-disp" data-tex="\frac{ds}{dx} = \sqrt{1 + \left(\frac{dy}{dx}\right)^2} \implies s = \int_a^b \sqrt{1 + \left(\frac{dy}{dx}\right)^2}\,dx"></div>
+              <div class="subtle-note"><em>Footnote 2 ("Good news / Bad news"):</em> Closed-form evaluation works only for special curves; most curves require numerical integration.</div>
+            </div>
+          </div>
+          <div>
+            <div class="canvas-box">
+              <canvas id="micro-canvas" width="560" height="260" data-base-w="560" data-base-h="260"></canvas>
+              <div class="canvas-caption">
+                <span>Shrink <span class="m-in" data-tex="\Delta x"></span> to see red curve flatten onto blue tangent!</span>
+                <span id="micro-readout" style="font-weight:700; color:var(--polyu-red);"></span>
+              </div>
+            </div>
+            <div class="inline-row" style="margin-top:0.65rem;">
+              <div class="control-group" style="margin-bottom:0;">
+                <label>Point x₀: <span id="micro-x0-lbl">0.80</span></label>
+                <input type="range" id="micro-x0" min="0.2" max="1.6" step="0.05" value="0.8" oninput="drawMicroLab()" />
+              </div>
+              <div class="control-group" style="margin-bottom:0;">
+                <label>Zoom Window Δx: <span id="micro-dx-lbl">0.45</span></label>
+                <input type="range" id="micro-dx" min="0.03" max="0.8" step="0.02" value="0.45" oninput="drawMicroLab()" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">2B. Interactive Arc Length Builder &amp; Worked Examples</h2>
+          <span class="tag">Exercises 3.1–3.2 + Custom Curves</span>
+        </div>
+
+        <div class="pill-bar" id="arc-presets">
+          <button class="pill active" onclick="loadArcPreset('ex3_1', this)">Ex 3.1: (4/3)x³ᐟ² on [2, 6]</button>
+          <button class="pill" onclick="loadArcPreset('ex3_2', this)">Ex 3.2: Catenary ½(eˣ+e⁻ˣ) on [0, 1]</button>
+          <button class="pill" onclick="loadArcPreset('shift32', this)">Exact Radical: ⅔(x−1)³ᐟ² on [1, 4]</button>
+          <button class="pill" onclick="loadArcPreset('semi', this)">Improper Slope: √(4−x²) on [−2, 2]</button>
+          <button class="pill" onclick="loadArcPreset('unb_arc', this)">Unbounded Arc: ln(cos x) on [0, π/2]</button>
+          <button class="pill" onclick="loadArcPreset('num_x2', this)">Numerical Showcase: y = x² on [0, 2]</button>
+        </div>
+
+        <div class="grid-2">
+          <div>
+            <div id="arc-banner" class="status-banner status-bounded"></div>
+            <div class="canvas-box">
+              <canvas id="arc-canvas" width="640" height="380" data-base-w="640" data-base-h="380"></canvas>
+              <div class="canvas-caption">
+                <span><span class="legend-dot" style="background:#A6192E;"></span>Highlighted Curve Arc &nbsp; <span class="legend-dot" style="background:#0EA5E9;"></span>Polygonal Chords</span>
+                <span id="arc-readout" style="font-weight:700;"></span>
+              </div>
+            </div>
+            <div class="control-group" style="margin-top:0.7rem;">
+              <label>Polygonal Straight-Chord Approximation (N = <span id="arc-n-lbl">4</span> chords):</label>
+              <input type="range" id="arc-chords" min="1" max="30" step="1" value="4" oninput="renderArc(false)" />
+            </div>
+          </div>
+
+          <div>
+            <div class="control-box">
+              <div class="control-group">
+                <label for="arc-fn">Choose Curve y = f(x)</label>
+                <select id="arc-fn" onchange="clearPills('arc-presets'); onArcCurveChange()">
+                  <option value="ex3_1">f(x) = (4/3) x^(3/2)  [Ex 3.1 — Exact u-sub, x ≥ 0]</option>
+                  <option value="catenary">y = ½(eˣ + e⁻ˣ)  [Ex 3.2 — Catenary Perfect Square]</option>
+                  <option value="shift32">f(x) = (2/3)(x − 1)^(3/2)  [Exact Radical, x ≥ 1]</option>
+                  <option value="semi">y = √(4 − x²)  [Semicircle r=2, −2 ≤ x ≤ 2]</option>
+                  <option value="logcos">y = ln(cos x)  [Secant Integral on (−π/2, π/2)]</option>
+                  <option value="x2">y = x²  [Hyperbolic / Numerical]</option>
+                  <option value="sinx">y = sin x  [Elliptic Integral — Numerical Only]</option>
+                </select>
+              </div>
+              <div class="inline-row">
+                <div class="control-group" style="margin-bottom:0;">
+                  <label for="arc-a">Lower Bound (a)</label>
+                  <input type="number" id="arc-a" step="0.25" value="2" onchange="clearPills('arc-presets'); renderArc(true)" />
+                </div>
+                <div class="control-group" style="margin-bottom:0;">
+                  <label for="arc-b">Upper Bound (b)</label>
+                  <input type="number" id="arc-b" step="0.25" value="6" onchange="clearPills('arc-presets'); renderArc(true)" />
+                </div>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label for="arc-scratch">Student Step-Writing Scratchpad (Compute dy/dx and 1 + (dy/dx)² first!):</label>
+              <textarea id="arc-scratch" placeholder="e.g., 1) dy/dx = ...  2) 1 + (dy/dx)² = ...  3) s = ∫ √(...) dx = ..."></textarea>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.4rem;">
+              <strong style="color:var(--polyu-red); font-size:0.92rem;">Arc Length Definite Integral &amp; Steps</strong>
+              <div style="display:flex; gap:0.35rem;">
+                <button class="btn btn-outline btn-sm" onclick="stepCtrl('arc', 1)">Reveal Next</button>
+                <button class="btn btn-gold btn-sm" onclick="stepCtrl('arc', 99)">Show All</button>
+                <button class="btn btn-outline btn-sm" onclick="stepCtrl('arc', 0)">Hide Steps</button>
+              </div>
+            </div>
+            <div id="arc-steps" class="steps-container"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TAB 3: SOLIDS OF REVOLUTION ================= -->
+    <section id="tab-volume" class="tab-panel">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">3A. Practical Introduction: Disc/Washer Method vs. Cylindrical Shell Method</h2>
+          <span class="tag">Theorems 4.1 &amp; 4.2 • Slides 29–44</span>
+        </div>
+        <p style="margin-top:0;">
+          Revolving a 2D region around an axis sweeps out a 3D axisymmetric solid (lathe parts, optical reflectors, spheres). By Microstraightness, the tiny top triangle of a strip has area <span class="m-in" data-tex="\frac{1}{2}(dy)(dx) = \frac{1}{2}f'(x)(dx)^2 = 0"></span>, contributing zero volume!
+        </p>
+        <div class="grid-2">
+          <div class="theorem-box" style="margin:0;">
+            <div class="theorem-label">Theorem ( 4.1 ) — Disc / Washer Method</div>
+            <div>Slice <strong>perpendicular</strong> to the axis (<span class="m-in" data-tex="dV = \pi r^2 h"></span> or <span class="m-in" data-tex="\pi(R^2-r^2)h"></span>):</div>
+            <div class="math-display m-disp" data-tex="V = \int_a^b \pi (f(x))^2\,dx \quad (\text{around } x\text{-axis})"></div>
+          </div>
+          <div class="theorem-box" style="margin:0;">
+            <div class="theorem-label">Theorem ( 4.2 ) — Cylindrical Shell Method</div>
+            <div>Slice <strong>parallel</strong> to the axis (<span class="m-in" data-tex="dV = 2\pi r h w"></span>, dropping <span class="m-in" data-tex="(dx)^2 \to 0"></span>):</div>
+            <div class="math-display m-disp" data-tex="V = \int_a^b 2\pi x |f(x)|\,dx \quad (\text{around } y\text{-axis})"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">3B. Interactive 3D Solids of Revolution Studio &amp; Integral Builder</h2>
+          <span class="tag">Exercises 4.1–4.4 + Gabriel's Horn</span>
+        </div>
+
+        <div class="pill-bar" id="vol-presets">
+          <button class="pill active" onclick="loadVolPreset('ex4_1', this)">Ex 4.1: Sphere y=√(r²−x²) (Disc dx)</button>
+          <button class="pill" onclick="loadVolPreset('ex4_2_disc', this)">Ex 4.2: y=x² around x=1 (Disc dy)</button>
+          <button class="pill" onclick="loadVolPreset('ex4_2_shell', this)">Ex 4.2 Verify: y=x² around x=1 (Shell dx)</button>
+          <button class="pill" onclick="loadVolPreset('ex4_3', this)">Ex 4.3: y=x² around y-axis (Shell dx)</button>
+          <button class="pill" onclick="loadVolPreset('ex4_4', this)">Ex 4.4: y=x &amp; y=x² around y-axis (Shell dx)</button>
+          <button class="pill" onclick="loadVolPreset('gabriel', this)">Unbounded [1, ∞): Gabriel's Horn y=1/x (V=π!)</button>
+        </div>
+
+        <div class="grid-2">
+          <div>
+            <div id="vol-banner" class="status-banner status-bounded"></div>
+            <div class="canvas-box">
+              <canvas id="vol-canvas" width="640" height="420" data-base-w="640" data-base-h="420" style="cursor:grab;"></canvas>
+              <div class="canvas-caption">
+                <span><strong>Drag 3D View to Orbit!</strong> &nbsp;|&nbsp; Gold/Burgundy = Element <span class="m-in" data-tex="dV"></span></span>
+                <span id="vol-readout" style="font-weight:700; color:var(--polyu-red);"></span>
+              </div>
+            </div>
+            <div class="inline-row" style="margin-top:0.75rem;">
+              <div class="control-group" style="margin-bottom:0;">
+                <label>Sweep Angle θ: <span id="vol-ang-lbl">330°</span></label>
+                <input type="range" id="vol-angle" min="15" max="360" step="5" value="330" oninput="renderVol(false)" />
+              </div>
+              <div class="control-group" style="margin-bottom:0;">
+                <label>Element Slice Position: <span id="vol-pos-lbl">0.55</span></label>
+                <input type="range" id="vol-pos" min="0.08" max="0.92" step="0.02" value="0.55" oninput="renderVol(false)" />
+              </div>
+              <div style="flex:0 0 auto;">
+                <button class="btn btn-primary btn-sm" id="vol-anim-btn" onclick="toggleVolAnim()">▶ Animate 360°</button>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="control-box">
+              <div class="control-group">
+                <label for="vol-reg">Generating 2D Region</label>
+                <select id="vol-reg" onchange="clearPills('vol-presets'); onVolRegionChange(true)">
+                  <option value="sphere">Upper Semicircle y = √(r² − x²) on [−r, r]  (Ex 4.1)</option>
+                  <option value="x2_01">Region bounded by y = x², y = 0, x = b on [0, b]  (Ex 4.2 &amp; Ex 4.3)</option>
+                  <option value="x_x2">Region between y = x and y = x² on [0, 1]  (Ex 4.4)</option>
+                  <option value="sqrt_reg">Region bounded by y = √x, y = 0, x = b on [0, b]</option>
+                  <option value="gabriel">Unbounded Region under y = 1/x on [1, ∞)  (Gabriel's Horn)</option>
+                </select>
+              </div>
+              <div class="inline-row" style="margin-bottom:0.65rem;">
+                <div class="control-group" style="margin-bottom:0;">
+                  <label for="vol-axis">Axis of Revolution</label>
+                  <select id="vol-axis" onchange="clearPills('vol-presets'); renderVol(true)">
+                    <option value="xaxis">x-axis (y = 0)</option>
+                    <option value="yaxis">y-axis (x = 0)</option>
+                    <option value="x1">Vertical Line x = 1 (Ex 4.2)</option>
+                  </select>
+                </div>
+                <div class="control-group" style="margin-bottom:0;">
+                  <label for="vol-method">Slicing Method</label>
+                  <select id="vol-method" onchange="clearPills('vol-presets'); renderVol(true)">
+                    <option value="disc">Disc / Washer Method</option>
+                    <option value="shell">Cylindrical Shell Method</option>
+                  </select>
+                </div>
+              </div>
+              <div class="inline-row" id="vol-b-wrap">
+                <div class="control-group" style="margin-bottom:0;">
+                  <label for="vol-b" id="vol-b-lbl">Radius / Upper Bound (r or b)</label>
+                  <input type="number" id="vol-b" min="0.5" max="4" step="0.5" value="2" onchange="clearPills('vol-presets'); renderVol(true)" />
+                </div>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label for="vol-scratch">Student Step-Writing Scratchpad (Identify radius r, height h, and dV first!):</label>
+              <textarea id="vol-scratch" placeholder="e.g., 1) r = ..., h = ...  2) dV = ...  3) V = ∫ dV = ..."></textarea>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.4rem;">
+              <strong style="color:var(--polyu-red); font-size:0.92rem;">Volume Definite Integral &amp; Steps</strong>
+              <div style="display:flex; gap:0.35rem;">
+                <button class="btn btn-outline btn-sm" onclick="stepCtrl('vol', 1)">Reveal Next</button>
+                <button class="btn btn-gold btn-sm" onclick="stepCtrl('vol', 99)">Show All</button>
+                <button class="btn btn-outline btn-sm" onclick="stepCtrl('vol', 0)">Hide Steps</button>
+              </div>
+            </div>
+            <div id="vol-steps" class="steps-container"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TAB 4: PARAMETERIZED QUIZ ================= -->
+    <section id="tab-quiz" class="tab-panel">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">4A. Overall Parameterized Quiz (AMA1702 Lecture Notes 10)</h2>
+          <span class="tag">Dynamic Parameters • Persistent Storage</span>
+        </div>
+        <p style="margin-top:0;">
+          Enter your <strong>Student Name</strong> and <strong>PolyU Student ID</strong> to generate an individualized set of Lecture 10 problems. Parameters are deterministically generated from your ID &amp; seed (and support URL parameters like <code>?sid=24012345D&amp;qcount=8&amp;topic=all&amp;seed=Lec10</code>).
+        </p>
+
+        <div class="control-box">
+          <div class="grid-4">
+            <div class="control-group" style="margin-bottom:0;">
+              <label for="q-name">Student Name</label>
+              <input type="text" id="q-name" placeholder="e.g., CHAN Tai Man" />
+            </div>
+            <div class="control-group" style="margin-bottom:0;">
+              <label for="q-sid">PolyU Student ID</label>
+              <input type="text" id="q-sid" placeholder="e.g., 24012345D" />
+            </div>
+            <div class="control-group" style="margin-bottom:0;">
+              <label for="q-topic">Topic Filter</label>
+              <select id="q-topic">
+                <option value="all">All Lecture 10 Topics</option>
+                <option value="area">Area (&amp; Unbounded)</option>
+                <option value="avg">Average Value</option>
+                <option value="arc">Arc Length</option>
+                <option value="volume">Solids of Revolution</option>
+              </select>
+            </div>
+            <div class="control-group" style="margin-bottom:0;">
+              <label>Questions &amp; Custom Seed</label>
+              <div style="display:flex; gap:0.4rem;">
+                <select id="q-count" style="width:46%;">
+                  <option value="5">5 Qs</option>
+                  <option value="8" selected>8 Qs</option>
+                  <option value="10">10 Qs</option>
+                </select>
+                <input type="text" id="q-seed" placeholder="Seed (e.g. Wk10)" style="width:54%;" />
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.6rem; margin-top:0.85rem;">
+            <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+              <button class="btn btn-primary" onclick="startQuiz(false)">Generate My Parameterized Quiz</button>
+              <button class="btn btn-outline" onclick="startQuiz(true)">New Random Variation</button>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="toggleLinkBuilder()">⚙ Instructor Parameter URL Builder</button>
+          </div>
+
+          <div id="link-builder" style="display:none; margin-top:0.8rem; padding-top:0.8rem; border-top:1px dashed #CBD5E1;">
+            <div class="subtle-note" style="margin-bottom:0.35rem;">Share this parameterized URL with AMA1702 students on Blackboard/GitHub Pages:</div>
+            <div style="display:flex; gap:0.45rem;">
+              <input type="text" id="share-link-input" readonly style="font-family:monospace; font-size:0.8rem;" />
+              <button class="btn btn-gold btn-sm" onclick="copyShareLink()">Copy URL</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="quiz-summary-box" style="display:none; margin-bottom:1rem;"></div>
+        <div id="quiz-list"></div>
+        <div id="quiz-submit-wrap" style="display:none; text-align:right; margin-top:0.9rem;">
+          <button class="btn btn-primary" style="padding:0.65rem 1.5rem; font-size:0.95rem;" onclick="gradeAndSaveQuiz()">Submit Quiz &amp; Save Results</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">4B. Saved Quiz Attempts &amp; Parameter Export</h2>
+          <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
+            <button class="btn btn-outline btn-sm" onclick="exportRecords('csv')">Download CSV</button>
+            <button class="btn btn-outline btn-sm" onclick="exportRecords('json')">Download JSON</button>
+            <button class="btn btn-outline btn-sm" onclick="clearRecords()">Clear Saved History</button>
+          </div>
+        </div>
+        <div id="quiz-records-wrap" style="overflow-x:auto;"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer-bar">
+    Dr. LEE Kei Fung, Charles (PolyU) &nbsp;•&nbsp; AMA1702 Lecture Notes 10 Interactive Companion &nbsp;•&nbsp; Department of Applied Mathematics
+  </footer>
+
+  <script>
+    /* =========================================================
+       UTILITIES: KaTeX, Safe Formatting, Quadrature, HiDPI Canvas
+       ========================================================= */
+    function kTex(str, display = false) {
+      if (window.katex) {
+        try { return katex.renderToString(str, { displayMode: display, throwOnError: false }); }
+        catch (e) { return '<code>' + str + '</code>'; }
+      }
+      return '<code>' + str + '</code>';
+    }
+
+    function renderStaticKaTeX() {
+      document.querySelectorAll('.m-in').forEach(el => { el.innerHTML = kTex(el.dataset.tex, false); });
+      document.querySelectorAll('.m-disp').forEach(el => { el.innerHTML = kTex(el.dataset.tex, true); });
+    }
+
+    function gcd(a, b) {
+      if (!Number.isFinite(a) || !Number.isFinite(b)) return 1;
+      a = Math.abs(Math.round(a));
+      b = Math.abs(Math.round(b));
+      while (b) { const t = b; b = a % b; a = t; }
+      return a || 1;
+    }
+
+    function fracTex(n, d) {
+      const g = gcd(n, d);
+      const nn = Math.round(n / g), dd = Math.round(d / g);
+      if (dd === 1) return String(nn);
+      return (nn < 0 ? '-\\frac{' + Math.abs(nn) + '}{' + dd + '}' : '\\frac{' + nn + '}{' + dd + '}');
+    }
+
+    function fmt(x, d = 4) {
+      if (!Number.isFinite(x)) return x > 0 ? '+∞' : '−∞';
+      if (Math.abs(x) < 1e-11) return '0';
+      if (Math.abs(x - Math.round(x)) < 1e-8) return String(Math.round(x));
+      if (Math.abs(x - Math.PI) < 1e-4) return 'π';
+      if (Math.abs(x - Math.PI / 2) < 1e-4) return 'π/2';
+      if (Math.abs(x - Math.PI / 3) < 1e-4) return 'π/3';
+      if (Math.abs(x - Math.PI / 4) < 1e-4) return 'π/4';
+      return Number(x.toFixed(d)).toString();
+    }
+
+    function bTex(x) {
+      if (!Number.isFinite(x)) return x > 0 ? '\\infty' : '-\\infty';
+      if (Math.abs(x - Math.round(x)) < 1e-7) return String(Math.round(x));
+      if (Math.abs(x - Math.PI) < 1e-4) return '\\pi';
+      if (Math.abs(x - Math.PI / 2) < 1e-4) return '\\pi/2';
+      if (Math.abs(x - Math.PI / 3) < 1e-4) return '\\pi/3';
+      if (Math.abs(x - Math.PI / 4) < 1e-4) return '\\pi/4';
+      return Number(x.toFixed(3)).toString();
+    }
+
+    function quadGL(fn, a, b, panels = 100) {
+      if (!Number.isFinite(a) || !Number.isFinite(b) || Math.abs(b - a) < 1e-12) return 0;
+      const nd = [-0.9061798459, -0.5384693101, 0, 0.5384693101, 0.9061798459];
+      const wt = [0.2369268850, 0.4786286705, 0.5688888889, 0.4786286705, 0.2369268850];
+      const h = (b - a) / panels;
+      let sum = 0;
+      for (let i = 0; i < panels; i++) {
+        const mid = a + (i + 0.5) * h, half = 0.5 * h;
+        let loc = 0;
+        for (let k = 0; k < 5; k++) {
+          const y = fn(mid + half * nd[k]);
+          if (Number.isFinite(y)) loc += wt[k] * y;
+        }
+        sum += half * loc;
+      }
+      return sum;
+    }
+
+    // FIXED HiDPI Canvas setup: uses immutable data-base-w / data-base-h so canvas never blows up
+    function prepCanvas(id) {
+      const c = document.getElementById(id);
+      if (!c) return null;
+      if (!c.dataset.baseW) {
+        c.dataset.baseW = c.getAttribute('width') || '640';
+        c.dataset.baseH = c.getAttribute('height') || '400';
+      }
+      const W = parseInt(c.dataset.baseW, 10);
+      const H = parseInt(c.dataset.baseH, 10);
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const targetW = Math.round(W * dpr);
+      const targetH = Math.round(H * dpr);
+      if (c.width !== targetW || c.height !== targetH) {
+        c.width = targetW;
+        c.height = targetH;
+      }
+      c.style.aspectRatio = W + ' / ' + H;
+      const ctx = c.getContext('2d');
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+      return { c, ctx, W, H };
+    }
+
+    function drawAxesGrid(ctx, W, H, m, xMin, xMax, yMin, yMax, toX, toY) {
+      if (!Number.isFinite(xMin) || !Number.isFinite(xMax) || xMax - xMin < 1e-7) { xMin = -1; xMax = 1; }
+      if (!Number.isFinite(yMin) || !Number.isFinite(yMax) || yMax - yMin < 1e-7) { yMin = -1; yMax = 1; }
+      ctx.save();
+      ctx.strokeStyle = '#E2E8F0';
+      ctx.lineWidth = 1;
+      ctx.fillStyle = '#64748B';
+      ctx.font = '11px sans-serif';
+
+      const stepOf = sp => {
+        const r = Math.max(sp, 1e-7) / 6;
+        const p = Math.pow(10, Math.floor(Math.log10(r)));
+        const n = r / p;
+        return (n < 1.5 ? 1 : n < 3.5 ? 2 : n < 7.5 ? 5 : 10) * p;
+      };
+      const sx = stepOf(xMax - xMin), sy = stepOf(yMax - yMin);
+
+      if (Number.isFinite(sx) && sx > 0) {
+        let guard = 0;
+        for (let x = Math.ceil(xMin / sx) * sx; x <= xMax + 1e-9 && guard < 40; x += sx, guard++) {
+          const px = toX(x);
+          ctx.beginPath(); ctx.moveTo(px, m.t); ctx.lineTo(px, H - m.b); ctx.stroke();
+          ctx.fillText(fmt(x, 2), px - 9, H - m.b + 14);
+        }
+      }
+      if (Number.isFinite(sy) && sy > 0) {
+        let guard = 0;
+        for (let y = Math.ceil(yMin / sy) * sy; y <= yMax + 1e-9 && guard < 40; y += sy, guard++) {
+          const py = toY(y);
+          ctx.beginPath(); ctx.moveTo(m.l, py); ctx.lineTo(W - m.r, py); ctx.stroke();
+          ctx.fillText(fmt(y, 2), 6, py + 4);
+        }
+      }
+
+      ctx.strokeStyle = '#475569';
+      ctx.lineWidth = 1.4;
+      if (xMin <= 0 && xMax >= 0) { ctx.beginPath(); ctx.moveTo(toX(0), m.t); ctx.lineTo(toX(0), H - m.b); ctx.stroke(); }
+      if (yMin <= 0 && yMax >= 0) { ctx.beginPath(); ctx.moveTo(m.l, toY(0)); ctx.lineTo(W - m.r, toY(0)); ctx.stroke(); }
+      ctx.strokeRect(m.l, m.t, W - m.l - m.r, H - m.t - m.b);
+      ctx.restore();
+    }
+
+    function clearPills(barId) {
+      document.querySelectorAll('#' + barId + ' .pill').forEach(b => b.classList.remove('active'));
+    }
+
+    const stepState = { area: 99, arc: 99, vol: 99 };
+    function stepCtrl(mod, delta) {
+      const box = document.getElementById(mod + '-steps');
+      const cards = box.querySelectorAll('.step-card');
+      if (delta === 0) stepState[mod] = 0;
+      else if (delta === 99) stepState[mod] = cards.length;
+      else stepState[mod] = Math.min(cards.length, stepState[mod] + 1);
+      cards.forEach((c, i) => c.classList.toggle('hidden-step', i >= stepState[mod]));
+    }
+
+    function paintSteps(mod, arr) {
+      const box = document.getElementById(mod + '-steps');
+      box.innerHTML = arr.map((s, i) =>
+        '<div class="step-card ' + (i >= stepState[mod] ? 'hidden-step' : '') + '">' +
+          '<div class="step-num">Step ' + (i + 1) + ' — ' + s.t + '</div>' +
+          '<div class="step-body">' + s.h + '</div>' +
+        '</div>'
+      ).join('');
+    }
+
+    function redrawActiveTab() {
+      const active = document.querySelector('.tab-panel.active');
+      if (!active) return;
+      if (active.id === 'tab-area') { renderArea(false); renderAvg(); }
+      else if (active.id === 'tab-arc') { drawMicroLab(); renderArc(false); }
+      else if (active.id === 'tab-volume') { renderVol(false); }
+    }
+
+    function switchTab(id) {
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === id));
+      document.getElementById(id).classList.add('active');
+      redrawActiveTab();
+    }
+    document.querySelectorAll('.nav-btn').forEach(b => b.addEventListener('click', () => switchTab(b.dataset.tab)));
+    window.addEventListener('resize', redrawActiveTab);
+    /* === END OF PART 1 — PASTE PART 2 DIRECTLY BELOW THIS LINE === */
+
+
+
+
+
+/* =========================================================
+       TAB 1B: AREA BETWEEN CURVES ENGINE
+       ========================================================= */
+    const DX_FNS = {
+      expx:     { lbl: 'y = eˣ',       tex: 'e^x',                fn: x => Math.exp(x),                       anti: 'e^x',                        asymp: false, minX: -Infinity },
+      expnx:    { lbl: 'y = e⁻ˣ',      tex: 'e^{-x}',             fn: x => Math.exp(-x),                      anti: '-e^{-x}',                    asymp: false, minX: -Infinity },
+      x:        { lbl: 'y = x',        tex: 'x',                  fn: x => x,                                 anti: '\\frac{1}{2}x^2',            asymp: false, minX: -Infinity },
+      x2:       { lbl: 'y = x²',       tex: 'x^2',                fn: x => x * x,                             anti: '\\frac{1}{3}x^3',            asymp: false, minX: -Infinity },
+      p6mx2:    { lbl: 'y = 6 − x²',   tex: '6 - x^2',            fn: x => 6 - x * x,                         anti: '6x - \\frac{1}{3}x^3',       asymp: false, minX: -Infinity },
+      m5x:      { lbl: 'y = −5x',      tex: '-5x',                fn: x => -5 * x,                            anti: '-\\frac{5}{2}x^2',           asymp: false, minX: -Infinity },
+      sinx:     { lbl: 'y = sin x',    tex: '\\sin x',            fn: x => Math.sin(x),                       anti: '-\\cos x',                   asymp: false, minX: -Infinity },
+      cosx:     { lbl: 'y = cos x',    tex: '\\cos x',            fn: x => Math.cos(x),                       anti: '\\sin x',                    asymp: false, minX: -Infinity },
+      zero:     { lbl: 'y = 0 (x-axis)', tex: '0',                fn: () => 0,                                anti: '0',                          asymp: false, minX: -Infinity },
+      invx2:    { lbl: 'y = 1/x²',     tex: '\\frac{1}{x^2}',     fn: x => (Math.abs(x) < 1e-5 ? NaN : 1 / (x * x)), anti: '-\\frac{1}{x}',       asymp: true,  minX: 0.2 },
+      invx:     { lbl: 'y = 1/x',      tex: '\\frac{1}{x}',       fn: x => (Math.abs(x) < 1e-5 ? NaN : 1 / x),       anti: '\\ln|x|',             asymp: true,  minX: 0.2 },
+      invsqrtx: { lbl: 'y = 1/√x',     tex: '\\frac{1}{\\sqrt{x}}', fn: x => (x <= 1e-6 ? NaN : 1 / Math.sqrt(x)),   anti: '2\\sqrt{x}',          asymp: true,  minX: 0 }
+    };
+
+    const DY_FNS = {
+      y:    { lbl: 'x = y (line y = x)', tex: 'y',       fn: y => y },
+      y2m2: { lbl: 'x = y² − 2',         tex: 'y^2 - 2', fn: y => y * y - 2 },
+      my2p4:{ lbl: 'x = 4 − y²',         tex: '4 - y^2', fn: y => 4 - y * y },
+      zero: { lbl: 'x = 0 (y-axis)',     tex: '0',       fn: () => 0 }
+    };
+
+    function populateAreaSelects() {
+      const mode = document.getElementById('area-mode').value;
+      const s1 = document.getElementById('area-f1'), s2 = document.getElementById('area-f2');
+      const wrap = document.getElementById('area-selectors-wrap');
+      if (mode === 'ex1_4') { wrap.style.display = 'none'; return; }
+      wrap.style.display = 'block';
+      const dict = mode === 'dy' ? DY_FNS : DX_FNS;
+      document.getElementById('area-f1-lbl').textContent = mode === 'dy' ? 'Right/Left Curve x = g₁(y)' : 'Curve 1: y = f₁(x)';
+      document.getElementById('area-f2-lbl').textContent = mode === 'dy' ? 'Right/Left Curve x = g₂(y)' : 'Curve 2: y = f₂(x)';
+      const prev1 = s1.value, prev2 = s2.value;
+      s1.innerHTML = Object.entries(dict).map(([k, v]) => '<option value="' + k + '">' + v.lbl + '</option>').join('');
+      s2.innerHTML = Object.entries(dict).map(([k, v]) => '<option value="' + k + '">' + v.lbl + '</option>').join('');
+      if (dict[prev1]) s1.value = prev1; else s1.value = mode === 'dy' ? 'y' : 'expx';
+      if (dict[prev2]) s2.value = prev2; else s2.value = mode === 'dy' ? 'y2m2' : 'expnx';
+      if (mode === 'dy') {
+        document.getElementById('area-inf').checked = false;
+        document.getElementById('area-b').disabled = false;
+      }
+    }
+
+    function onAreaModeChange(resetBounds) {
+      populateAreaSelects();
+      const mode = document.getElementById('area-mode').value;
+      if (resetBounds && mode === 'dy') {
+        document.getElementById('area-a').value = -1;
+        document.getElementById('area-b').value = 2;
+      } else if (resetBounds && mode === 'dx') {
+        onAreaCurveSelect();
+        return;
+      }
+      renderArea(true);
+    }
+
+    function onAreaCurveSelect() {
+      const mode = document.getElementById('area-mode').value;
+      if (mode === 'dx') {
+        const k1 = document.getElementById('area-f1').value;
+        const k2 = document.getElementById('area-f2').value;
+        const reqMin = Math.max(DX_FNS[k1].minX, DX_FNS[k2].minX);
+        let a = parseFloat(document.getElementById('area-a').value);
+        let b = parseFloat(document.getElementById('area-b').value);
+        if (!Number.isFinite(a) || a < reqMin) {
+          a = reqMin > 0 ? 1 : 0;
+          document.getElementById('area-a').value = a;
+        }
+        if (!document.getElementById('area-inf').checked && (!Number.isFinite(b) || b <= a)) {
+          b = a + 2;
+          document.getElementById('area-b').value = b;
+        }
+      }
+      renderArea(true);
+    }
+
+    function setAreaBounds(a, b) {
+      clearPills('area-presets');
+      document.getElementById('area-inf').checked = false;
+      document.getElementById('area-b').disabled = false;
+      document.getElementById('area-a').value = Number(a.toFixed(4));
+      document.getElementById('area-b').value = Number(b.toFixed(4));
+      renderArea(true);
+    }
+
+    function findRoots(diffFn, lo, hi, n = 500) {
+      const roots = [];
+      const h = (hi - lo) / n;
+      for (let i = 0; i < n; i++) {
+        const x1 = lo + i * h, x2 = x1 + h;
+        const y1 = diffFn(x1), y2 = diffFn(x2);
+        if (!Number.isFinite(y1) || !Number.isFinite(y2)) continue;
+        if (Math.abs(y1) < 1e-9) {
+          if (!roots.length || Math.abs(roots[roots.length - 1] - x1) > 1e-3) roots.push(x1);
+        } else if (y1 * y2 < 0) {
+          let a = x1, b = x2, fa = y1;
+          for (let k = 0; k < 32; k++) {
+            const m = 0.5 * (a + b), fm = diffFn(m);
+            if (fa * fm <= 0) b = m; else { a = m; fa = fm; }
+          }
+          const r = 0.5 * (a + b);
+          if (!roots.length || Math.abs(roots[roots.length - 1] - r) > 1e-3) roots.push(r);
+        }
+      }
+      return roots;
+    }
+
+    function autoEncloseArea() {
+      const mode = document.getElementById('area-mode').value;
+      if (mode === 'ex1_4') return;
+      const dict = mode === 'dy' ? DY_FNS : DX_FNS;
+      const f1 = dict[document.getElementById('area-f1').value].fn;
+      const f2 = dict[document.getElementById('area-f2').value].fn;
+      const rts = findRoots(t => f1(t) - f2(t), -5, 5, 700);
+      if (rts.length >= 2) setAreaBounds(rts[0], rts[rts.length - 1]);
+      else alert('Fewer than 2 intersections found on [−5, 5] for this pair of curves.');
+    }
+
+    function loadAreaPreset(p, btn) {
+      clearPills('area-presets');
+      if (btn) btn.classList.add('active');
+      const modeEl = document.getElementById('area-mode');
+      const infEl = document.getElementById('area-inf');
+      const bEl = document.getElementById('area-b');
+      infEl.checked = false; bEl.disabled = false;
+
+      if (p === 'ex1_1') {
+        modeEl.value = 'dx'; populateAreaSelects();
+        document.getElementById('area-f1').value = 'expx';
+        document.getElementById('area-f2').value = 'expnx';
+        document.getElementById('area-a').value = 0; bEl.value = 2;
+      } else if (p === 'ex1_2') {
+        modeEl.value = 'dx'; populateAreaSelects();
+        document.getElementById('area-f1').value = 'x';
+        document.getElementById('area-f2').value = 'x2';
+        document.getElementById('area-a').value = 0; bEl.value = 1;
+      } else if (p === 'ex1_3') {
+        modeEl.value = 'dx'; populateAreaSelects();
+        document.getElementById('area-f1').value = 'sinx';
+        document.getElementById('area-f2').value = 'cosx';
+        document.getElementById('area-a').value = 0; bEl.value = Number((Math.PI / 3).toFixed(4));
+      } else if (p === 'ex1_4') {
+        modeEl.value = 'ex1_4'; populateAreaSelects();
+      } else if (p === 'ex1_5') {
+        modeEl.value = 'dy'; populateAreaSelects();
+        document.getElementById('area-f1').value = 'y';
+        document.getElementById('area-f2').value = 'y2m2';
+        document.getElementById('area-a').value = -1; bEl.value = 2;
+      } else if (p === 'unb_conv') {
+        modeEl.value = 'dx'; populateAreaSelects();
+        document.getElementById('area-f1').value = 'invx2';
+        document.getElementById('area-f2').value = 'zero';
+        document.getElementById('area-a').value = 1; infEl.checked = true; bEl.disabled = true;
+      } else if (p === 'unb_div') {
+        modeEl.value = 'dx'; populateAreaSelects();
+        document.getElementById('area-f1').value = 'invx';
+        document.getElementById('area-f2').value = 'zero';
+        document.getElementById('area-a').value = 1; infEl.checked = true; bEl.disabled = true;
+      } else if (p === 'unb_asymp') {
+        modeEl.value = 'dx'; populateAreaSelects();
+        document.getElementById('area-f1').value = 'invsqrtx';
+        document.getElementById('area-f2').value = 'zero';
+        document.getElementById('area-a').value = 0; bEl.value = 1;
+      }
+      renderArea(true);
+    }
+
+    function renderArea(rebuildSteps = true) {
+      const pack = prepCanvas('area-canvas');
+      if (!pack) return;
+      const { ctx, W, H } = pack;
+      const m = { l: 46, r: 20, t: 20, b: 32 };
+      const mode = document.getElementById('area-mode').value;
+      const probeFrac = parseFloat(document.getElementById('area-probe').value);
+      const banner = document.getElementById('area-banner');
+
+      // ---- SPECIAL 3-CURVE CASE: EXERCISE 1.4 ----
+      if (mode === 'ex1_4') {
+        banner.className = 'status-banner status-bounded';
+        banner.innerHTML = '<strong>Bounded 3-Curve Region (Exercise 1.4):</strong> Enclosed by ' + kTex('y=6-x^2') + ', ' + kTex('y=x') + ', and ' + kTex('y=-5x') + '. Lower boundary switches at ' + kTex('(0,0)') + '!';
+        const xMin = -1.6, xMax = 2.6, yMin = -2, yMax = 7;
+        const toX = x => m.l + ((x - xMin) / (xMax - xMin)) * (W - m.l - m.r);
+        const toY = y => H - m.b - ((y - yMin) / (yMax - yMin)) * (H - m.t - m.b);
+        drawAxesGrid(ctx, W, H, m, xMin, xMax, yMin, yMax, toX, toY);
+
+        ctx.save();
+        ctx.beginPath(); ctx.rect(m.l, m.t, W - m.l - m.r, H - m.t - m.b); ctx.clip();
+
+        ctx.fillStyle = 'rgba(29, 78, 216, 0.16)';
+        ctx.beginPath();
+        for (let i = 0; i <= 60; i++) { const x = -1 + i / 60; const px = toX(x), py = toY(6 - x * x); if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py); }
+        ctx.lineTo(toX(0), toY(0)); ctx.lineTo(toX(-1), toY(5)); ctx.closePath(); ctx.fill();
+
+        ctx.fillStyle = 'rgba(166, 25, 46, 0.18)';
+        ctx.beginPath();
+        for (let i = 0; i <= 80; i++) { const x = (2 * i) / 80; const px = toX(x), py = toY(6 - x * x); if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py); }
+        ctx.lineTo(toX(2), toY(2)); ctx.lineTo(toX(0), toY(0)); ctx.closePath(); ctx.fill();
+
+        const plotFn = (fn, col) => {
+          ctx.strokeStyle = col; ctx.lineWidth = 2.3; ctx.beginPath();
+          for (let i = 0; i <= 200; i++) {
+            const x = xMin + (i / 200) * (xMax - xMin), y = fn(x);
+            if (i === 0) ctx.moveTo(toX(x), toY(y)); else ctx.lineTo(toX(x), toY(y));
+          }
+          ctx.stroke();
+        };
+        plotFn(x => 6 - x * x, '#1D4ED8');
+        plotFn(x => x, '#DC2626');
+        plotFn(x => -5 * x, '#0F766E');
+
+        const xp = -1 + probeFrac * 3;
+        const yTop = 6 - xp * xp, yBot = xp < 0 ? -5 * xp : xp;
+        ctx.fillStyle = 'rgba(245, 184, 46, 0.85)';
+        ctx.strokeStyle = '#9A6700'; ctx.lineWidth = 1.5;
+        ctx.fillRect(toX(xp) - 3, toY(yTop), 6, toY(yBot) - toY(yTop));
+        ctx.strokeRect(toX(xp) - 3, toY(yTop), 6, toY(yBot) - toY(yTop));
+
+        [[-1, 5], [0, 0], [2, 2]].forEach(([ix, iy]) => {
+          ctx.fillStyle = '#1E293B'; ctx.beginPath(); ctx.arc(toX(ix), toY(iy), 4.5, 0, Math.PI * 2); ctx.fill();
+        });
+        ctx.restore();
+
+        document.getElementById('area-var-lbl').textContent = 'x';
+        document.getElementById('area-probe-num').textContent = xp.toFixed(2);
+        document.getElementById('area-probe-readout').textContent = 'x = ' + xp.toFixed(2) + ', strip height h(x) = ' + (yTop - yBot).toFixed(3);
+        document.getElementById('area-legend').innerHTML =
+          '<span class="legend-dot" style="background:#1D4ED8;"></span>y=6−x² &nbsp;<span class="legend-dot" style="background:#DC2626;"></span>y=x &nbsp;<span class="legend-dot" style="background:#0F766E;"></span>y=−5x';
+
+        if (rebuildSteps) {
+          paintSteps('area', [
+            { t: 'Find Pairwise Intersections', h: 'Vertices at ' + kTex('(-1,5)') + ', ' + kTex('(0,0)') + ', and ' + kTex('(2,2)') + '. The lower curve switches from ' + kTex('y=-5x') + ' to ' + kTex('y=x') + ' at ' + kTex('x=0') + '.' },
+            { t: 'Split Definite Integral at x = 0', h: kTex('A = \\int_{-1}^0 \\big((6-x^2)-(-5x)\\big)\\,dx + \\int_0^2 \\big((6-x^2)-x\\big)\\,dx', true) },
+            { t: 'Evaluate Antiderivatives', h: kTex('A = \\left[6x + \\frac{5}{2}x^2 - \\frac{1}{3}x^3\\right]_{-1}^0 + \\left[6x - \\frac{1}{2}x^2 - \\frac{1}{3}x^3\\right]_0^2 = \\frac{19}{6} + \\frac{22}{3} = \\frac{21}{2} = 10.5', true) }
+          ]);
+        }
+        return;
+      }
+
+      // ---- HORIZONTAL SLICING (dy) ----
+      if (mode === 'dy') {
+        const k1 = document.getElementById('area-f1').value, k2 = document.getElementById('area-f2').value;
+        const g1 = DY_FNS[k1], g2 = DY_FNS[k2];
+        let c = parseFloat(document.getElementById('area-a').value);
+        let d = parseFloat(document.getElementById('area-b').value);
+        if (!Number.isFinite(c)) c = -1;
+        if (!Number.isFinite(d)) d = 2;
+        if (c > d) { const t = c; c = d; d = t; }
+        if (Math.abs(d - c) < 1e-4) d = c + 1;
+
+        banner.className = 'status-banner status-bounded';
+        banner.innerHTML = '<strong>Horizontal Slicing (' + kTex('dy') + '):</strong> Width ' + kTex('w(y)=|' + g1.tex + ' - (' + g2.tex + ')|') + ' on ' + kTex('y \\in [' + fmt(c, 2) + ', ' + fmt(d, 2) + ']') + ' avoids splitting square-root branches!';
+
+        const padY = Math.max(0.5, 0.2 * (d - c));
+        const yMin = c - padY, yMax = d + padY;
+        let xs = [-1, 1];
+        for (let i = 0; i <= 100; i++) {
+          const y = yMin + (i / 100) * (yMax - yMin);
+          const v1 = g1.fn(y), v2 = g2.fn(y);
+          if (Number.isFinite(v1)) xs.push(v1);
+          if (Number.isFinite(v2)) xs.push(v2);
+        }
+        const xSpan = Math.max(1, Math.max(...xs) - Math.min(...xs));
+        const xMin = Math.min(...xs) - 0.12 * xSpan, xMax = Math.max(...xs) + 0.12 * xSpan;
+        const toX = x => m.l + ((x - xMin) / (xMax - xMin)) * (W - m.l - m.r);
+        const toY = y => H - m.b - ((y - yMin) / (yMax - yMin)) * (H - m.t - m.b);
+        drawAxesGrid(ctx, W, H, m, xMin, xMax, yMin, yMax, toX, toY);
+
+        ctx.save();
+        ctx.beginPath(); ctx.rect(m.l, m.t, W - m.l - m.r, H - m.t - m.b); ctx.clip();
+
+        ctx.fillStyle = 'rgba(166, 25, 46, 0.16)';
+        const N = 120;
+        for (let i = 0; i < N; i++) {
+          const ya = c + (i / N) * (d - c), yb = c + ((i + 1) / N) * (d - c), ym = 0.5 * (ya + yb);
+          const xL = Math.min(g1.fn(ym), g2.fn(ym)), xR = Math.max(g1.fn(ym), g2.fn(ym));
+          ctx.fillRect(toX(xL), toY(yb), toX(xR) - toX(xL), toY(ya) - toY(yb) + 0.6);
+        }
+
+        const plotY = (fn, col) => {
+          ctx.strokeStyle = col; ctx.lineWidth = 2.3; ctx.beginPath();
+          for (let i = 0; i <= 180; i++) {
+            const y = yMin + (i / 180) * (yMax - yMin), x = fn(y);
+            if (i === 0) ctx.moveTo(toX(x), toY(y)); else ctx.lineTo(toX(x), toY(y));
+          }
+          ctx.stroke();
+        };
+        plotY(g1.fn, '#1D4ED8');
+        plotY(g2.fn, '#DC2626');
+
+        const yp = c + probeFrac * (d - c);
+        const xL = Math.min(g1.fn(yp), g2.fn(yp)), xR = Math.max(g1.fn(yp), g2.fn(yp));
+        ctx.fillStyle = 'rgba(245, 184, 46, 0.88)';
+        ctx.strokeStyle = '#9A6700'; ctx.lineWidth = 1.5;
+        ctx.fillRect(toX(xL), toY(yp) - 3, Math.max(2, toX(xR) - toX(xL)), 6);
+        ctx.strokeRect(toX(xL), toY(yp) - 3, Math.max(2, toX(xR) - toX(xL)), 6);
+        ctx.restore();
+
+        document.getElementById('area-var-lbl').textContent = 'y';
+        document.getElementById('area-probe-num').textContent = yp.toFixed(2);
+        document.getElementById('area-probe-readout').textContent = 'y = ' + yp.toFixed(2) + ', width w(y) = ' + (xR - xL).toFixed(3);
+        document.getElementById('area-legend').innerHTML =
+          '<span class="legend-dot" style="background:#1D4ED8;"></span>' + g1.lbl + ' &nbsp;<span class="legend-dot" style="background:#DC2626;"></span>' + g2.lbl;
+
+        if (rebuildSteps) {
+          const val = quadGL(y => Math.abs(g1.fn(y) - g2.fn(y)), c, d, 120);
+          const isEx15 = (k1 === 'y' && k2 === 'y2m2' && Math.abs(c + 1) < 1e-4 && Math.abs(d - 2) < 1e-4);
+          paintSteps('area', [
+            { t: 'Horizontal Strip Element dA = w(y) dy', h: 'Right minus left width: ' + kTex('dA = |(' + g1.tex + ') - (' + g2.tex + ')|\\,dy') + ' for ' + kTex('y \\in [' + bTex(c) + ', ' + bTex(d) + ']') + '.' },
+            { t: 'Construct Definite Integral', h: isEx15 ? kTex('A = \\int_{-1}^2 \\big(y - (y^2 - 2)\\big)\\,dy = \\int_{-1}^2 (y - y^2 + 2)\\,dy', true) : kTex('A = \\int_{' + bTex(c) + '}^{' + bTex(d) + '} |(' + g1.tex + ') - (' + g2.tex + ')|\\,dy', true) },
+            { t: 'Evaluate Area', h: isEx15 ? kTex('A = \\left[\\frac{1}{2}y^2 - \\frac{1}{3}y^3 + 2y\\right]_{-1}^2 = \\frac{10}{3} - \\left(-\\frac{7}{6}\\right) = \\frac{9}{2} = 4.5', true) : 'Computed Area: ' + kTex('A \\approx ' + val.toFixed(5), true) }
+          ]);
+        }
+        return;
+      }
+
+      // ---- STANDARD VERTICAL SLICING (dx), BOUNDED OR UNBOUNDED ----
+      const k1 = document.getElementById('area-f1').value, k2 = document.getElementById('area-f2').value;
+      const f1 = DX_FNS[k1], f2 = DX_FNS[k2];
+      const isInf = document.getElementById('area-inf').checked;
+      let a = parseFloat(document.getElementById('area-a').value);
+      let b = isInf ? Infinity : parseFloat(document.getElementById('area-b').value);
+      if (!Number.isFinite(a)) a = 0;
+      if (!isInf && !Number.isFinite(b)) b = a + 2;
+      if (!isInf && a > b) { const t = a; a = b; b = t; }
+      if (!isInf && Math.abs(b - a) < 1e-5) b = a + 1;
+
+      const plotB = isInf ? Math.max(a + 7, 8) : b;
+      const padX = Math.max(0.25, 0.12 * (plotB - a));
+      const xMin = a - padX, xMax = plotB + padX;
+
+      const hasAsymp = f1.asymp || f2.asymp;
+      let ys = [0, 1];
+      for (let i = 0; i <= 180; i++) {
+        const x = a + (i / 180) * (plotB - a);
+        [f1.fn(x), f2.fn(x)].forEach(y => {
+          if (Number.isFinite(y)) {
+            if (hasAsymp) ys.push(Math.max(-10, Math.min(10, y)));
+            else ys.push(y);
+          }
+        });
+      }
+      const rawMinY = Math.min(...ys), rawMaxY = Math.max(...ys);
+      const ySpan = Math.max(1, rawMaxY - rawMinY);
+      const yMin = rawMinY - 0.14 * ySpan, yMax = rawMaxY + 0.16 * ySpan;
+      const toX = x => m.l + ((x - xMin) / (xMax - xMin)) * (W - m.l - m.r);
+      const toY = y => H - m.b - ((y - yMin) / (yMax - yMin)) * (H - m.t - m.b);
+      drawAxesGrid(ctx, W, H, m, xMin, xMax, yMin, yMax, toX, toY);
+
+      const roots = (!isInf) ? findRoots(x => f1.fn(x) - f2.fn(x), a + 1e-5, b - 1e-5, 400) : [];
+
+      ctx.save();
+      ctx.beginPath(); ctx.rect(m.l, m.t, W - m.l - m.r, H - m.t - m.b); ctx.clip();
+
+      const N = 160;
+      for (let i = 0; i < N; i++) {
+        const xa = a + (i / N) * (plotB - a), xb = a + ((i + 1) / N) * (plotB - a), xm = 0.5 * (xa + xb);
+        let y1 = f1.fn(xm), y2 = f2.fn(xm);
+        if (!Number.isFinite(y1) || !Number.isFinite(y2)) continue;
+        y1 = Math.max(yMin - 5, Math.min(yMax + 5, y1));
+        y2 = Math.max(yMin - 5, Math.min(yMax + 5, y2));
+        ctx.fillStyle = y1 >= y2 ? 'rgba(29, 78, 216, 0.17)' : 'rgba(220, 38, 38, 0.17)';
+        const top = Math.max(y1, y2), bot = Math.min(y1, y2);
+        ctx.fillRect(toX(xa), toY(top), toX(xb) - toX(xa) + 0.6, toY(bot) - toY(top));
+      }
+
+      const plotCurve = (fn, col) => {
+        ctx.strokeStyle = col; ctx.lineWidth = 2.3; ctx.beginPath();
+        let pen = false;
+        for (let i = 0; i <= 280; i++) {
+          const x = xMin + (i / 280) * (xMax - xMin), y = fn(x);
+          if (!Number.isFinite(y) || Math.abs(y) > (yMax - yMin) * 8 + 50) { pen = false; continue; }
+          if (!pen) { ctx.moveTo(toX(x), toY(y)); pen = true; } else ctx.lineTo(toX(x), toY(y));
+        }
+        ctx.stroke();
+      };
+      plotCurve(f1.fn, '#1D4ED8');
+      plotCurve(f2.fn, '#DC2626');
+
+      roots.forEach(r => {
+        const yr = f1.fn(r);
+        if (Number.isFinite(yr)) {
+          ctx.fillStyle = '#1E293B'; ctx.beginPath(); ctx.arc(toX(r), toY(yr), 4.5, 0, Math.PI * 2); ctx.fill();
+        }
+      });
+
+      const xp = a + Math.max(0.01, probeFrac) * (plotB - a);
+      const yp1 = f1.fn(xp), yp2 = f2.fn(xp);
+      if (Number.isFinite(yp1) && Number.isFinite(yp2)) {
+        const top = Math.min(yMax, Math.max(yp1, yp2)), bot = Math.max(yMin, Math.min(yp1, yp2));
+        ctx.fillStyle = 'rgba(245, 184, 46, 0.88)';
+        ctx.strokeStyle = '#9A6700'; ctx.lineWidth = 1.5;
+        ctx.fillRect(toX(xp) - 3, toY(top), 6, Math.max(2, toY(bot) - toY(top)));
+        ctx.strokeRect(toX(xp) - 3, toY(top), 6, Math.max(2, toY(bot) - toY(top)));
+        document.getElementById('area-probe-readout').textContent = 'x = ' + xp.toFixed(2) + ', strip height |f₁−f₂| = ' + Math.abs(yp1 - yp2).toFixed(3);
+      }
+      ctx.restore();
+
+      document.getElementById('area-var-lbl').textContent = 'x';
+      document.getElementById('area-probe-num').textContent = xp.toFixed(2);
+      document.getElementById('area-legend').innerHTML =
+        '<span class="legend-dot" style="background:#1D4ED8;"></span>' + f1.lbl + ' &nbsp;<span class="legend-dot" style="background:#DC2626;"></span>' + f2.lbl;
+
+      // Classification & Step Construction
+      const crossesZeroPole = (k1 === 'invx2' || k2 === 'invx2' || k1 === 'invx' || k2 === 'invx') && (a <= 1e-6 && (isInf || b >= -1e-6));
+      const crossesNegSqrt = (k1 === 'invsqrtx' || k2 === 'invsqrtx') && a < -1e-6;
+      const isAsymp0 = (k1 === 'invsqrtx' || k2 === 'invsqrtx') && Math.abs(a) < 1e-6 && !isInf && b > 0;
+
+      if (crossesNegSqrt) {
+        banner.className = 'status-banner status-divergent';
+        banner.innerHTML = '<strong>Domain Warning:</strong> ' + kTex('1/\\sqrt{x}') + ' is real-valued only for ' + kTex('x > 0') + '. Set Lower Bound ' + kTex('a \\ge 0') + '.';
+        if (rebuildSteps) paintSteps('area', [{ t: 'Check Domain', h: 'Adjust lower bound ' + kTex('a \\ge 0') + ' so ' + kTex('1/\\sqrt{x}') + ' is defined on ' + kTex('(a,b]') + '.' }]);
+      } else if (crossesZeroPole) {
+        banner.className = 'status-banner status-divergent';
+        banner.innerHTML = '<strong>Unbounded Vertical Asymptote — Divergent:</strong> Strong pole at ' + kTex('x = 0') + ' makes the improper area diverge to ' + kTex('+\\infty') + '!';
+        if (rebuildSteps) paintSteps('area', [
+          { t: 'Detect Singularity at x = 0', h: 'The interval contains ' + kTex('x=0') + ', where ' + kTex('|f_1(x)-f_2(x)|') + ' blows up non-integrably.' },
+          { t: 'Conclusion', h: kTex('A = +\\infty \\quad (\\text{Diverges!})', true) }
+        ]);
+      } else if (isInf) {
+        if ((k1 === 'invx2' && k2 === 'zero') || (k2 === 'invx2' && k1 === 'zero')) {
+          banner.className = 'status-banner status-improper';
+          banner.innerHTML = '<strong>Unbounded Interval [' + fmt(a, 2) + ', ∞) — Convergent!</strong> ' + kTex('1/x^2') + ' decays fast enough (' + kTex('p=2>1') + ') to enclose finite area ' + kTex('A = 1/' + fmt(a, 2)) + '.';
+          if (rebuildSteps) paintSteps('area', [
+            { t: 'Improper Limit Setup', h: kTex('A = \\int_{' + bTex(a) + '}^{\\infty} \\frac{1}{x^2}\\,dx = \\lim_{t\\to\\infty} \\int_{' + bTex(a) + '}^{t} x^{-2}\\,dx', true) },
+            { t: 'Antiderivative & Limit', h: kTex('A = \\lim_{t\\to\\infty}\\left[-\\frac{1}{x}\\right]_{' + bTex(a) + '}^{t} = \\lim_{t\\to\\infty}\\left(\\frac{1}{' + bTex(a) + '} - \\frac{1}{t}\\right) = ' + fmt(1 / a, 4), true) }
+          ]);
+        } else if ((k1 === 'expnx' && k2 === 'zero') || (k2 === 'expnx' && k1 === 'zero')) {
+          banner.className = 'status-banner status-improper';
+          banner.innerHTML = '<strong>Unbounded Interval [' + fmt(a, 2) + ', ∞) — Convergent!</strong> Exponential decay encloses finite area ' + kTex('A = e^{-' + fmt(a, 2) + '} = ' + fmt(Math.exp(-a), 4)) + '.';
+          if (rebuildSteps) paintSteps('area', [
+            { t: 'Improper Limit Setup', h: kTex('A = \\lim_{t\\to\\infty} \\int_{' + bTex(a) + '}^{t} e^{-x}\\,dx = \\lim_{t\\to\\infty}\\left[-e^{-x}\\right]_{' + bTex(a) + '}^{t} = e^{-' + bTex(a) + '} \\approx ' + fmt(Math.exp(-a), 4), true) }
+          ]);
+        } else {
+          banner.className = 'status-banner status-divergent';
+          banner.innerHTML = '<strong>Unbounded Interval [' + fmt(a, 2) + ', ∞) — Divergent!</strong> Strip height ' + kTex('|' + f1.tex + ' - (' + f2.tex + ')|') + ' does not decay fast enough as ' + kTex('x \\to \\infty') + '; total area is <strong>infinite (+∞)</strong>.';
+          if (rebuildSteps) paintSteps('area', [
+            { t: 'Improper Integral Limit Setup', h: kTex('A = \\lim_{t\\to\\infty} \\int_{' + bTex(a) + '}^{t} |' + f1.tex + ' - (' + f2.tex + ')|\\,dx', true) },
+            { t: 'Divergence Analysis', h: (k1 === 'invx' || k2 === 'invx')
+              ? kTex('\\lim_{t\\to\\infty}[\\ln x]_{' + bTex(a) + '}^t = \\lim_{t\\to\\infty}(\\ln t - \\ln ' + bTex(a) + ') = +\\infty \\;(\\text{Diverges!})', true)
+              : kTex('\\lim_{t\\to\\infty} \\int_{' + bTex(a) + '}^{t} |' + f1.tex + ' - (' + f2.tex + ')|\\,dx = +\\infty \\;(\\text{Diverges!})', true) }
+          ]);
+        }
+      } else if (isAsymp0) {
+        const otherFn = k1 === 'invsqrtx' ? f2 : f1;
+        const val = 2 * Math.sqrt(b) - quadGL(otherFn.fn, 0, b, 100);
+        banner.className = 'status-banner status-improper';
+        banner.innerHTML = '<strong>Unbounded Height on [0, ' + fmt(b, 2) + '] — Convergent!</strong> Although ' + kTex('1/\\sqrt{x} \\to \\infty') + ' as ' + kTex('x \\to 0^+') + ', the improper integral is finite!';
+        if (rebuildSteps) paintSteps('area', [
+          { t: 'Vertical Asymptote at x = 0⁺', h: kTex('A = \\lim_{\\varepsilon \\to 0^+} \\int_{\\varepsilon}^{' + bTex(b) + '} \\left(\\frac{1}{\\sqrt{x}} - (' + otherFn.tex + ')\\right)dx', true) },
+          { t: 'Evaluate Limit', h: otherFn.tex === '0'
+            ? kTex('A = \\lim_{\\varepsilon \\to 0^+} \\left[2\\sqrt{x}\\right]_{\\varepsilon}^{' + bTex(b) + '} = 2\\sqrt{' + bTex(b) + '} = ' + fmt(2 * Math.sqrt(b), 4), true)
+            : 'Computed Convergent Area: ' + kTex('A \\approx ' + fmt(Math.abs(val), 5), true) }
+        ]);
+      } else {
+        banner.className = 'status-banner status-bounded';
+        banner.innerHTML = roots.length > 0
+          ? '<strong>Bounded Region with ' + roots.length + ' Interior Crossing(s):</strong> Split integral at ' + roots.map(r => kTex('x \\approx ' + fmt(r, 3))).join(', ') + ' so every strip height is positive!'
+          : '<strong>Bounded Region:</strong> Curves do not cross inside ' + kTex('(' + fmt(a, 2) + ', ' + fmt(b, 2) + ')') + '. Single definite integral suffices.';
+
+        if (rebuildSteps) {
+          const pts = [a, ...roots, b];
+          let piecesTex = [], totalA = 0;
+          for (let i = 0; i < pts.length - 1; i++) {
+            const p1 = pts[i], p2 = pts[i + 1], mid = 0.5 * (p1 + p2);
+            const f1Top = f1.fn(mid) >= f2.fn(mid);
+            const topT = f1Top ? f1.tex : f2.tex, botT = f1Top ? f2.tex : f1.tex;
+            const integrand = botT === '0' ? topT : topT + ' - (' + botT + ')';
+            piecesTex.push('\\int_{' + bTex(p1) + '}^{' + bTex(p2) + '} \\big(' + integrand + '\\big)\\,dx');
+            totalA += quadGL(x => Math.abs(f1.fn(x) - f2.fn(x)), Math.max(p1, 1e-6 && f1.minX === 0 ? p1 : p1), p2, 100);
+          }
+
+          let exactTex = 'A \\approx ' + totalA.toFixed(5);
+          if (k1 === 'expx' && k2 === 'expnx' && Math.abs(a) < 1e-5 && Math.abs(b - 2) < 1e-5) {
+            exactTex = 'A = \\left[e^x + e^{-x}\\right]_0^2 = e^2 + e^{-2} - 2 \\approx 5.5244';
+          } else if (((k1 === 'x' && k2 === 'x2') || (k1 === 'x2' && k2 === 'x')) && Math.abs(a) < 1e-5 && Math.abs(b - 1) < 1e-5) {
+            exactTex = 'A = \\left[\\frac{1}{2}x^2 - \\frac{1}{3}x^3\\right]_0^1 = \\frac{1}{6} \\approx 0.1667';
+          } else if (((k1 === 'sinx' && k2 === 'cosx') || (k1 === 'cosx' && k2 === 'sinx')) && Math.abs(a) < 1e-5 && Math.abs(b - Math.PI / 3) < 1e-3) {
+            exactTex = 'A = (\\sqrt{2}-1) + \\left(\\sqrt{2} - \\frac{1+\\sqrt{3}}{2}\\right) = 2\\sqrt{2} - \\frac{3+\\sqrt{3}}{2} \\approx 0.4624';
+          }
+
+          paintSteps('area', [
+            { t: 'Infinitesimal Vertical Strip & Intersections', h: (roots.length ? 'Interior intersection(s) at ' + roots.map(r => kTex('x = ' + bTex(r))).join(', ') + '. ' : 'No interior intersections on ' + kTex('(' + bTex(a) + ', ' + bTex(b) + ')') + '. ') + 'Height ' + kTex('dA = |' + f1.tex + ' - (' + f2.tex + ')|\\,dx') + '.' },
+            { t: 'Construct Sign-Resolved Definite Integral', h: kTex('A = ' + piecesTex.join(' + '), true) },
+            { t: 'Antiderivative & Final Area', h: kTex(exactTex, true) }
+          ]);
+        }
+      }
+    }
+
+    /* =========================================================
+       TAB 1C: AVERAGE VALUE COMPANION
+       ========================================================= */
+    const AVG_CASES = {
+      ex2_1:   { fn: x => x * x, a: 0, b: 1, avg: 1 / 3, tex: 'f_{\\text{avg}} = \\frac{1}{1-0}\\int_0^1 x^2\\,dx = \\left[\\frac{x^3}{3}\\right]_0^1 = \\frac{1}{3} \\approx 0.3333' },
+      ex2_2:   { fn: x => x * x, a: -1, b: 1, avg: 1 / 3, tex: 'f_{\\text{avg}} = \\frac{1}{1-(-1)}\\int_{-1}^1 x^2\\,dx = \\frac{1}{2}\\left[\\frac{x^3}{3}\\right]_{-1}^1 = \\frac{1}{3} \\approx 0.3333' },
+      ex2_3:   { fn: x => Math.sin(x), a: 0, b: Math.PI, avg: 2 / Math.PI, tex: 'f_{\\text{avg}} = \\frac{1}{\\pi - 0}\\int_0^{\\pi} \\sin x\\,dx = \\frac{1}{\\pi}[-\\cos x]_0^{\\pi} = \\frac{2}{\\pi} \\approx 0.6366' },
+      exp_avg: { fn: x => Math.exp(x), a: 0, b: 2, avg: (Math.exp(2) - 1) / 2, tex: 'f_{\\text{avg}} = \\frac{1}{2-0}\\int_0^2 e^x\\,dx = \\frac{e^2 - 1}{2} \\approx 3.1945' }
+    };
+    let curAvgKey = 'ex2_1';
+
+    function loadAvgPreset(k, btn) {
+      curAvgKey = k;
+      clearPills('avg-presets');
+      if (btn) btn.classList.add('active');
+      renderAvg();
+    }
+
+    function renderAvg() {
+      const pack = prepCanvas('avg-canvas');
+      if (!pack) return;
+      const { ctx, W, H } = pack;
+      const m = { l: 42, r: 18, t: 18, b: 28 };
+      const c = AVG_CASES[curAvgKey];
+      const padX = 0.15 * (c.b - c.a);
+      const xMin = c.a - padX, xMax = c.b + padX;
+      let yMax = 0.5;
+      for (let i = 0; i <= 80; i++) yMax = Math.max(yMax, c.fn(c.a + (i / 80) * (c.b - c.a)));
+      yMax *= 1.18;
+      const yMin = -0.08 * yMax;
+      const toX = x => m.l + ((x - xMin) / (xMax - xMin)) * (W - m.l - m.r);
+      const toY = y => H - m.b - ((y - yMin) / (yMax - yMin)) * (H - m.t - m.b);
+      drawAxesGrid(ctx, W, H, m, xMin, xMax, yMin, yMax, toX, toY);
+
+      ctx.save();
+      ctx.beginPath(); ctx.rect(m.l, m.t, W - m.l - m.r, H - m.t - m.b); ctx.clip();
+
+      ctx.fillStyle = 'rgba(29, 78, 216, 0.18)';
+      ctx.beginPath(); ctx.moveTo(toX(c.a), toY(0));
+      for (let i = 0; i <= 100; i++) { const x = c.a + (i / 100) * (c.b - c.a); ctx.lineTo(toX(x), toY(c.fn(x))); }
+      ctx.lineTo(toX(c.b), toY(0)); ctx.closePath(); ctx.fill();
+
+      ctx.fillStyle = 'rgba(245, 184, 46, 0.30)';
+      ctx.strokeStyle = '#B45309'; ctx.lineWidth = 2; ctx.setLineDash([6, 4]);
+      ctx.fillRect(toX(c.a), toY(c.avg), toX(c.b) - toX(c.a), toY(0) - toY(c.avg));
+      ctx.strokeRect(toX(c.a), toY(c.avg), toX(c.b) - toX(c.a), toY(0) - toY(c.avg));
+      ctx.setLineDash([]);
+
+      ctx.strokeStyle = '#1D4ED8'; ctx.lineWidth = 2.4; ctx.beginPath();
+      for (let i = 0; i <= 120; i++) {
+        const x = xMin + (i / 120) * (xMax - xMin), y = c.fn(x);
+        if (i === 0) ctx.moveTo(toX(x), toY(y)); else ctx.lineTo(toX(x), toY(y));
+      }
+      ctx.stroke();
+      ctx.restore();
+
+      document.getElementById('avg-readout').textContent = 'f_avg = ' + c.avg.toFixed(4);
+      document.getElementById('avg-steps').innerHTML = '<div class="step-num">Exact Evaluation</div><div class="step-body">' + kTex(c.tex, true) + '</div>';
+    }
+
+    /* =========================================================
+       TAB 2A & 2B: MICROSTRAIGHTNESS & ARC LENGTH ENGINE
+       ========================================================= */
+    function drawMicroLab() {
+      const pack = prepCanvas('micro-canvas');
+      if (!pack) return;
+      const { ctx, W, H } = pack;
+      const x0 = parseFloat(document.getElementById('micro-x0').value);
+      const dx = parseFloat(document.getElementById('micro-dx').value);
+      document.getElementById('micro-x0-lbl').textContent = x0.toFixed(2);
+      document.getElementById('micro-dx-lbl').textContent = dx.toFixed(2);
+
+      const fn = x => 0.5 * x * x, dfn = x => x;
+      const y0 = fn(x0), sl = dfn(x0);
+      const xMin = x0 - 0.35 * dx, xMax = x0 + 1.35 * dx;
+      const yA = y0 - 0.35 * dx * Math.max(0.4, sl), yB = fn(x0 + dx) + 0.35 * dx * Math.max(0.4, sl);
+      const m = { l: 38, r: 16, t: 16, b: 26 };
+      const toX = x => m.l + ((x - xMin) / (xMax - xMin)) * (W - m.l - m.r);
+      const toY = y => H - m.b - ((y - yA) / (yB - yA)) * (H - m.t - m.b);
+      drawAxesGrid(ctx, W, H, m, xMin, xMax, yA, yB, toX, toY);
+
+      const x1 = x0 + dx, yTan1 = y0 + sl * dx;
+      ctx.save();
+      ctx.beginPath(); ctx.rect(m.l, m.t, W - m.l - m.r, H - m.t - m.b); ctx.clip();
+
+      ctx.fillStyle = 'rgba(245, 184, 46, 0.22)';
+      ctx.strokeStyle = '#B45309'; ctx.lineWidth = 1.6;
+      ctx.beginPath();
+      ctx.moveTo(toX(x0), toY(y0)); ctx.lineTo(toX(x1), toY(y0)); ctx.lineTo(toX(x1), toY(yTan1)); ctx.closePath();
+      ctx.fill(); ctx.stroke();
+
+      ctx.strokeStyle = '#1D4ED8'; ctx.lineWidth = 2; ctx.setLineDash([5, 4]);
+      ctx.beginPath(); ctx.moveTo(toX(xMin), toY(y0 + sl * (xMin - x0))); ctx.lineTo(toX(xMax), toY(y0 + sl * (xMax - x0))); ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.strokeStyle = '#A6192E'; ctx.lineWidth = 2.8;
+      ctx.beginPath();
+      for (let i = 0; i <= 90; i++) {
+        const x = xMin + (i / 90) * (xMax - xMin);
+        if (i === 0) ctx.moveTo(toX(x), toY(fn(x))); else ctx.lineTo(toX(x), toY(fn(x)));
+      }
+      ctx.stroke();
+      ctx.restore();
+
+      ctx.fillStyle = '#1E293B'; ctx.font = 'bold 11px sans-serif';
+      ctx.fillText('dx', 0.5 * (toX(x0) + toX(x1)) - 6, toY(y0) + 14);
+      ctx.fillText('dy = f\'(x)dx', toX(x1) - 68, 0.5 * (toY(y0) + toY(yTan1)));
+      ctx.fillText('ds', 0.5 * (toX(x0) + toX(x1)) - 18, 0.5 * (toY(y0) + toY(yTan1)) - 8);
+
+      const dsTan = Math.sqrt(1 + sl * sl) * dx;
+      const dsTrue = quadGL(x => Math.sqrt(1 + dfn(x) * dfn(x)), x0, x1, 20);
+      const relErr = (Math.abs(dsTrue - dsTan) / dsTrue) * 100;
+      document.getElementById('micro-readout').textContent = 'Curve vs Tangent gap: ' + relErr.toFixed(3) + '%';
+    }
+
+    const ARC_FNS = {
+      ex3_1: {
+        fn: x => (x < 0 ? NaN : (4 / 3) * Math.pow(x, 1.5)),
+        dfn: x => (x < 0 ? NaN : 2 * Math.sqrt(x)),
+        tex: '\\frac{4}{3}x^{3/2}', dtex: '2x^{1/2}', sqtex: '1 + 4x',
+        domMin: 0, domMax: Infinity, defA: 2, defB: 6
+      },
+      catenary: {
+        fn: x => 0.5 * (Math.exp(x) + Math.exp(-x)),
+        dfn: x => 0.5 * (Math.exp(x) - Math.exp(-x)),
+        tex: '\\frac{1}{2}(e^x + e^{-x})', dtex: '\\frac{1}{2}(e^x - e^{-x})', sqtex: '\\left(\\frac{e^x + e^{-x}}{2}\\right)^2',
+        domMin: -Infinity, domMax: Infinity, defA: 0, defB: 1
+      },
+      shift32: {
+        fn: x => (x < 1 ? NaN : (2 / 3) * Math.pow(x - 1, 1.5)),
+        dfn: x => (x < 1 ? NaN : Math.sqrt(x - 1)),
+        tex: '\\frac{2}{3}(x-1)^{3/2}', dtex: '\\sqrt{x-1}', sqtex: 'x',
+        domMin: 1, domMax: Infinity, defA: 1, defB: 4
+      },
+      semi: {
+        fn: x => (Math.abs(x) > 2 + 1e-9 ? NaN : Math.sqrt(Math.max(0, 4 - x * x))),
+        dfn: x => (Math.abs(x) >= 2 - 1e-7 ? Infinity : -x / Math.sqrt(4 - x * x)),
+        tex: '\\sqrt{4 - x^2}', dtex: '\\frac{-x}{\\sqrt{4-x^2}}', sqtex: '\\frac{4}{4-x^2}',
+        domMin: -2, domMax: 2, defA: -2, defB: 2
+      },
+      logcos: {
+        fn: x => (Math.cos(x) <= 1e-6 ? NaN : Math.log(Math.cos(x))),
+        dfn: x => -Math.tan(x),
+        tex: '\\ln(\\cos x)', dtex: '-\\tan x', sqtex: '1 + \\tan^2 x = \\sec^2 x',
+        domMin: -Math.PI / 2, domMax: Math.PI / 2, defA: 0, defB: Number((Math.PI / 3).toFixed(4))
+      },
+      x2: {
+        fn: x => x * x, dfn: x => 2 * x,
+        tex: 'x^2', dtex: '2x', sqtex: '1 + 4x^2',
+        domMin: -Infinity, domMax: Infinity, defA: 0, defB: 2
+      },
+      sinx: {
+        fn: x => Math.sin(x), dfn: x => Math.cos(x),
+        tex: '\\sin x', dtex: '\\cos x', sqtex: '1 + \\cos^2 x',
+        domMin: -Infinity, domMax: Infinity, defA: 0, defB: Number(Math.PI.toFixed(4))
+      }
+    };
+
+    function onArcCurveChange() {
+      const k = document.getElementById('arc-fn').value;
+      const spec = ARC_FNS[k];
+      document.getElementById('arc-a').value = spec.defA;
+      document.getElementById('arc-b').value = spec.defB;
+      renderArc(true);
+    }
+
+    function loadArcPreset(p, btn) {
+      clearPills('arc-presets');
+      if (btn) btn.classList.add('active');
+      const sel = document.getElementById('arc-fn');
+      const aEl = document.getElementById('arc-a'), bEl = document.getElementById('arc-b');
+      if (p === 'ex3_1') { sel.value = 'ex3_1'; aEl.value = 2; bEl.value = 6; }
+      else if (p === 'ex3_2') { sel.value = 'catenary'; aEl.value = 0; bEl.value = 1; }
+      else if (p === 'shift32') { sel.value = 'shift32'; aEl.value = 1; bEl.value = 4; }
+      else if (p === 'semi') { sel.value = 'semi'; aEl.value = -2; bEl.value = 2; }
+      else if (p === 'unb_arc') { sel.value = 'logcos'; aEl.value = 0; bEl.value = Number((Math.PI / 2).toFixed(4)); }
+      else if (p === 'num_x2') { sel.value = 'x2'; aEl.value = 0; bEl.value = 2; }
+      renderArc(true);
+    }
+
+    function renderArc(rebuildSteps = true) {
+      const pack = prepCanvas('arc-canvas');
+      if (!pack) return;
+      const { ctx, W, H } = pack;
+      const m = { l: 46, r: 20, t: 20, b: 32 };
+      const k = document.getElementById('arc-fn').value;
+      const spec = ARC_FNS[k];
+      let a = parseFloat(document.getElementById('arc-a').value);
+      let b = parseFloat(document.getElementById('arc-b').value);
+      if (!Number.isFinite(a)) a = spec.defA;
+      if (!Number.isFinite(b)) b = spec.defB;
+      if (a > b) { const t = a; a = b; b = t; }
+      a = Math.max(a, spec.domMin);
+      b = Math.min(b, spec.domMax);
+      if (b - a < 1e-4) { a = spec.defA; b = spec.defB; }
+
+      const nChords = parseInt(document.getElementById('arc-chords').value, 10);
+      document.getElementById('arc-n-lbl').textContent = nChords;
+      const banner = document.getElementById('arc-banner');
+
+      const isLogCosInf = (k === 'logcos' && (Math.abs(b - Math.PI / 2) < 0.002 || Math.abs(a + Math.PI / 2) < 0.002));
+      const drawA = (k === 'logcos') ? Math.max(a, -Math.PI / 2 + 0.04) : a;
+      const drawB = (k === 'logcos') ? Math.min(b, Math.PI / 2 - 0.04) : b;
+
+      const padX = Math.max(0.2, 0.12 * (drawB - drawA));
+      const xMin = Math.max(spec.domMin, drawA - padX), xMax = Math.min(spec.domMax, drawB + padX);
+      let ys = [0];
+      for (let i = 0; i <= 140; i++) {
+        const y = spec.fn(drawA + (i / 140) * (drawB - drawA));
+        if (Number.isFinite(y)) ys.push(y);
+      }
+      const rawMinY = Math.min(...ys), rawMaxY = Math.max(...ys);
+      const ySpan = Math.max(1, rawMaxY - rawMinY);
+      const yMin = rawMinY - 0.15 * ySpan, yMax = rawMaxY + 0.15 * ySpan;
+      const toX = x => m.l + ((x - xMin) / Math.max(1e-6, xMax - xMin)) * (W - m.l - m.r);
+      const toY = y => H - m.b - ((y - yMin) / Math.max(1e-6, yMax - yMin)) * (H - m.t - m.b);
+      drawAxesGrid(ctx, W, H, m, xMin, xMax, yMin, yMax, toX, toY);
+
+      ctx.save();
+      ctx.beginPath(); ctx.rect(m.l, m.t, W - m.l - m.r, H - m.t - m.b); ctx.clip();
+
+      ctx.strokeStyle = '#CBD5E1'; ctx.lineWidth = 2; ctx.beginPath();
+      let pen = false;
+      for (let i = 0; i <= 200; i++) {
+        const x = xMin + (i / 200) * (xMax - xMin), y = spec.fn(x);
+        if (!Number.isFinite(y)) { pen = false; continue; }
+        if (!pen) { ctx.moveTo(toX(x), toY(y)); pen = true; } else ctx.lineTo(toX(x), toY(y));
+      }
+      ctx.stroke();
+
+      ctx.strokeStyle = '#A6192E'; ctx.lineWidth = 3.2; ctx.beginPath();
+      pen = false;
+      for (let i = 0; i <= 180; i++) {
+        const x = drawA + (i / 180) * (drawB - drawA), y = spec.fn(x);
+        if (!Number.isFinite(y)) { pen = false; continue; }
+        if (!pen) { ctx.moveTo(toX(x), toY(y)); pen = true; } else ctx.lineTo(toX(x), toY(y));
+      }
+      ctx.stroke();
+
+      let polyLen = 0;
+      ctx.strokeStyle = '#0EA5E9'; ctx.lineWidth = 1.8; ctx.setLineDash([5, 3]);
+      ctx.beginPath();
+      for (let i = 0; i <= nChords; i++) {
+        const xi = drawA + (i / nChords) * (drawB - drawA), yi = spec.fn(xi);
+        if (i === 0) ctx.moveTo(toX(xi), toY(yi)); else ctx.lineTo(toX(xi), toY(yi));
+        if (i > 0) {
+          const xp = drawA + ((i - 1) / nChords) * (drawB - drawA), yp = spec.fn(xp);
+          polyLen += Math.hypot(xi - xp, yi - yp);
+        }
+      }
+      ctx.stroke(); ctx.setLineDash([]);
+
+      for (let i = 0; i <= nChords; i++) {
+        const xi = drawA + (i / nChords) * (drawB - drawA), yi = spec.fn(xi);
+        if (Number.isFinite(yi)) {
+          ctx.fillStyle = '#0284C7'; ctx.beginPath(); ctx.arc(toX(xi), toY(yi), 3.2, 0, Math.PI * 2); ctx.fill();
+        }
+      }
+      ctx.restore();
+
+      let trueLen = NaN;
+      if (isLogCosInf) {
+        banner.className = 'status-banner status-divergent';
+        banner.innerHTML = '<strong>Unbounded Curve — Infinite Arc Length!</strong> As ' + kTex('x \\to (\\pi/2)^-') + ', ' + kTex('\\ln(\\cos x) \\to -\\infty') + ', so ' + kTex('s = \\int \\sec x\\,dx = +\\infty') + '.';
+        document.getElementById('arc-readout').textContent = 's = +∞ (Diverges!)';
+      } else if (k === 'semi' && (Math.abs(a + 2) < 1e-4 || Math.abs(b - 2) < 1e-4)) {
+        trueLen = 2 * (Math.asin(Math.min(1, Math.max(-1, b / 2))) - Math.asin(Math.min(1, Math.max(-1, a / 2))));
+        banner.className = 'status-banner status-improper';
+        banner.innerHTML = '<strong>Improper Derivative (Vertical Tangent) — Finite Arc Length!</strong> Even though ' + kTex('|dy/dx| \\to \\infty') + ' at ' + kTex('x = \\pm 2') + ', the circle arc is finite: ' + kTex('s = ' + fmt(trueLen, 4)) + '.';
+        document.getElementById('arc-readout').textContent = 'Chords L_' + nChords + ' = ' + polyLen.toFixed(4) + '  |  Exact s = ' + trueLen.toFixed(4);
+      } else {
+        trueLen = quadGL(x => Math.sqrt(1 + Math.pow(spec.dfn(x), 2)), a + 1e-7, b - 1e-7, 140);
+        banner.className = 'status-banner status-bounded';
+        banner.innerHTML = (k === 'x2' || k === 'sinx')
+          ? '<strong>Bounded Smooth Arc (Numerical Showcase — Footnote 2):</strong> Smooth curve with finite arc length, illustrating when numerical quadrature is needed.'
+          : '<strong>Bounded Smooth Arc (Closed-Form Exact!):</strong> ' + kTex('1 + (dy/dx)^2') + ' simplifies cleanly under the radical!';
+        document.getElementById('arc-readout').textContent = 'Chords L_' + nChords + ' = ' + polyLen.toFixed(4) + '  |  True s = ' + trueLen.toFixed(4);
+      }
+
+      if (rebuildSteps) {
+        let evalTex = 's \\approx ' + (Number.isFinite(trueLen) ? trueLen.toFixed(5) : '+\\infty');
+        if (k === 'ex3_1') {
+          const exact = ((Math.pow(1 + 4 * b, 1.5) - Math.pow(1 + 4 * a, 1.5)) / 6);
+          evalTex = (Math.abs(a - 2) < 1e-5 && Math.abs(b - 6) < 1e-5)
+            ? 'u = 1+4x \\implies s = \\frac{1}{4}\\left[\\frac{2}{3}(1+4x)^{3/2}\\right]_2^6 = \\frac{1}{6}(125 - 27) = \\frac{49}{3} \\approx 16.3333'
+            : 's = \\left[\\frac{1}{6}(1+4x)^{3/2}\\right]_{' + bTex(a) + '}^{' + bTex(b) + '} \\approx ' + exact.toFixed(5);
+        } else if (k === 'catenary') {
+          const exact = 0.5 * ((Math.exp(b) - Math.exp(-b)) - (Math.exp(a) - Math.exp(-a)));
+          evalTex = (Math.abs(a) < 1e-5 && Math.abs(b - 1) < 1e-5)
+            ? 's = \\int_0^1 \\frac{1}{2}(e^x + e^{-x})\\,dx = \\left[\\frac{1}{2}(e^x - e^{-x})\\right]_0^1 = \\frac{e - e^{-1}}{2} \\approx 1.1752'
+            : 's = \\left[\\frac{1}{2}(e^x - e^{-x})\\right]_{' + bTex(a) + '}^{' + bTex(b) + '} \\approx ' + exact.toFixed(5);
+        } else if (k === 'shift32') {
+          const exact = (2 / 3) * (Math.pow(b, 1.5) - Math.pow(a, 1.5));
+          evalTex = 's = \\int_{' + bTex(a) + '}^{' + bTex(b) + '} \\sqrt{x}\\,dx = \\left[\\frac{2}{3}x^{3/2}\\right]_{' + bTex(a) + '}^{' + bTex(b) + '} = ' + fmt(exact, 4);
+        } else if (k === 'semi') {
+          evalTex = 's = \\left[2\\arcsin\\left(\\frac{x}{2}\\right)\\right]_{' + bTex(a) + '}^{' + bTex(b) + '} = ' + (Math.abs(a + 2) < 1e-4 && Math.abs(b - 2) < 1e-4 ? '2\\pi \\approx 6.2832' : fmt(trueLen, 5));
+        } else if (isLogCosInf) {
+          evalTex = 's = \\lim_{t \\to (\\pi/2)^-} \\big[\\ln|\\sec x + \\tan x|\\big]_0^t = +\\infty \\;(\\text{Diverges!})';
+        } else if (k === 'logcos') {
+          evalTex = 's = \\big[\\ln|\\sec x + \\tan x|\\big]_{' + bTex(a) + '}^{' + bTex(b) + '} \\approx ' + trueLen.toFixed(5);
+        } else if (k === 'sinx') {
+          evalTex = '\\text{Elliptic integral (no elementary antiderivative): } s \\approx ' + trueLen.toFixed(5);
+        }
+
+        paintSteps('arc', [
+          { t: 'Derivative & Squared Slope', h: kTex('\\frac{dy}{dx} = ' + spec.dtex + ' \\implies 1 + \\left(\\frac{dy}{dx}\\right)^2 = ' + spec.sqtex, true) },
+          { t: 'Construct Arc Length Integral (Theorem 3.1)', h: kTex('s = \\int_{' + bTex(a) + '}^{' + bTex(b) + '} \\sqrt{' + spec.sqtex + '}\\,dx', true) },
+          { t: 'Antiderivative / Numerical Value', h: kTex(evalTex, true) }
+        ]);
+      }
+    }
+    /* === END OF PART 2 — PASTE PART 3 DIRECTLY BELOW THIS LINE === */
+
+/* =========================================================
+       UTILITY GETTERS & SAFE STEP DISPATCHER FOR PART 3 ENGINES
+       ========================================================= */
+    function pickEl() {
+      for (let i = 0; i < arguments.length; i++) {
+        const el = document.getElementById(arguments[i]);
+        if (el) return el;
+      }
+      return null;
+    }
+
+    function pickNum(fallback) {
+      for (let i = 1; i < arguments.length; i++) {
+        const el = document.getElementById(arguments[i]);
+        if (el) {
+          const v = parseFloat(el.value);
+          if (Number.isFinite(v)) return v;
+        }
+      }
+      return fallback;
+    }
+
+    function dispatchSteps(prefixes, steps) {
+      for (let i = 0; i < prefixes.length; i++) {
+        const p = prefixes[i];
+        if (document.getElementById(p + '-steps')) {
+          if (typeof paintSteps === 'function') {
+            paintSteps(p, steps);
+          } else {
+            document.getElementById(p + '-steps').innerHTML = steps.map((s, idx) =>
+              '<div class="step-card"><div class="step-num">Step ' + (idx + 1) + ': ' + s.t + '</div><div class="step-body">' + s.h + '</div></div>'
+            ).join('');
+          }
+          return;
+        }
+      }
+    }
+
+    function toggleAreaInf(chk) {
+      const infEl = chk || document.getElementById('area-inf');
+      if (!infEl) return;
+      const bEl = document.getElementById('area-b');
+      if (bEl) bEl.disabled = infEl.checked;
+      const modeEl = document.getElementById('area-mode');
+      if (infEl.checked && modeEl && modeEl.value !== 'dx') {
+        modeEl.value = 'dx';
+        populateAreaSelects();
+      }
+      renderArea(true);
+    }
+    const onAreaInfChange = toggleAreaInf;
+
+    /* =========================================================
+       TAB 2C: CURVATURE & NUMERICAL QUADRATURE (FOOTNOTE 2)
+       ========================================================= */
+    const CURV_FNS = {
+      x2:   { lbl: 'y = x²',          tex: 'x^2',                  fn: x => x * x,                           d1: x => 2 * x,                        d2: () => 2,                           xMin: -2.2, xMax: 2.2 },
+      sinx: { lbl: 'y = sin x',       tex: '\\sin x',              fn: x => Math.sin(x),                     d1: x => Math.cos(x),                  d2: x => -Math.sin(x),                 xMin: -3.5, xMax: 3.5 },
+      cat:  { lbl: 'y = ½(eˣ + e⁻ˣ)', tex: '\\frac{1}{2}(e^x+e^{-x})', fn: x => 0.5*(Math.exp(x)+Math.exp(-x)), d1: x => 0.5*(Math.exp(x)-Math.exp(-x)), d2: x => 0.5*(Math.exp(x)+Math.exp(-x)), xMin: -2.2, xMax: 2.2 },
+      x3:   { lbl: 'y = x³ − x',      tex: 'x^3 - x',              fn: x => x * x * x - x,                   d1: x => 3 * x * x - 1,                d2: x => 6 * x,                        xMin: -1.8, xMax: 1.8 }
+    };
+
+    function loadCurvPreset(p, btn) {
+      const pWrap = pickEl('curv-presets', 'kap-presets');
+      if (pWrap) clearPills(pWrap.id);
+      if (btn) btn.classList.add('active');
+      const fnEl = pickEl('curv-fn', 'kap-fn');
+      const xEl = pickEl('curv-x', 'curv-x0', 'kap-x');
+      if (p === 'x2_0') { if (fnEl) fnEl.value = 'x2'; if (xEl) xEl.value = 0; }
+      else if (p === 'x2_1') { if (fnEl) fnEl.value = 'x2'; if (xEl) xEl.value = 1; }
+      else if (p === 'sin_peak') { if (fnEl) fnEl.value = 'sinx'; if (xEl) xEl.value = Number((Math.PI / 2).toFixed(2)); }
+      else if (p === 'inflect') { if (fnEl) fnEl.value = 'x3'; if (xEl) xEl.value = 0; }
+      renderCurv(true);
+    }
+
+    function renderCurv(rebuildSteps = true) {
+      const cv = pickEl('curv-canvas', 'kap-canvas');
+      if (!cv) return;
+      const pack = prepCanvas(cv.id);
+      if (!pack) return;
+      const { ctx, W, H } = pack;
+      const m = { l: 44, r: 18, t: 18, b: 30 };
+
+      const fnEl = pickEl('curv-fn', 'kap-fn');
+      const key = (fnEl && CURV_FNS[fnEl.value]) ? fnEl.value : 'x2';
+      const spec = CURV_FNS[key];
+      const x0 = pickNum(0, 'curv-x', 'curv-x0', 'kap-x');
+      const xLbl = pickEl('curv-x-lbl', 'curv-x0-lbl', 'kap-x-lbl');
+      if (xLbl) xLbl.textContent = x0.toFixed(2);
+
+      const xMin = spec.xMin, xMax = spec.xMax;
+      const plotW = W - m.l - m.r, plotH = H - m.t - m.b;
+      const spanX = xMax - xMin;
+      const spanY = spanX * (plotH / Math.max(1, plotW)); // Equal aspect ratio so osculating circle looks circular!
+      const yMid = 0.5 * (spec.fn(0) + spec.fn(x0));
+      const yMin = yMid - 0.5 * spanY, yMax = yMid + 0.5 * spanY;
+      const toX = x => m.l + ((x - xMin) / spanX) * plotW;
+      const toY = y => H - m.b - ((y - yMin) / spanY) * plotH;
+      drawAxesGrid(ctx, W, H, m, xMin, xMax, yMin, yMax, toX, toY);
+
+      const y0 = spec.fn(x0), fp = spec.d1(x0), fpp = spec.d2(x0);
+      const denom = Math.pow(1 + fp * fp, 1.5);
+      const kappa = Math.abs(fpp) / denom;
+      const R = kappa > 1e-5 ? 1 / kappa : Infinity;
+
+      ctx.save();
+      ctx.beginPath(); ctx.rect(m.l, m.t, plotW, plotH); ctx.clip();
+
+      ctx.strokeStyle = '#A6192E'; ctx.lineWidth = 2.6; ctx.beginPath();
+      for (let i = 0; i <= 200; i++) {
+        const x = xMin + (i / 200) * spanX, y = spec.fn(x);
+        if (i === 0) ctx.moveTo(toX(x), toY(y)); else ctx.lineTo(toX(x), toY(y));
+      }
+      ctx.stroke();
+
+      if (Number.isFinite(R) && R < 80) {
+        const xc = x0 - (fp * (1 + fp * fp)) / fpp;
+        const yc = y0 + (1 + fp * fp) / fpp;
+        const rPx = (R / spanX) * plotW;
+        ctx.fillStyle = 'rgba(29, 78, 216, 0.09)';
+        ctx.strokeStyle = '#1D4ED8'; ctx.lineWidth = 2; ctx.setLineDash([5, 4]);
+        ctx.beginPath(); ctx.arc(toX(xc), toY(yc), rPx, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.strokeStyle = '#64748B'; ctx.lineWidth = 1.3;
+        ctx.beginPath(); ctx.moveTo(toX(x0), toY(y0)); ctx.lineTo(toX(xc), toY(yc)); ctx.stroke();
+        ctx.fillStyle = '#1D4ED8'; ctx.beginPath(); ctx.arc(toX(xc), toY(yc), 3.5, 0, Math.PI * 2); ctx.fill();
+      }
+
+      ctx.fillStyle = '#F5B82E'; ctx.strokeStyle = '#9A6700'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(toX(x0), toY(y0), 5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      ctx.restore();
+
+      const rd = pickEl('curv-readout', 'kap-readout');
+      if (rd) rd.textContent = 'κ(' + x0.toFixed(2) + ') = ' + kappa.toFixed(4) + '  |  R = ' + (Number.isFinite(R) ? R.toFixed(3) : '∞');
+
+      if (rebuildSteps) {
+        dispatchSteps(['curv', 'kap'], [
+          { t: 'First & Second Derivatives at x₀ = ' + fmt(x0, 2), h: kTex("f'(x_0) = " + fmt(fp, 4) + ", \\quad f''(x_0) = " + fmt(fpp, 4), true) },
+          { t: 'Curvature & Osculating Radius', h: kTex("\\kappa = \\frac{|f''(x_0)|}{(1 + [f'(x_0)]^2)^{3/2}} = " + kappa.toFixed(4) + ", \\quad R = \\frac{1}{\\kappa} = " + (Number.isFinite(R) ? R.toFixed(4) : '\\infty'), true) }
+        ]);
+      }
+    }
+
+    function renderNumLab(rebuildSteps = true) {
+      const cv = pickEl('num-canvas', 'quad-canvas');
+      if (!cv) return;
+      const pack = prepCanvas(cv.id);
+      if (!pack) return;
+      const { ctx, W, H } = pack;
+      const m = { l: 44, r: 18, t: 18, b: 30 };
+
+      const fnSel = pickEl('num-fn', 'quad-fn');
+      const isSin = fnSel && fnSel.value === 'sinx';
+      const g = isSin ? (x => Math.sqrt(1 + Math.cos(x) * Math.cos(x))) : (x => Math.sqrt(1 + 4 * x * x));
+      const a = 0, b = isSin ? Math.PI : 2;
+      const n = Math.max(2, Math.round(pickNum(6, 'num-n', 'quad-n')));
+      if (n % 2 !== 0 && pickEl('num-method') && pickEl('num-method').value === 'simp') { /* allow any n via composite sub-2 */ }
+      const nLbl = pickEl('num-n-lbl', 'quad-n-lbl');
+      if (nLbl) nLbl.textContent = n;
+
+      const xMin = -0.15, xMax = b + 0.2, yMin = 0, yMax = isSin ? 1.7 : 4.6;
+      const toX = x => m.l + ((x - xMin) / (xMax - xMin)) * (W - m.l - m.r);
+      const toY = y => H - m.b - ((y - yMin) / (yMax - yMin)) * (H - m.t - m.b);
+      drawAxesGrid(ctx, W, H, m, xMin, xMax, yMin, yMax, toX, toY);
+
+      const h = (b - a) / n;
+      let mid = 0, trap = 0, simp = 0;
+      ctx.save();
+      ctx.beginPath(); ctx.rect(m.l, m.t, W - m.l - m.r, H - m.t - m.b); ctx.clip();
+
+      for (let i = 0; i < n; i++) {
+        const xL = a + i * h, xR = xL + h, xM = 0.5 * (xL + xR);
+        const yL = g(xL), yM = g(xM), yR = g(xR);
+        mid += yM * h;
+        trap += 0.5 * (yL + yR) * h;
+        simp += (h / 6) * (yL + 4 * yM + yR);
+
+        ctx.fillStyle = 'rgba(245, 184, 46, 0.24)';
+        ctx.strokeStyle = '#B45309'; ctx.lineWidth = 1.3;
+        ctx.beginPath();
+        ctx.moveTo(toX(xL), toY(0)); ctx.lineTo(toX(xL), toY(yL));
+        ctx.lineTo(toX(xR), toY(yR)); ctx.lineTo(toX(xR), toY(0));
+        ctx.closePath(); ctx.fill(); ctx.stroke();
+      }
+
+      ctx.strokeStyle = '#1D4ED8'; ctx.lineWidth = 2.5; ctx.beginPath();
+      for (let i = 0; i <= 160; i++) {
+        const x = a + (i / 160) * (b - a);
+        if (i === 0) ctx.moveTo(toX(x), toY(g(x))); else ctx.lineTo(toX(x), toY(g(x)));
+      }
+      ctx.stroke();
+      ctx.restore();
+
+      const exact = quadGL(g, a, b, 120);
+      const rd = pickEl('num-readout', 'quad-readout');
+      if (rd) rd.textContent = 'M_' + n + ' = ' + mid.toFixed(5) + ' | T_' + n + ' = ' + trap.toFixed(5) + ' | S_' + n + ' = ' + simp.toFixed(6);
+
+      if (rebuildSteps) {
+        dispatchSteps(['num', 'quad'], [
+          { t: 'Arc Length Integrand g(x) = √(1 + [f\'(x)]²)', h: kTex(isSin ? 's = \\int_0^{\\pi} \\sqrt{1 + \\cos^2 x}\\,dx \\quad (\\text{Elliptic — no elementary antiderivative!})' : 's = \\int_0^2 \\sqrt{1 + 4x^2}\\,dx', true) },
+          { t: 'Quadrature Comparison (n = ' + n + ')', h: kTex('M_{' + n + '} = ' + mid.toFixed(5) + ', \\quad T_{' + n + '} = ' + trap.toFixed(5) + ', \\quad S_{' + n + '} = ' + simp.toFixed(6) + ', \\quad s_{\\text{true}} \\approx ' + exact.toFixed(6), true) }
+        ]);
+      }
+    }
+
+    /* =========================================================
+       TAB 3: SURFACES & SOLIDS OF REVOLUTION (INC. GABRIEL'S HORN)
+       ========================================================= */
+    const REV_CASES = {
+      ex4_1: {
+        title: 'Sphere Surface Area (Ex 4.1)', mode: 'surf', axisType: 'x', axisVal: 0,
+        f1: x => Math.sqrt(Math.max(0, 4 - x * x)), f2: () => 0, df1: x => -x / Math.sqrt(Math.max(1e-6, 4 - x * x)),
+        a: -2, b: 2, inf: false, status: 'improper',
+        banner: '<strong>Sphere Surface Area (y = √(4 − x²) on [−2, 2]):</strong> Vertical tangents at ' + 'x = ±2' + ' cancel cleanly with radius ' + 'f(x)' + ', yielding constant ribbon density ' + '4π dx' + '!',
+        steps: [
+          { t: 'Frustum Ribbon Element dS = 2π f(x) ds', h: () => kTex('1 + (f\'(x))^2 = 1 + \\frac{x^2}{4-x^2} = \\frac{4}{4-x^2} \\implies dS = 2\\pi\\sqrt{4-x^2}\\cdot\\frac{2}{\\sqrt{4-x^2}}\\,dx = 4\\pi\\,dx', true) },
+          { t: 'Integrate Over [−2, 2]', h: () => kTex('S = \\int_{-2}^2 4\\pi\\,dx = 16\\pi \\approx 50.2655', true) }
+        ],
+        readout: 'Exact Surface Area S = 16π ≈ 50.2655'
+      },
+      ex4_2: {
+        title: 'Sphere Volume — Disc Method (Ex 4.2)', mode: 'disc', axisType: 'x', axisVal: 0,
+        f1: x => Math.sqrt(Math.max(0, 4 - x * x)), f2: () => 0,
+        a: -2, b: 2, inf: false, status: 'bounded',
+        banner: '<strong>Disc Method Around x-Axis:</strong> Each vertical slice at ' + 'x' + ' sweeps a solid circular disc of radius ' + 'R(x) = √(4 − x²)' + ' and area ' + 'π(4 − x²)' + '.',
+        steps: [
+          { t: 'Infinitesimal Disc Element dV = π [R(x)]² dx', h: () => kTex('dV = \\pi\\left(\\sqrt{4-x^2}\\right)^2 dx = \\pi(4 - x^2)\\,dx', true) },
+          { t: 'Definite Integral & Evaluation', h: () => kTex('V = \\pi\\int_{-2}^2 (4 - x^2)\\,dx = \\pi\\left[4x - \\frac{x^3}{3}\\right]_{-2}^2 = \\frac{32\\pi}{3} \\approx 33.5103', true) }
+        ],
+        readout: 'Exact Volume V = 32π/3 ≈ 33.5103'
+      },
+      ex4_3: {
+        title: 'y = x² Revolved Around Line x = 1 (Ex 4.3)', mode: 'shell', axisType: 'y', axisVal: 1,
+        f1: x => x * x, f2: () => 0,
+        a: 0, b: 1, inf: false, status: 'bounded',
+        banner: '<strong>Shifted Vertical Axis x = 1:</strong> Distance from slice at ' + 'x' + ' to axis ' + 'x = 1' + ' is ' + 'r = 1 − x' + ' (or horizontal discs of radius ' + '1 − √y' + ' in ' + 'dy' + ').',
+        steps: [
+          { t: 'Setup via Discs (dy) or Cylindrical Shells (dx)', h: () => kTex('V = \\pi\\int_0^1 (1 - \\sqrt{y})^2\\,dy = \\int_0^1 2\\pi(1 - x)x^2\\,dx', true) },
+          { t: 'Evaluate Antiderivative', h: () => kTex('V = 2\\pi\\left[\\frac{x^3}{3} - \\frac{x^4}{4}\\right]_0^1 = \\frac{\\pi}{6} \\approx 0.5236', true) }
+        ],
+        readout: 'Exact Volume V = π/6 ≈ 0.5236'
+      },
+      ex4_4: {
+        title: 'Shell Method Around y-Axis (Ex 4.4)', mode: 'shell', axisType: 'y', axisVal: 0,
+        f1: x => x * x, f2: () => 0,
+        a: 0, b: 1, inf: false, status: 'bounded',
+        banner: '<strong>Cylindrical Shell Method Around y-Axis:</strong> Vertical strip at radius ' + 'r = x' + ' with height ' + 'h = x²' + ' unrolls into a thin rectangular slab ' + 'dV = 2π x(x²) dx' + '.',
+        steps: [
+          { t: 'Cylindrical Shell Element dV = 2π r h dx', h: () => kTex('dV = 2\\pi (x)(x^2)\\,dx = 2\\pi x^3\\,dx', true) },
+          { t: 'Integrate Over [0, 1]', h: () => kTex('V = \\int_0^1 2\\pi x^3\\,dx = 2\\pi\\left[\\frac{x^4}{4}\\right]_0^1 = \\frac{\\pi}{2} \\approx 1.5708', true) }
+        ],
+        readout: 'Exact Volume V = π/2 ≈ 1.5708'
+      },
+      ex4_5: {
+        title: 'Two-Curve Region y = x & y = x² (Ex 4.5)', mode: 'washer', axisType: 'x', axisVal: 0,
+        f1: x => x, f2: x => x * x,
+        a: 0, b: 1, inf: false, status: 'bounded',
+        banner: '<strong>Washer vs. Shell Duality:</strong> Between ' + 'y = x' + ' and ' + 'y = x²' + ' on ' + '[0, 1]' + ': around x-axis gives Washers (' + '2π/15' + '); around y-axis gives Shells (' + 'π/6' + ')!',
+        steps: [
+          { t: 'Washer Around x-Axis & Shell Around y-Axis', h: () => kTex('V_x = \\pi\\int_0^1 (x^2 - x^4)\\,dx = \\frac{2\\pi}{15}, \\qquad V_y = \\int_0^1 2\\pi x(x - x^2)\\,dx = \\frac{\\pi}{6}', true) },
+          { t: 'Key Geometric Insight', h: () => 'Subtracting squared radii ' + kTex('R_{\\text{out}}^2 - R_{\\text{in}}^2') + ' is <strong>not</strong> ' + kTex('(R_{\\text{out}} - R_{\\text{in}})^2') + '!' }
+        ],
+        readout: 'V_x (Washer) = 2π/15 ≈ 0.4189  |  V_y (Shell) = π/6 ≈ 0.5236'
+      },
+      gabriel: {
+        title: "Gabriel's Horn — y = 1/x on [1, ∞)", mode: 'disc', axisType: 'x', axisVal: 0,
+        f1: x => 1 / x, f2: () => 0,
+        a: 1, b: 7, inf: true, status: 'improper',
+        banner: "<strong>Gabriel's Horn (Painter's Paradox):</strong> Revolving y = 1/x on [1, ∞) around the x-axis encloses <strong>FINITE volume V = π</strong>, yet <strong>INFINITE surface area S = +∞</strong>!",
+        steps: [
+          { t: 'Finite Volume (behaves like p = 2 > 1)', h: () => kTex('V = \\pi\\int_1^{\\infty} \\frac{1}{x^2}\\,dx = \\pi\\lim_{t\\to\\infty}\\left[-\\frac{1}{x}\\right]_1^t = \\pi \\approx 3.1416 \\;(\\text{Converges!})', true) },
+          { t: 'Infinite Surface Area (behaves like p = 1)', h: () => kTex('S = 2\\pi\\int_1^{\\infty} \\frac{1}{x}\\sqrt{1 + \\frac{1}{x^4}}\\,dx > 2\\pi\\int_1^{\\infty} \\frac{1}{x}\\,dx = +\\infty \\;(\\text{Diverges!})', true) }
+        ],
+        readout: 'Volume V = π ≈ 3.1416 (Finite!)  |  Surface Area S = +∞ (Infinite!)'
+      }
+    };
+    let curRevKey = 'ex4_2';
+
+    function loadVolPreset(k, btn) {
+      if (REV_CASES[k]) curRevKey = k;
+      else if (k === 'sphere') curRevKey = 'ex4_2';
+      else if (k === 'horn' || k === 'unb_vol') curRevKey = 'gabriel';
+      const pWrap = pickEl('vol-presets', 'rev-presets', 'surf-presets');
+      if (pWrap) clearPills(pWrap.id);
+      if (btn) btn.classList.add('active');
+      const sel = pickEl('vol-case', 'rev-case', 'vol-fn', 'rev-fn');
+      if (sel && sel.querySelector('option[value="' + curRevKey + '"]')) sel.value = curRevKey;
+      renderVol(true);
+    }
+    const loadRevPreset = loadVolPreset;
+    const loadSurfPreset = loadVolPreset;
+
+    function renderVol(rebuildSteps = true) {
+      const cv = pickEl('vol-canvas', 'rev-canvas', 'solid-canvas', 'surf-canvas');
+      if (!cv) return;
+      const pack = prepCanvas(cv.id);
+      if (!pack) return;
+      const { ctx, W, H } = pack;
+      const m = { l: 46, r: 20, t: 20, b: 32 };
+
+      const sel = pickEl('vol-case', 'rev-case', 'vol-fn', 'rev-fn');
+      if (sel && REV_CASES[sel.value]) curRevKey = sel.value;
+      const c = REV_CASES[curRevKey] || REV_CASES.ex4_2;
+      const probeFrac = pickNum(0.45, 'vol-probe', 'rev-probe', 'surf-probe');
+
+      const banner = pickEl('vol-banner', 'rev-banner', 'surf-banner');
+      if (banner) {
+        banner.className = 'status-banner status-' + c.status;
+        banner.innerHTML = c.banner;
+      }
+
+      let xMin, xMax, yMin, yMax;
+      if (c.axisType === 'x') {
+        xMin = c.a - 0.12 * (c.b - c.a);
+        xMax = c.b + 0.12 * (c.b - c.a);
+        let maxR = 0.5;
+        for (let i = 0; i <= 80; i++) maxR = Math.max(maxR, Math.abs(c.f1(c.a + (i / 80) * (c.b - c.a)) - c.axisVal));
+        yMin = c.axisVal - 1.25 * maxR;
+        yMax = c.axisVal + 1.25 * maxR;
+      } else {
+        const spanL = Math.max(Math.abs(c.a - c.axisVal), Math.abs(c.b - c.axisVal));
+        xMin = c.axisVal - 1.25 * spanL;
+        xMax = c.axisVal + 1.25 * spanL;
+        yMin = -0.18;
+        yMax = 1.25;
+      }
+
+      const toX = x => m.l + ((x - xMin) / (xMax - xMin)) * (W - m.l - m.r);
+      const toY = y => H - m.b - ((y - yMin) / (yMax - yMin)) * (H - m.t - m.b);
+      drawAxesGrid(ctx, W, H, m, xMin, xMax, yMin, yMax, toX, toY);
+
+      ctx.save();
+      ctx.beginPath(); ctx.rect(m.l, m.t, W - m.l - m.r, H - m.t - m.b); ctx.clip();
+
+      // Axis of revolution line
+      ctx.strokeStyle = '#0F766E'; ctx.lineWidth = 1.8; ctx.setLineDash([6, 4]);
+      ctx.beginPath();
+      if (c.axisType === 'x') { ctx.moveTo(toX(xMin), toY(c.axisVal)); ctx.lineTo(toX(xMax), toY(c.axisVal)); }
+      else { ctx.moveTo(toX(c.axisVal), toY(yMin)); ctx.lineTo(toX(c.axisVal), toY(yMax)); }
+      ctx.stroke(); ctx.setLineDash([]);
+
+      // Swept silhouette & base generating region
+      if (c.axisType === 'x') {
+        ctx.fillStyle = 'rgba(29, 78, 216, 0.11)';
+        ctx.beginPath();
+        for (let i = 0; i <= 120; i++) {
+          const x = c.a + (i / 120) * (c.b - c.a);
+          if (i === 0) ctx.moveTo(toX(x), toY(c.f1(x))); else ctx.lineTo(toX(x), toY(c.f1(x)));
+        }
+        for (let i = 120; i >= 0; i--) {
+          const x = c.a + (i / 120) * (c.b - c.a);
+          ctx.lineTo(toX(x), toY(2 * c.axisVal - c.f1(x)));
+        }
+        ctx.closePath(); ctx.fill();
+
+        ctx.strokeStyle = '#94A3B8'; ctx.lineWidth = 1.6; ctx.setLineDash([4, 4]);
+        ctx.beginPath();
+        for (let i = 0; i <= 120; i++) {
+          const x = c.a + (i / 120) * (c.b - c.a), ym = 2 * c.axisVal - c.f1(x);
+          if (i === 0) ctx.moveTo(toX(x), toY(ym)); else ctx.lineTo(toX(x), toY(ym));
+        }
+        ctx.stroke(); ctx.setLineDash([]);
+
+        ctx.strokeStyle = '#A6192E'; ctx.lineWidth = 2.6; ctx.beginPath();
+        for (let i = 0; i <= 120; i++) {
+          const x = c.a + (i / 120) * (c.b - c.a);
+          if (i === 0) ctx.moveTo(toX(x), toY(c.f1(x))); else ctx.lineTo(toX(x), toY(c.f1(x)));
+        }
+        ctx.stroke();
+
+        // 2.5D Elliptical Disc / Washer / Frustum Slice at xp
+        const xp = c.a + Math.min(0.95, Math.max(0.05, probeFrac)) * (c.b - c.a);
+        const rOutPx = Math.abs(toY(c.f1(xp)) - toY(c.axisVal));
+        const rInPx = Math.abs(toY(c.f2(xp)) - toY(c.axisVal));
+        const tiltX = Math.min(14, Math.max(5, 0.22 * rOutPx));
+
+        ctx.fillStyle = 'rgba(245, 184, 46, 0.62)';
+        ctx.strokeStyle = '#9A6700'; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.ellipse(toX(xp), toY(c.axisVal), tiltX, Math.max(2, rOutPx), 0, 0, Math.PI * 2);
+        ctx.fill(); ctx.stroke();
+
+        if (rInPx > 1.5) {
+          ctx.fillStyle = '#FFFFFF';
+          ctx.strokeStyle = '#DC2626'; ctx.lineWidth = 1.6;
+          ctx.beginPath(); ctx.ellipse(toX(xp), toY(c.axisVal), Math.max(2, tiltX * (rInPx / rOutPx)), rInPx, 0, 0, Math.PI * 2);
+          ctx.fill(); ctx.stroke();
+        }
+      } else {
+        // Cylindrical Shell around x = axisVal
+        ctx.fillStyle = 'rgba(166, 25, 46, 0.16)';
+        ctx.beginPath();
+        for (let i = 0; i <= 80; i++) {
+          const x = c.a + (i / 80) * (c.b - c.a);
+          if (i === 0) ctx.moveTo(toX(x), toY(c.f1(x))); else ctx.lineTo(toX(x), toY(c.f1(x)));
+        }
+        for (let i = 80; i >= 0; i--) {
+          const x = c.a + (i / 80) * (c.b - c.a);
+          ctx.lineTo(toX(x), toY(c.f2(x)));
+        }
+        ctx.closePath(); ctx.fill();
+
+        ctx.strokeStyle = '#A6192E'; ctx.lineWidth = 2.6; ctx.beginPath();
+        for (let i = 0; i <= 80; i++) {
+          const x = c.a + (i / 80) * (c.b - c.a);
+          if (i === 0) ctx.moveTo(toX(x), toY(c.f1(x))); else ctx.lineTo(toX(x), toY(c.f1(x)));
+        }
+        ctx.stroke();
+
+        const xp = c.a + Math.min(0.93, Math.max(0.12, probeFrac)) * (c.b - c.a);
+        const rxPx = Math.abs(toX(xp) - toX(c.axisVal));
+        const ryTilt = Math.min(13, Math.max(4, 0.16 * rxPx));
+        const yTop = toY(c.f1(xp)), yBot = toY(c.f2(xp)), cx = toX(c.axisVal);
+
+        ctx.fillStyle = 'rgba(245, 184, 46, 0.35)';
+        ctx.strokeStyle = '#9A6700'; ctx.lineWidth = 1.8;
+        ctx.fillRect(cx - rxPx, yTop, 2 * rxPx, Math.max(2, yBot - yTop));
+        ctx.beginPath(); ctx.moveTo(cx - rxPx, yTop); ctx.lineTo(cx - rxPx, yBot);
+        ctx.moveTo(cx + rxPx, yTop); ctx.lineTo(cx + rxPx, yBot); ctx.stroke();
+
+        ctx.fillStyle = 'rgba(245, 184, 46, 0.65)';
+        ctx.beginPath(); ctx.ellipse(cx, yTop, Math.max(2, rxPx), ryTilt, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        ctx.beginPath(); ctx.ellipse(cx, yBot, Math.max(2, rxPx), ryTilt, 0, 0, Math.PI); ctx.stroke();
+      }
+      ctx.restore();
+
+      const rd = pickEl('vol-readout', 'rev-readout', 'surf-readout');
+      if (rd) rd.textContent = c.readout;
+
+      if (rebuildSteps) {
+        dispatchSteps(['vol', 'rev', 'solid', 'surf'], c.steps.map(s => ({ t: s.t, h: s.h() })));
+      }
+    }
+    const renderRev = renderVol;
+    const renderSurf = renderVol;
+
+    /* =========================================================
+       BOUNDED VS. UNBOUNDED p-POWER IMPROPER EXPLORER
+       ========================================================= */
+    function loadUnbPreset(preset, btn) {
+      const pWrap = pickEl('unb-presets', 'imp-presets');
+      if (pWrap) clearPills(pWrap.id);
+      if (btn) btn.classList.add('active');
+      const typeEl = pickEl('unb-type', 'imp-type');
+      const pEl = pickEl('unb-p', 'imp-p');
+      if (preset === 'tail_conv') { if (typeEl) typeEl.value = 'tail'; if (pEl) pEl.value = 2.0; }
+      else if (preset === 'tail_harm') { if (typeEl) typeEl.value = 'tail'; if (pEl) pEl.value = 1.0; }
+      else if (preset === 'tail_div') { if (typeEl) typeEl.value = 'tail'; if (pEl) pEl.value = 0.5; }
+      else if (preset === 'asymp_conv') { if (typeEl) typeEl.value = 'asymp'; if (pEl) pEl.value = 0.5; }
+      else if (preset === 'asymp_div') { if (typeEl) typeEl.value = 'asymp'; if (pEl) pEl.value = 1.5; }
+      renderUnb(true);
+    }
+
+    function renderUnb(rebuildSteps = true) {
+      const cv = pickEl('unb-canvas', 'imp-canvas', 'p-canvas');
+      if (!cv) return;
+      const pack = prepCanvas(cv.id);
+      if (!pack) return;
+      const { ctx, W, H } = pack;
+      const m = { l: 46, r: 20, t: 20, b: 32 };
+
+      const typeEl = pickEl('unb-type', 'imp-type');
+      const isAsymp = typeEl && typeEl.value === 'asymp';
+      const p = pickNum(2.0, 'unb-p', 'imp-p');
+      const tCut = pickNum(8.0, 'unb-t', 'imp-t');
+      const pLbl = pickEl('unb-p-lbl', 'imp-p-lbl');
+      if (pLbl) pLbl.textContent = p.toFixed(2);
+      const tLbl = pickEl('unb-t-lbl', 'imp-t-lbl');
+      if (tLbl) tLbl.textContent = isAsymp ? (1 / tCut).toFixed(3) : tCut.toFixed(1);
+
+      const conv = isAsymp ? (p < 1 - 1e-6) : (p > 1 + 1e-6);
+      const banner = pickEl('unb-banner', 'imp-banner');
+      if (banner) {
+        banner.className = 'status-banner ' + (conv ? 'status-improper' : 'status-divergent');
+        banner.innerHTML = isAsymp
+          ? '<strong>Type II Vertical Asymptote on (0, 1] for 1/xᵖ (p = ' + p.toFixed(2) + '):</strong> ' + (conv ? 'Converges because <strong>p < 1</strong>! Exact area = <strong>' + (1 / (1 - p)).toFixed(4) + '</strong>.' : 'Diverges to <strong>+∞</strong> because <strong>p ≥ 1</strong>!')
+          : '<strong>Type I Infinite Tail on [1, ∞) for 1/xᵖ (p = ' + p.toFixed(2) + '):</strong> ' + (conv ? 'Converges because <strong>p > 1</strong>! Exact area = <strong>' + (1 / (p - 1)).toFixed(4) + '</strong>.' : 'Diverges to <strong>+∞</strong> because <strong>p ≤ 1</strong>!');
+      }
+
+      const xMin = 0, xMax = isAsymp ? 1.25 : Math.max(8.5, tCut + 0.5);
+      const yMin = 0, yMax = isAsymp ? 5.0 : 1.35;
+      const toX = x => m.l + ((x - xMin) / (xMax - xMin)) * (W - m.l - m.r);
+      const toY = y => H - m.b - ((y - yMin) / (yMax - yMin)) * (H - m.t - m.b);
+      drawAxesGrid(ctx, W, H, m, xMin, xMax, yMin, yMax, toX, toY);
+
+      ctx.save();
+      ctx.beginPath(); ctx.rect(m.l, m.t, W - m.l - m.r, H - m.t - m.b); ctx.clip();
+
+      const lo = isAsymp ? Math.max(0.015, 1 / Math.max(2, tCut)) : 1;
+      const hi = isAsymp ? 1 : Math.min(xMax - 0.1, tCut);
+
+      ctx.fillStyle = conv ? 'rgba(29, 78, 216, 0.20)' : 'rgba(220, 38, 38, 0.20)';
+      ctx.beginPath(); ctx.moveTo(toX(lo), toY(0));
+      for (let i = 0; i <= 140; i++) {
+        const x = lo + (i / 140) * (hi - lo);
+        ctx.lineTo(toX(x), toY(Math.min(yMax + 2, Math.pow(x, -p))));
+      }
+      ctx.lineTo(toX(hi), toY(0)); ctx.closePath(); ctx.fill();
+
+      ctx.strokeStyle = conv ? '#1D4ED8' : '#DC2626'; ctx.lineWidth = 2.5; ctx.beginPath();
+      let pen = false;
+      for (let i = 1; i <= 220; i++) {
+        const x = (i / 220) * xMax, y = Math.pow(x, -p);
+        if (!Number.isFinite(y) || y > yMax * 4) { pen = false; continue; }
+        if (!pen) { ctx.moveTo(toX(x), toY(y)); pen = true; } else ctx.lineTo(toX(x), toY(y));
+      }
+      ctx.stroke();
+      ctx.restore();
+
+      const partArea = Math.abs(p - 1) < 1e-5
+        ? Math.log(hi / lo)
+        : (Math.pow(hi, 1 - p) - Math.pow(lo, 1 - p)) / (1 - p);
+
+      const rd = pickEl('unb-readout', 'imp-readout');
+      if (rd) rd.textContent = 'Partial Area = ' + partArea.toFixed(4) + '  |  Limit = ' + (conv ? (1 / Math.abs(p - 1)).toFixed(4) : '+∞');
+
+      if (rebuildSteps) {
+        dispatchSteps(['unb', 'imp'], [
+          { t: 'Improper Limit Definition', h: kTex(isAsymp ? 'A = \\lim_{\\varepsilon \\to 0^+} \\int_{\\varepsilon}^1 x^{-' + fmt(p, 2) + '}\\,dx' : 'A = \\lim_{t \\to \\infty} \\int_1^t x^{-' + fmt(p, 2) + '}\\,dx', true) },
+          { t: 'Threshold Evaluation Across p = 1', h: kTex(conv ? 'A = \\frac{1}{|1 - ' + fmt(p, 2) + '|} = ' + (1 / Math.abs(1 - p)).toFixed(4) + ' \\;(\\text{Converges!})' : 'A = +\\infty \\;(\\text{Diverges!})', true) }
+        ]);
+      }
+    }
+
+    /* =========================================================
+       TAB 4: INTERACTIVE DIAGNOSTIC & PRACTICE QUIZ ENGINE
+       ========================================================= */
+    const QUIZ_BANK = [
+      {
+        tag: 'Area — Interior Crossing',
+        q: 'To find the geometric area enclosed between ' + 'y = \\sin x' + ' and ' + 'y = \\cos x' + ' on ' + '[0, \\pi/3]' + ', how must the integral be set up?',
+        opts: [
+          '\\int_0^{\\pi/3} (\\sin x - \\cos x)\\,dx',
+          '\\int_0^{\\pi/4} (\\cos x - \\sin x)\\,dx + \\int_{\\pi/4}^{\\pi/3} (\\sin x - \\cos x)\\,dx',
+          '\\int_0^{\\pi/3} (\\cos x - \\sin x)\\,dx',
+          '\\left|\\int_0^{\\pi/3} (\\cos x - \\sin x)\\,dx\\right|'
+        ],
+        ans: 1,
+        exp: 'Because ' + '\\cos x = \\sin x' + ' at ' + 'x = \\pi/4 \\in (0, \\pi/3)' + ', you must split at ' + '\\pi/4' + ' so strip height ' + '|f_1(x)-f_2(x)|' + ' stays non-negative on each subinterval. Taking absolute value outside the integral cancels signed areas!'
+      },
+      {
+        tag: 'Horizontal Slicing (dy)',
+        q: 'For the region bounded by ' + 'y = x' + ' and ' + 'x = y^2 - 2' + ' (Exercise 1.5), why is integrating with respect to ' + 'y' + ' cleaner than ' + 'x' + '?',
+        opts: [
+          'Horizontal slices never require finding intersection points',
+          'For every y in [−1, 2], x_right = y and x_left = y² − 2 without switching curves, whereas vertical slices split at x = −1',
+          'Integrating in dy always produces a smaller numerical area',
+          'The parabola x = y² − 2 has an unbounded asymptote in dx'
+        ],
+        ans: 1,
+        exp: 'In ' + 'dx' + ', for ' + 'x \\in [-2, -1]' + ' both top and bottom boundaries are branches ' + '\\pm\\sqrt{x+2}' + ' of the same parabola before switching to ' + 'y = x' + ' at ' + 'x = -1' + '. In ' + 'dy' + ', one single integral ' + '\\int_{-1}^2 (y - (y^2 - 2))\\,dy = 9/2' + ' solves it cleanly!'
+      },
+      {
+        tag: 'Unbounded Improper Area',
+        q: 'Which statement accurately compares ' + 'I_1 = \\int_1^{\\infty} \\frac{1}{x^2}\\,dx' + ', ' + 'I_2 = \\int_1^{\\infty} \\frac{1}{x}\\,dx' + ', and ' + 'I_3 = \\int_0^1 \\frac{1}{\\sqrt{x}}\\,dx' + '?',
+        opts: [
+          'All three diverge to +∞ because every region is geometrically unbounded',
+          'Only I₁ converges; both I₂ and I₃ diverge',
+          'I₁ = 1 and I₃ = 2 both converge to finite areas, whereas I₂ = +∞ diverges',
+          'I₂ converges to 1 while I₁ and I₃ diverge'
+        ],
+        ans: 2,
+        exp: 'On ' + '[1,\\infty)' + ', ' + '1/x^p' + ' converges iff ' + 'p > 1' + ' (' + 'I_1 = 1' + ', ' + 'I_2 = \\infty' + '). Near a vertical asymptote on ' + '(0,1]' + ', ' + '1/x^p' + ' converges iff ' + 'p < 1' + ', giving ' + 'I_3 = [2\\sqrt{x}]_0^1 = 2' + '!'
+      },
+      {
+        tag: 'Average Value Geometry',
+        q: 'What does the Average Value ' + 'f_{\\text{avg}} = \\frac{1}{b-a}\\int_a^b f(x)\\,dx' + ' represent geometrically for ' + 'f(x) \\ge 0' + '?',
+        opts: [
+          'The slope of the secant line connecting (a, f(a)) and (b, f(b))',
+          'The height of a rectangle over [a, b] whose area equals the exact area under y = f(x) on [a, b]',
+          'Half the maximum value of f(x) on [a, b]',
+          'The arc length of y = f(x) divided by (b − a)'
+        ],
+        ans: 1,
+        exp: 'Multiplying both sides by ' + '(b - a)' + ' gives ' + 'f_{\\text{avg}}\\cdot(b - a) = \\int_a^b f(x)\\,dx' + ': the rectangle of height ' + 'f_{\\text{avg}}' + ' and width ' + '(b - a)' + ' encloses the exact same net area as the curve!'
+      },
+      {
+        tag: 'Microstraightness & Arc Length',
+        q: 'Using Theorem 3.1, what is the exact arc length of ' + 'y = \\frac{4}{3}x^{3/2}' + ' on ' + '[2, 6]' + ' (Exercise 3.1)?',
+        opts: [
+          '49/3',
+          '16',
+          '125/6',
+          '28/3'
+        ],
+        ans: 0,
+        exp: 'Here ' + "y' = 2x^{1/2}" + ', so ' + "1 + (y')^2 = 1 + 4x" + '. Substituting ' + 'u = 1 + 4x' + ' gives ' + 's = \\int_2^6 \\sqrt{1+4x}\\,dx = \\left[\\frac{1}{6}(1+4x)^{3/2}\\right]_2^6 = \\frac{125 - 27}{6} = \\frac{98}{6} = \\frac{49}{3}' + '.'
+      },
+      {
+        tag: 'Catenary Perfect Square Trick',
+        q: 'Why does the catenary ' + 'y = \\frac{1}{2}(e^x + e^{-x})' + ' admit an elementary closed-form arc length on ' + '[0, 1]' + ' (Exercise 3.2)?',
+        opts: [
+          'Its second derivative vanishes identically',
+          '1 + [½(eˣ − e⁻ˣ)]² simplifies to the perfect square [½(eˣ + e⁻ˣ)]², eliminating the square root!',
+          'The arc length equals the area between eˣ and e⁻ˣ',
+          'Its slope dy/dx is constant on [0, 1]'
+        ],
+        ans: 1,
+        exp: 'Because ' + '1 + \\frac{1}{4}(e^{2x} - 2 + e^{-2x}) = \\frac{1}{4}(e^{2x} + 2 + e^{-2x}) = \\left[\\frac{1}{2}(e^x + e^{-x})\\right]^2' + ', the radical simplifies cleanly to ' + 's = \\frac{e - e^{-1}}{2} \\approx 1.1752' + '.'
+      }
+    ];
+    let quizAnswers = {};
+
+    function fmtQuizInline(txt) {
+      return txt;
+    }
+
+    function renderQuiz() {
+      const mount = pickEl('quiz-container', 'quiz-list', 'quiz-mount', 'quiz-body', 'practice-container', 'quiz-questions');
+      if (!mount) return;
+      if (mount.children.length > 0 && !mount.hasAttribute('data-dynamic-quiz')) return;
+      mount.setAttribute('data-dynamic-quiz', '1');
+
+      let correctCount = 0;
+      Object.keys(quizAnswers).forEach(idx => {
+        if (quizAnswers[idx] === QUIZ_BANK[idx].ans) correctCount++;
+      });
+
+      const scoreEl = pickEl('quiz-score', 'practice-score');
+      if (scoreEl) scoreEl.textContent = correctCount + ' / ' + QUIZ_BANK.length + ' Correct';
+
+      mount.innerHTML = QUIZ_BANK.map((item, qIdx) => {
+        const chosen = quizAnswers[qIdx];
+        const answered = chosen !== undefined;
+        const qHtml = item.q.replace(/(y = \\sin x|y = \\cos x|\[0, \\pi\/3\]|y = x|x = y\^2 - 2|I_1 = \\int_1\^\{\\infty\} \\frac\{1\}\{x\^2\}\\,dx|I_2 = \\int_1\^\{\\infty\} \\frac\{1\}\{x\}\\,dx|I_3 = \\int_0\^1 \\frac\{1\}\{\\sqrt\{x\}\}\\,dx|f_\{\\text\{avg\}\} = \\frac\{1\}\{b-a\}\\int_a\^b f\(x\)\\,dx|f\(x\) \\ge 0|y = \\frac\{4\}\{3\}x\^\{3\/2\}|\[2, 6\]|y = \\frac\{1\}\{2\}\(e\^x \+ e\^\{-x\}\)|\[0, 1\])/g, m => kTex(m));
+
+        const optsHtml = item.opts.map((opt, oIdx) => {
+          const isTexOpt = opt.indexOf('\\') !== -1 || opt === '49/3';
+          const labelHtml = isTexOpt ? kTex(opt) : opt;
+          let bg = '#FFFFFF', brd = '#CBD5E1', col = '#1E293B';
+          if (answered) {
+            if (oIdx === item.ans) { bg = '#DCFCE7'; brd = '#16A34A'; col = '#14532D'; }
+            else if (oIdx === chosen) { bg = '#FEE2E2'; brd = '#DC2626'; col = '#7F1D1D'; }
+          }
+          return '<button type="button" onclick="selectQuizOption(' + qIdx + ',' + oIdx + ')" style="display:block;width:100%;text-align:left;margin:6px 0;padding:10px 12px;border-radius:8px;border:1.5px solid ' + brd + ';background:' + bg + ';color:' + col + ';cursor:pointer;font-size:0.93rem;transition:all 0.15s;">' +
+            '<strong>' + String.fromCharCode(65 + oIdx) + '.</strong> &nbsp;' + labelHtml + '</button>';
+        }).join('');
+
+        const expHtml = answered
+          ? '<div style="margin-top:10px;padding:10px 12px;border-radius:8px;background:' + (chosen === item.ans ? '#F0FDF4' : '#FEF2F2') + ';border-left:4px solid ' + (chosen === item.ans ? '#16A34A' : '#DC2626') + ';font-size:0.9rem;line-height:1.5;">' +
+              '<strong>' + (chosen === item.ans ? '✓ Correct! ' : '✗ Not quite. ') + '</strong>' +
+              item.exp.replace(/(\\cos x = \\sin x|x = \\pi\/4 \\in \(0, \\pi\/3\)|\\pi\/4|\|f_1\(x\)-f_2\(x\)\||dx|x \\in \[-2, -1\]|\\pm\\sqrt\{x\+2\}|y = x|x = -1|dy|\\int_\{-1\}\^2 \(y - \(y\^2 - 2\)\)\\,dy = 9\/2|\[1,\\infty\)|1\/x\^p|p > 1|I_1 = 1|I_2 = \\infty|\(0,1\]|p < 1|I_3 = \[2\\sqrt\{x\}\]_0\^1 = 2|\(b - a\)|f_\{\\text\{avg\}\}\\cdot\(b - a\) = \\int_a\^b f\(x\)\\,dx|f_\{\\text\{avg\}\}|y' = 2x\^\{1\/2\}|1 \+ \(y'\)\^2 = 1 \+ 4x|u = 1 \+ 4x|s = \\int_2\^6 \\sqrt\{1\+4x\}\\,dx = \\left\[\\frac\{1\}\{6\}\(1\+4x\)\^\{3\/2\}\\right\]_2\^6 = \\frac\{125 - 27\}\{6\} = \\frac\{98\}\{6\} = \\frac\{49\}\{3\}|1 \+ \\frac\{1\}\{4\}\(e\^\{2x\} - 2 \+ e\^\{-2x\}\) = \\frac\{1\}\{4\}\(e\^\{2x\} \+ 2 \+ e\^\{-2x\}\) = \\left\[\\frac\{1\}\{2\}\(e\^x \+ e\^\{-x\}\)\\right\]\^2|s = \\frac\{e - e\^\{-1\}\}\{2\} \\approx 1\.1752)/g, m => kTex(m)) +
+            '</div>'
+          : '';
+
+        return '<div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;padding:16px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,0.04);">' +
+          '<div style="font-size:0.76rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#A6192E;margin-bottom:6px;">Question ' + (qIdx + 1) + ' • ' + item.tag + '</div>' +
+          '<div style="font-weight:600;color:#0F172A;margin-bottom:10px;line-height:1.45;">' + qHtml + '</div>' +
+          optsHtml + expHtml + '</div>';
+      }).join('');
+    }
+
+    function selectQuizOption(qIdx, oIdx) {
+      quizAnswers[qIdx] = oIdx;
+      renderQuiz();
+    }
+
+    function resetQuiz() {
+      quizAnswers = {};
+      renderQuiz();
+    }
+
+    /* =========================================================
+       STARTUP INITIALIZATION, TAB REVEAL & RESIZE SYNCHRONIZER
+       ========================================================= */
+    const initializedCanvases = new Set();
+
+    function renderVisibleModules(forceRebuild) {
+      const jobs = [
+        ['area-canvas', renderArea],
+        ['avg-canvas', renderAvg],
+        ['micro-canvas', drawMicroLab],
+        ['arc-canvas', renderArc],
+        ['curv-canvas', renderCurv],
+        ['kap-canvas', renderCurv],
+        ['num-canvas', renderNumLab],
+        ['quad-canvas', renderNumLab],
+        ['vol-canvas', renderVol],
+        ['rev-canvas', renderVol],
+        ['solid-canvas', renderVol],
+        ['surf-canvas', renderSurf],
+        ['unb-canvas', renderUnb],
+        ['imp-canvas', renderUnb],
+        ['p-canvas', renderUnb]
+      ];
+
+      jobs.forEach(([id, fn]) => {
+        const el = document.getElementById(id);
+        if (el && el.offsetWidth > 0) {
+          const firstTime = !initializedCanvases.has(id);
+          fn(forceRebuild || firstTime);
+          initializedCanvases.add(id);
+        }
+      });
+    }
+
+    function initCalculusApp() {
+      // 1. Render static KaTeX math in HTML if auto-render or data-tex attributes exist
+      if (typeof renderMathInElement === 'function') {
+        renderMathInElement(document.body, {
+          delimiters: [
+            { left: '$$', right: '$$', display: true },
+            { left: '\\[', right: '\\]', display: true },
+            { left: '$', right: '$', display: false },
+            { left: '\\(', right: '\\)', display: false }
+          ],
+          throwOnError: false
+        });
+      }
+      document.querySelectorAll('[data-tex]').forEach(el => {
+        if (!el.innerHTML.trim()) {
+          el.innerHTML = kTex(el.getAttribute('data-tex'), el.hasAttribute('data-display'));
+        }
+      });
+
+      // 2. Wire #area-inf checkbox cleanly
+      const areaInf = document.getElementById('area-inf');
+      if (areaInf && !areaInf.hasAttribute('data-wired')) {
+        areaInf.setAttribute('data-wired', '1');
+        areaInf.addEventListener('change', function () { toggleAreaInf(this); });
+      }
+
+      // 3. Populate dynamic selects & quiz mount
+      if (document.getElementById('area-mode')) populateAreaSelects();
+      renderQuiz();
+
+      // 4. Render all currently visible canvases
+      renderVisibleModules(true);
+
+      // 5. Re-render newly revealed canvases whenever any tab/subtab button is clicked
+      document.addEventListener('click', function (e) {
+        const tabTrigger = e.target.closest('[role="tab"], .tab-btn, .nav-tab, .subtab-btn, [data-tab], [onclick*="Tab"], [onclick*="tab"]');
+        if (tabTrigger) {
+          requestAnimationFrame(() => renderVisibleModules(false));
+        }
+      });
+    }
+
+    let resizeTimer = null;
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => renderVisibleModules(false), 80);
+    });
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initCalculusApp);
+    } else {
+      initCalculusApp();
+    }
+    window.addEventListener('load', () => renderVisibleModules(false));
+  </script>
+</body>
+</html>
