@@ -2108,234 +2108,484 @@
     }
 
     /* =========================================================
-       TAB 3: SURFACES & SOLIDS OF REVOLUTION (INC. GABRIEL'S HORN)
+       TAB 3: SOLIDS OF REVOLUTION — TRUE 3D ENGINE
+       Wired to: #vol-reg, #vol-axis, #vol-method, #vol-b,
+                 #vol-angle, #vol-pos, #vol-anim-btn, drag-to-orbit
        ========================================================= */
-    const REV_CASES = {
-      ex4_1: {
-        title: 'Sphere Surface Area (Ex 4.1)', mode: 'surf', axisType: 'x', axisVal: 0,
-        f1: x => Math.sqrt(Math.max(0, 4 - x * x)), f2: () => 0, df1: x => -x / Math.sqrt(Math.max(1e-6, 4 - x * x)),
-        a: -2, b: 2, inf: false, status: 'improper',
-        banner: '<strong>Sphere Surface Area (y = √(4 − x²) on [−2, 2]):</strong> Vertical tangents at ' + 'x = ±2' + ' cancel cleanly with radius ' + 'f(x)' + ', yielding constant ribbon density ' + '4π dx' + '!',
-        steps: [
-          { t: 'Frustum Ribbon Element dS = 2π f(x) ds', h: () => kTex('1 + (f\'(x))^2 = 1 + \\frac{x^2}{4-x^2} = \\frac{4}{4-x^2} \\implies dS = 2\\pi\\sqrt{4-x^2}\\cdot\\frac{2}{\\sqrt{4-x^2}}\\,dx = 4\\pi\\,dx', true) },
-          { t: 'Integrate Over [−2, 2]', h: () => kTex('S = \\int_{-2}^2 4\\pi\\,dx = 16\\pi \\approx 50.2655', true) }
-        ],
-        readout: 'Exact Surface Area S = 16π ≈ 50.2655'
+    const GABRIEL_DRAW_B = 8;
+    const volPar = t => (/[+\-]/.test(t) ? '\\left(' + t + '\\right)' : t);
+
+    const VOL_REGIONS = {
+      sphere: {
+        usesB: true, bLabel: 'Radius r', defB: 2, inf: false,
+        range: p => [-p, p],
+        top: (x, p) => Math.sqrt(Math.max(0, p * p - x * x)), bot: () => 0,
+        topTex: p => '\\sqrt{' + bTex(p * p) + ' - x^2}', botTex: () => '0',
+        yRange: p => [0, p], y1Tex: p => bTex(p),
+        xL: (y, p) => -Math.sqrt(Math.max(0, p * p - y * y)),
+        xR: (y, p) => Math.sqrt(Math.max(0, p * p - y * y)),
+        xLTex: p => '-\\sqrt{' + bTex(p * p) + ' - y^2}', xRTex: p => '\\sqrt{' + bTex(p * p) + ' - y^2}'
       },
-      ex4_2: {
-        title: 'Sphere Volume — Disc Method (Ex 4.2)', mode: 'disc', axisType: 'x', axisVal: 0,
-        f1: x => Math.sqrt(Math.max(0, 4 - x * x)), f2: () => 0,
-        a: -2, b: 2, inf: false, status: 'bounded',
-        banner: '<strong>Disc Method Around x-Axis:</strong> Each vertical slice at ' + 'x' + ' sweeps a solid circular disc of radius ' + 'R(x) = √(4 − x²)' + ' and area ' + 'π(4 − x²)' + '.',
-        steps: [
-          { t: 'Infinitesimal Disc Element dV = π [R(x)]² dx', h: () => kTex('dV = \\pi\\left(\\sqrt{4-x^2}\\right)^2 dx = \\pi(4 - x^2)\\,dx', true) },
-          { t: 'Definite Integral & Evaluation', h: () => kTex('V = \\pi\\int_{-2}^2 (4 - x^2)\\,dx = \\pi\\left[4x - \\frac{x^3}{3}\\right]_{-2}^2 = \\frac{32\\pi}{3} \\approx 33.5103', true) }
-        ],
-        readout: 'Exact Volume V = 32π/3 ≈ 33.5103'
+      x2_01: {
+        usesB: true, bLabel: 'Upper Bound b', defB: 1, inf: false,
+        range: p => [0, p],
+        top: x => x * x, bot: () => 0,
+        topTex: () => 'x^2', botTex: () => '0',
+        yRange: p => [0, p * p], y1Tex: p => bTex(p * p),
+        xL: y => Math.sqrt(Math.max(0, y)), xR: (y, p) => p,
+        xLTex: () => '\\sqrt{y}', xRTex: p => bTex(p)
       },
-      ex4_3: {
-        title: 'y = x² Revolved Around Line x = 1 (Ex 4.3)', mode: 'shell', axisType: 'y', axisVal: 1,
-        f1: x => x * x, f2: () => 0,
-        a: 0, b: 1, inf: false, status: 'bounded',
-        banner: '<strong>Shifted Vertical Axis x = 1:</strong> Distance from slice at ' + 'x' + ' to axis ' + 'x = 1' + ' is ' + 'r = 1 − x' + ' (or horizontal discs of radius ' + '1 − √y' + ' in ' + 'dy' + ').',
-        steps: [
-          { t: 'Setup via Discs (dy) or Cylindrical Shells (dx)', h: () => kTex('V = \\pi\\int_0^1 (1 - \\sqrt{y})^2\\,dy = \\int_0^1 2\\pi(1 - x)x^2\\,dx', true) },
-          { t: 'Evaluate Antiderivative', h: () => kTex('V = 2\\pi\\left[\\frac{x^3}{3} - \\frac{x^4}{4}\\right]_0^1 = \\frac{\\pi}{6} \\approx 0.5236', true) }
-        ],
-        readout: 'Exact Volume V = π/6 ≈ 0.5236'
+      x_x2: {
+        usesB: false, bLabel: 'b = 1 (fixed by intersections)', defB: 1, inf: false,
+        range: () => [0, 1],
+        top: x => x, bot: x => x * x,
+        topTex: () => 'x', botTex: () => 'x^2',
+        yRange: () => [0, 1], y1Tex: () => '1',
+        xL: y => y, xR: y => Math.sqrt(Math.max(0, y)),
+        xLTex: () => 'y', xRTex: () => '\\sqrt{y}'
       },
-      ex4_4: {
-        title: 'Shell Method Around y-Axis (Ex 4.4)', mode: 'shell', axisType: 'y', axisVal: 0,
-        f1: x => x * x, f2: () => 0,
-        a: 0, b: 1, inf: false, status: 'bounded',
-        banner: '<strong>Cylindrical Shell Method Around y-Axis:</strong> Vertical strip at radius ' + 'r = x' + ' with height ' + 'h = x²' + ' unrolls into a thin rectangular slab ' + 'dV = 2π x(x²) dx' + '.',
-        steps: [
-          { t: 'Cylindrical Shell Element dV = 2π r h dx', h: () => kTex('dV = 2\\pi (x)(x^2)\\,dx = 2\\pi x^3\\,dx', true) },
-          { t: 'Integrate Over [0, 1]', h: () => kTex('V = \\int_0^1 2\\pi x^3\\,dx = 2\\pi\\left[\\frac{x^4}{4}\\right]_0^1 = \\frac{\\pi}{2} \\approx 1.5708', true) }
-        ],
-        readout: 'Exact Volume V = π/2 ≈ 1.5708'
-      },
-      ex4_5: {
-        title: 'Two-Curve Region y = x & y = x² (Ex 4.5)', mode: 'washer', axisType: 'x', axisVal: 0,
-        f1: x => x, f2: x => x * x,
-        a: 0, b: 1, inf: false, status: 'bounded',
-        banner: '<strong>Washer vs. Shell Duality:</strong> Between ' + 'y = x' + ' and ' + 'y = x²' + ' on ' + '[0, 1]' + ': around x-axis gives Washers (' + '2π/15' + '); around y-axis gives Shells (' + 'π/6' + ')!',
-        steps: [
-          { t: 'Washer Around x-Axis & Shell Around y-Axis', h: () => kTex('V_x = \\pi\\int_0^1 (x^2 - x^4)\\,dx = \\frac{2\\pi}{15}, \\qquad V_y = \\int_0^1 2\\pi x(x - x^2)\\,dx = \\frac{\\pi}{6}', true) },
-          { t: 'Key Geometric Insight', h: () => 'Subtracting squared radii ' + kTex('R_{\\text{out}}^2 - R_{\\text{in}}^2') + ' is <strong>not</strong> ' + kTex('(R_{\\text{out}} - R_{\\text{in}})^2') + '!' }
-        ],
-        readout: 'V_x (Washer) = 2π/15 ≈ 0.4189  |  V_y (Shell) = π/6 ≈ 0.5236'
+      sqrt_reg: {
+        usesB: true, bLabel: 'Upper Bound b', defB: 1, inf: false,
+        range: p => [0, p],
+        top: x => Math.sqrt(Math.max(0, x)), bot: () => 0,
+        topTex: () => '\\sqrt{x}', botTex: () => '0',
+        yRange: p => [0, Math.sqrt(p)],
+        y1Tex: p => (Math.abs(Math.sqrt(p) - Math.round(Math.sqrt(p))) < 1e-9 ? String(Math.round(Math.sqrt(p))) : '\\sqrt{' + bTex(p) + '}'),
+        xL: y => y * y, xR: (y, p) => p,
+        xLTex: () => 'y^2', xRTex: p => bTex(p)
       },
       gabriel: {
-        title: "Gabriel's Horn — y = 1/x on [1, ∞)", mode: 'disc', axisType: 'x', axisVal: 0,
-        f1: x => 1 / x, f2: () => 0,
-        a: 1, b: 7, inf: true, status: 'improper',
-        banner: "<strong>Gabriel's Horn (Painter's Paradox):</strong> Revolving y = 1/x on [1, ∞) around the x-axis encloses <strong>FINITE volume V = π</strong>, yet <strong>INFINITE surface area S = +∞</strong>!",
-        steps: [
-          { t: 'Finite Volume (behaves like p = 2 > 1)', h: () => kTex('V = \\pi\\int_1^{\\infty} \\frac{1}{x^2}\\,dx = \\pi\\lim_{t\\to\\infty}\\left[-\\frac{1}{x}\\right]_1^t = \\pi \\approx 3.1416 \\;(\\text{Converges!})', true) },
-          { t: 'Infinite Surface Area (behaves like p = 1)', h: () => kTex('S = 2\\pi\\int_1^{\\infty} \\frac{1}{x}\\sqrt{1 + \\frac{1}{x^4}}\\,dx > 2\\pi\\int_1^{\\infty} \\frac{1}{x}\\,dx = +\\infty \\;(\\text{Diverges!})', true) }
-        ],
-        readout: 'Volume V = π ≈ 3.1416 (Finite!)  |  Surface Area S = +∞ (Infinite!)'
+        usesB: false, bLabel: 'b = ∞ (drawn to x = 8)', defB: 1, inf: true,
+        range: () => [1, Infinity],
+        top: x => 1 / x, bot: () => 0,
+        topTex: () => '\\frac{1}{x}', botTex: () => '0',
+        yRange: () => [0, 1], y1Tex: () => '1',
+        xL: () => 1, xR: y => 1 / Math.max(y, 1e-9),
+        xLTex: () => '1', xRTex: () => '\\frac{1}{y}'
       }
     };
-    let curRevKey = 'ex4_2';
+
+    const VOL_PRESETS = {
+      ex4_1:       { reg: 'sphere',  axis: 'xaxis', method: 'disc',  b: 2 },
+      ex4_2_disc:  { reg: 'x2_01',   axis: 'x1',    method: 'disc',  b: 1 },
+      ex4_2_shell: { reg: 'x2_01',   axis: 'x1',    method: 'shell', b: 1 },
+      ex4_3:       { reg: 'x2_01',   axis: 'yaxis', method: 'shell', b: 1 },
+      ex4_4:       { reg: 'x_x2',    axis: 'yaxis', method: 'shell', b: 1 },
+      gabriel:     { reg: 'gabriel', axis: 'xaxis', method: 'disc',  b: 1 }
+    };
+
+    const volView = { yaw: -0.6, pitch: 0.35, dragging: false, lx: 0, ly: 0, raf: null, animAngle: null };
+
+    function piFracTex(v) {
+      if (!Number.isFinite(v) || v <= 0) return null;
+      const q = v / Math.PI;
+      for (let d = 1; d <= 240; d++) {
+        const n = Math.round(q * d);
+        if (n > 0 && Math.abs(q - n / d) < 1e-9) {
+          const g = gcd(n, d), nn = n / g, dd = d / g;
+          if (dd === 1) return nn === 1 ? '\\pi' : nn + '\\pi';
+          return '\\frac{' + (nn === 1 ? '' : nn) + '\\pi}{' + dd + '}';
+        }
+      }
+      return null;
+    }
+
+    function volState() {
+      const regEl = document.getElementById('vol-reg');
+      const key = (regEl && VOL_REGIONS[regEl.value]) ? regEl.value : 'sphere';
+      const R = VOL_REGIONS[key];
+      const axis = document.getElementById('vol-axis').value;
+      const method = document.getElementById('vol-method').value;
+      let p = parseFloat(document.getElementById('vol-b').value);
+      if (!R.usesB || !Number.isFinite(p)) p = R.defB;
+      p = Math.min(4, Math.max(0.5, p));
+      const [a, b] = R.range(p);
+      const c = axis === 'x1' ? 1 : 0;
+      return {
+        key, R, axis, method, p, a, b, c,
+        bDraw: R.inf ? GABRIEL_DRAW_B : b,
+        stripDx: (axis === 'xaxis') === (method === 'disc')   // disc⊥axis, shell∥axis
+      };
+    }
+
+    function syncVolBInput(S) {
+      const bEl = document.getElementById('vol-b'), lbl = document.getElementById('vol-b-lbl');
+      if (lbl) lbl.textContent = S.R.bLabel;
+      if (bEl) bEl.disabled = !S.R.usesB;
+    }
+
+    function onVolRegionChange(reset) {
+      const R = VOL_REGIONS[document.getElementById('vol-reg').value] || VOL_REGIONS.sphere;
+      if (reset) document.getElementById('vol-b').value = R.defB;
+      renderVol(true);
+    }
 
     function loadVolPreset(k, btn) {
-      if (REV_CASES[k]) curRevKey = k;
-      else if (k === 'sphere') curRevKey = 'ex4_2';
-      else if (k === 'horn' || k === 'unb_vol') curRevKey = 'gabriel';
-      const pWrap = pickEl('vol-presets', 'rev-presets', 'surf-presets');
-      if (pWrap) clearPills(pWrap.id);
+      const P = VOL_PRESETS[k] || VOL_PRESETS.ex4_1;
+      clearPills('vol-presets');
       if (btn) btn.classList.add('active');
-      const sel = pickEl('vol-case', 'rev-case', 'vol-fn', 'rev-fn');
-      if (sel && sel.querySelector('option[value="' + curRevKey + '"]')) sel.value = curRevKey;
+      document.getElementById('vol-reg').value = P.reg;
+      document.getElementById('vol-axis').value = P.axis;
+      document.getElementById('vol-method').value = P.method;
+      document.getElementById('vol-b').value = P.b;
       renderVol(true);
     }
     const loadRevPreset = loadVolPreset;
     const loadSurfPreset = loadVolPreset;
 
+    /* ---------- Exact & numerical volumes ---------- */
+    function volExact(S) {
+      const { key, axis, method, p } = S, P = bTex(p);
+      if (key === 'sphere') {
+        if (axis === 'xaxis') return { f: '\\frac{4}{3}\\pi r^3 = \\frac{4}{3}\\pi(' + P + ')^3', v: 4 * Math.PI * p ** 3 / 3 };
+        if (axis === 'yaxis') return { f: '\\frac{2}{3}\\pi r^3 = \\frac{2}{3}\\pi(' + P + ')^3 \\;(\\text{hemisphere})', v: 2 * Math.PI * p ** 3 / 3 };
+        if (p <= 1 + 1e-9) return { f: '2\\pi(1)\\cdot\\frac{\\pi r^2}{2} = \\pi^2(' + P + ')^2 \\;(\\text{Pappus})', v: Math.PI * Math.PI * p * p };
+        return null;
+      }
+      if (key === 'x2_01') {
+        if (axis === 'xaxis') return { f: '\\frac{\\pi b^5}{5} = \\frac{\\pi(' + P + ')^5}{5}', v: Math.PI * p ** 5 / 5 };
+        if (axis === 'yaxis') return { f: '\\frac{\\pi b^4}{2} = \\frac{\\pi(' + P + ')^4}{2}', v: Math.PI * p ** 4 / 2 };
+        if (p <= 1 + 1e-9) {
+          if (method === 'disc' && Math.abs(p - 1) < 1e-9)
+            return { f: '\\pi\\left[y - \\frac{4}{3}y^{3/2} + \\frac{y^2}{2}\\right]_0^1 = \\pi\\left(1 - \\frac{4}{3} + \\frac{1}{2}\\right)', v: Math.PI / 6 };
+          return { f: '2\\pi\\left[\\frac{x^3}{3} - \\frac{x^4}{4}\\right]_0^{' + P + '}', v: 2 * Math.PI * (p ** 3 / 3 - p ** 4 / 4) };
+        }
+        return null;
+      }
+      if (key === 'x_x2') {
+        if (axis === 'xaxis') return { f: '\\pi\\left(\\frac{1}{3} - \\frac{1}{5}\\right)', v: 2 * Math.PI / 15 };
+        if (axis === 'yaxis') return { f: '2\\pi\\left(\\frac{1}{3} - \\frac{1}{4}\\right)', v: Math.PI / 6 };
+        return { f: '2\\pi\\left(\\frac{1}{2} - \\frac{2}{3} + \\frac{1}{4}\\right)', v: Math.PI / 6 };
+      }
+      if (key === 'sqrt_reg') {
+        if (axis === 'xaxis') return { f: '\\frac{\\pi b^2}{2} = \\frac{\\pi(' + P + ')^2}{2}', v: Math.PI * p * p / 2 };
+        if (axis === 'yaxis') return { f: '\\frac{4\\pi b^{5/2}}{5} = \\frac{4\\pi(' + P + ')^{5/2}}{5}', v: 4 * Math.PI * p ** 2.5 / 5 };
+        if (p <= 1 + 1e-9) return { f: '2\\pi\\left[\\frac{2}{3}x^{3/2} - \\frac{2}{5}x^{5/2}\\right]_0^{' + P + '}', v: 2 * Math.PI * (2 * p ** 1.5 / 3 - 2 * p ** 2.5 / 5) };
+        return null;
+      }
+      if (key === 'gabriel') {
+        if (axis === 'xaxis') return method === 'disc'
+          ? { f: '\\pi\\lim_{t\\to\\infty}\\left[-\\frac{1}{x}\\right]_1^t', v: Math.PI }
+          : { f: '2\\pi\\int_0^1 (1 - y)\\,dy = 2\\pi\\cdot\\frac{1}{2}', v: Math.PI };
+        return { f: '', v: Infinity };
+      }
+      return null;
+    }
+
+    function volNumeric(S) {
+      const { R, p, a, b, axis, c } = S;
+      if (R.inf) return axis === 'xaxis' ? Math.PI : Infinity;
+      if (axis === 'xaxis') return quadGL(x => Math.PI * (R.top(x, p) ** 2 - R.bot(x, p) ** 2), a, b, 160);
+      // General washer-in-y form about x = c (correct even if the axis cuts the region)
+      const [y0, y1] = R.yRange(p);
+      return quadGL(y => {
+        const xl = R.xL(y, p), xr = R.xR(y, p);
+        const dl = Math.abs(xl - c), dr = Math.abs(xr - c);
+        const Ro = Math.max(dl, dr), Ri = (xl <= c && c <= xr) ? 0 : Math.min(dl, dr);
+        return Math.PI * (Ro * Ro - Ri * Ri);
+      }, y0, y1, 200);
+    }
+
+    /* ---------- Symbolic setup ---------- */
+    function volSetup(S) {
+      const { key, R, axis, method, p, a, b, c } = S;
+      const top = R.topTex(p), bot = R.botTex(p), xl = R.xLTex(p), xr = R.xRTex(p);
+      const aT = bTex(a), bT = R.inf ? '\\infty' : bTex(b), y0T = '0', y1T = R.y1Tex(p);
+      const straddle = !R.inf && axis !== 'xaxis' && a < c - 1e-9 && b > c + 1e-9;
+      const symHalf = straddle && key === 'sphere' && c === 0;
+      const hX = bot === '0' ? top : top + ' - ' + volPar(bot);
+      const hY = xr + ' - ' + volPar(xl);
+      let elem, setup, note = '';
+
+      if (axis === 'xaxis' && method === 'disc') {
+        const washer = bot !== '0';
+        elem = 'A vertical strip at ' + kTex('x') + ' is <strong>perpendicular</strong> to the axis and sweeps a ' + (washer ? 'washer' : 'disc') +
+          ' of outer radius ' + kTex('R(x) = ' + top) + (washer ? ' and inner radius ' + kTex('r(x) = ' + bot) : '') + ': ' +
+          kTex(washer ? 'dV = \\pi\\left[R(x)^2 - r(x)^2\\right]dx' : 'dV = \\pi R(x)^2\\,dx') + '.';
+        setup = washer
+          ? 'V = \\int_{' + aT + '}^{' + bT + '} \\pi\\left[\\left(' + top + '\\right)^2 - \\left(' + bot + '\\right)^2\\right]dx'
+          : 'V = \\int_{' + aT + '}^{' + bT + '} \\pi\\left(' + top + '\\right)^2 dx';
+      } else if (axis === 'xaxis') {
+        elem = 'A horizontal strip at height ' + kTex('y') + ' is <strong>parallel</strong> to the axis and sweeps a cylindrical shell of radius ' +
+          kTex('r = y') + ' and length ' + kTex('h(y) = ' + hY) + ': ' + kTex('dV = 2\\pi\\,r\\,h\\,dy') + '.';
+        setup = 'V = \\int_{' + y0T + '}^{' + y1T + '} 2\\pi y\\left[' + hY + '\\right]dy';
+      } else if (straddle && !symHalf) {
+        elem = 'The axis ' + kTex('x = 1') + ' cuts through the region. A horizontal strip at height ' + kTex('y') + ' runs from ' +
+          kTex('x_L = ' + xl) + ' to ' + kTex('x_R = ' + xr) + '; after revolving, the parts on both sides of the axis overlap.';
+        setup = 'V = \\int_{' + y0T + '}^{' + y1T + '} \\pi\\left[R(y)^2 - r(y)^2\\right]dy';
+        note = kTex('R(y) = \\max(|x_L - 1|, |x_R - 1|)') + ', and ' + kTex('r(y) = 0') + ' whenever the strip contains ' + kTex('x = 1') + '.' +
+          (method === 'shell' ? ' The shell integral ' + kTex('\\int 2\\pi|x-1|\\,h(x)\\,dx') + ' would <strong>double-count</strong> the overlap, so it is not valid here.' : '');
+      } else if (method === 'shell') {
+        const lo = symHalf ? 0 : a;
+        const rad = c === 0 ? 'x' : (b <= c + 1e-9 ? '(1 - x)' : '(x - 1)');
+        elem = 'A vertical strip at ' + kTex('x') + ' is <strong>parallel</strong> to the axis and sweeps a cylindrical shell of radius ' +
+          kTex('r(x) = ' + rad) + ' and height ' + kTex('h(x) = ' + hX) + ': ' + kTex('dV = 2\\pi\\,r(x)\\,h(x)\\,dx') + '.';
+        setup = 'V = \\int_{' + bTex(lo) + '}^{' + bT + '} 2\\pi ' + rad + '\\left(' + hX + '\\right)dx';
+        if (symHalf) note = 'The left half ' + kTex('-r \\le x \\le 0') + ' sweeps the <em>same</em> hemisphere, so integrate over ' + kTex('0 \\le x \\le r') + ' only.';
+      } else {
+        let Rt, rt;
+        if (symHalf) { Rt = xr; rt = null; }
+        else if (c === 0) { Rt = xr; rt = xl === '0' ? null : xl; }
+        else if (b <= c + 1e-9) { Rt = '1 - ' + volPar(xl); rt = xr === '1' ? null : '1 - ' + volPar(xr); }
+        else { Rt = xr + ' - 1'; rt = xl === '1' ? null : xl + ' - 1'; }
+        elem = 'A horizontal strip at height ' + kTex('y') + ' is <strong>perpendicular</strong> to the axis and sweeps a ' + (rt ? 'washer' : 'disc') +
+          ' of outer radius ' + kTex('R(y) = ' + Rt) + (rt ? ' and inner radius ' + kTex('r(y) = ' + rt) : '') + ': ' +
+          kTex(rt ? 'dV = \\pi\\left[R(y)^2 - r(y)^2\\right]dy' : 'dV = \\pi R(y)^2\\,dy') + '.';
+        setup = rt
+          ? 'V = \\int_{' + y0T + '}^{' + y1T + '} \\pi\\left[\\left(' + Rt + '\\right)^2 - \\left(' + rt + '\\right)^2\\right]dy'
+          : 'V = \\int_{' + y0T + '}^{' + y1T + '} \\pi\\left(' + Rt + '\\right)^2 dy';
+        if (symHalf) note = 'Both halves of the semicircle sweep the same hemisphere, so the disc radius is just ' + kTex('x_R(y)') + '.';
+      }
+      return { elem, setup, note, straddle, symHalf };
+    }
+
+    function volBanner(S, st) {
+      if (S.key === 'gabriel') {
+        if (S.axis === 'xaxis') return ['improper', "<strong>Gabriel's Horn (Painter's Paradox):</strong> Revolving y = 1/x on [1, ∞) about the x-axis encloses <strong>finite volume V = π</strong> but has <strong>infinite surface area</strong>. (Drawn truncated at x = 8.)"];
+        return ['divergent', '<strong>Divergent Volume:</strong> Revolving the infinite tail of y = 1/x about a <em>vertical</em> axis sweeps shells of ever-growing radius: ' + kTex('\\int_1^{\\infty} 2\\pi\\,r(x)\\,\\frac{1}{x}\\,dx = +\\infty') + '.'];
+      }
+      if (st.symHalf) return ['improper', '<strong>Axis Through the Region:</strong> The semicircle straddles the y-axis; its two halves sweep the <em>same</em> solid (a hemisphere), so only one half is used.'];
+      if (st.straddle) return ['improper', '<strong>Axis Cuts Through the Region:</strong> Both sides of x = 1 overlap after revolving, so the solid is their union. The general washer form is evaluated numerically.'];
+      const methodName = S.method === 'disc' ? 'Disc / Washer' : 'Cylindrical Shell';
+      const axisName = { xaxis: 'the x-axis', yaxis: 'the y-axis', x1: 'the line x = 1' }[S.axis];
+      const strip = S.stripDx ? 'Vertical strips (' + kTex('dx') + ')' : 'Horizontal strips (' + kTex('dy') + ')';
+      return ['bounded', '<strong>' + methodName + ' Method about ' + axisName + ':</strong> ' + strip +
+        (S.method === 'disc' ? ' are perpendicular to the axis, so each sweeps a disc / washer.' : ' are parallel to the axis, so each sweeps a thin cylindrical shell.')];
+    }
+
+    /* ---------- 3D renderer ---------- */
     function renderVol(rebuildSteps = true) {
-      const cv = pickEl('vol-canvas', 'rev-canvas', 'solid-canvas', 'surf-canvas');
-      if (!cv) return;
-      const pack = prepCanvas(cv.id);
+      const pack = prepCanvas('vol-canvas');
       if (!pack) return;
       const { ctx, W, H } = pack;
-      const m = { l: 46, r: 20, t: 20, b: 32 };
+      const S = volState();
+      const { R, axis, p, a, bDraw, c } = S;
+      syncVolBInput(S);
 
-      const sel = pickEl('vol-case', 'rev-case', 'vol-fn', 'rev-fn');
-      if (sel && REV_CASES[sel.value]) curRevKey = sel.value;
-      const c = REV_CASES[curRevKey] || REV_CASES.ex4_2;
-      const probeFrac = pickNum(0.45, 'vol-probe', 'rev-probe', 'surf-probe');
+      const angSlider = document.getElementById('vol-angle');
+      const angDeg = volView.animAngle != null ? volView.animAngle : (parseFloat(angSlider.value) || 360);
+      const sFrac = parseFloat(document.getElementById('vol-pos').value) || 0.5;
+      document.getElementById('vol-ang-lbl').textContent = Math.round(angDeg) + '°';
 
-      const banner = pickEl('vol-banner', 'rev-banner', 'surf-banner');
-      if (banner) {
-        banner.className = 'status-banner status-' + c.status;
-        banner.innerHTML = c.banner;
-      }
+      const rev = (x, y, phi) => axis === 'xaxis'
+        ? [x, y * Math.cos(phi), y * Math.sin(phi)]
+        : [c + (x - c) * Math.cos(phi), y, -(x - c) * Math.sin(phi)];
+      const radOf = (x, y) => axis === 'xaxis' ? Math.abs(y) : Math.abs(x - c);
 
-      let xMin, xMax, yMin, yMax;
-      if (c.axisType === 'x') {
-        xMin = c.a - 0.12 * (c.b - c.a);
-        xMax = c.b + 0.12 * (c.b - c.a);
-        let maxR = 0.5;
-        for (let i = 0; i <= 80; i++) maxR = Math.max(maxR, Math.abs(c.f1(c.a + (i / 80) * (c.b - c.a)) - c.axisVal));
-        yMin = c.axisVal - 1.25 * maxR;
-        yMax = c.axisVal + 1.25 * maxR;
+      // Boundary of the generating region (cosine spacing = denser near endpoints)
+      const N = 44, xs = [];
+      for (let i = 0; i <= N; i++) xs.push(a + (bDraw - a) * (1 - Math.cos(Math.PI * i / N)) / 2);
+      const outline = [];
+      xs.forEach(x => outline.push([x, R.top(x, p)]));
+      for (let i = N; i >= 0; i--) outline.push([xs[i], R.bot(xs[i], p)]);
+
+      // Camera framing
+      let Rmax = 0, yLo = Infinity, yHi = -Infinity;
+      outline.forEach(([x, y]) => { Rmax = Math.max(Rmax, radOf(x, y)); yLo = Math.min(yLo, y); yHi = Math.max(yHi, y); });
+      const Cn = axis === 'xaxis' ? [(a + bDraw) / 2, 0, 0] : [c, (yLo + yHi) / 2, 0];
+      const rad = axis === 'xaxis' ? Math.hypot((bDraw - a) / 2, Rmax) : Math.hypot(Rmax, (yHi - yLo) / 2);
+      const sc = 0.44 * Math.min(W, H) / Math.max(rad, 1e-6);
+      const cyw = Math.cos(volView.yaw), syw = Math.sin(volView.yaw);
+      const cp = Math.cos(volView.pitch), sp = Math.sin(volView.pitch);
+      const view = P => {
+        const x = P[0] - Cn[0], y = P[1] - Cn[1], z = P[2] - Cn[2];
+        const x1 = x * cyw + z * syw, z1 = -x * syw + z * cyw;
+        return [x1, y * cp - z1 * sp, y * sp + z1 * cp];
+      };
+      const scr = V => [W / 2 + V[0] * sc, H / 2 - V[1] * sc];
+
+      // Build faces
+      const faces = [];
+      const pushQuad = (pts, kind) => faces.push({ v: pts.map(view), kind });
+      const revolve = (poly, phiMax, nPhi, kind) => {
+        for (let k = 0; k < poly.length; k++) {
+          const P = poly[k], Q = poly[(k + 1) % poly.length];
+          if (Math.hypot(P[0] - Q[0], P[1] - Q[1]) < 1e-10) continue;
+          if (radOf(P[0], P[1]) < 1e-9 && radOf(Q[0], Q[1]) < 1e-9) continue;
+          for (let j = 0; j < nPhi; j++) {
+            const f0 = phiMax * j / nPhi, f1 = phiMax * (j + 1) / nPhi;
+            pushQuad([rev(P[0], P[1], f0), rev(Q[0], Q[1], f0), rev(Q[0], Q[1], f1), rev(P[0], P[1], f1)], kind);
+          }
+        }
+      };
+      const capAt = (phi, kind) => {
+        for (let i = 0; i < N; i++) {
+          const x0 = xs[i], x1 = xs[i + 1];
+          pushQuad([rev(x0, R.bot(x0, p), phi), rev(x1, R.bot(x1, p), phi), rev(x1, R.top(x1, p), phi), rev(x0, R.top(x0, p), phi)], kind);
+        }
+      };
+
+      const phiMax = angDeg * Math.PI / 180;
+      revolve(outline, phiMax, Math.max(3, Math.ceil(angDeg / 8)), 'solid');
+      capAt(0, 'gen');
+      if (angDeg < 359.5) capAt(phiMax, 'cap');
+
+      // Infinitesimal element dV (full 360° ring)
+      let rect, posTxt, elemInfo;
+      if (S.stripDx) {
+        const xp = a + sFrac * (bDraw - a), hw = (bDraw - a) / 60;
+        const yt = R.top(xp, p), yb = R.bot(xp, p);
+        rect = [[xp - hw, yb], [xp + hw, yb], [xp + hw, yt], [xp - hw, yt]];
+        posTxt = 'x = ' + xp.toFixed(2);
+        elemInfo = axis === 'xaxis'
+          ? 'R = ' + yt.toFixed(3) + (yb > 1e-9 ? ', r = ' + yb.toFixed(3) : '')
+          : 'shell r = ' + Math.abs(xp - c).toFixed(3) + ', h = ' + (yt - yb).toFixed(3);
       } else {
-        const spanL = Math.max(Math.abs(c.a - c.axisVal), Math.abs(c.b - c.axisVal));
-        xMin = c.axisVal - 1.25 * spanL;
-        xMax = c.axisVal + 1.25 * spanL;
-        yMin = -0.18;
-        yMax = 1.25;
+        const [y0, y1] = R.yRange(p);
+        const yp = y0 + sFrac * (y1 - y0), hh = (y1 - y0) / 60;
+        const xl = R.xL(yp, p), xr = Math.min(bDraw, R.xR(yp, p));
+        rect = [[xl, yp - hh], [xr, yp - hh], [xr, yp + hh], [xl, yp + hh]];
+        posTxt = 'y = ' + yp.toFixed(2);
+        if (axis === 'xaxis') elemInfo = 'shell r = ' + yp.toFixed(3) + ', length = ' + (xr - xl).toFixed(3);
+        else {
+          const dl = Math.abs(xl - c), dr = Math.abs(xr - c);
+          const Ro = Math.max(dl, dr), Ri = (xl <= c && c <= xr) ? 0 : Math.min(dl, dr);
+          elemInfo = 'R = ' + Ro.toFixed(3) + (Ri > 1e-9 ? ', r = ' + Ri.toFixed(3) : '');
+        }
       }
+      revolve(rect, 2 * Math.PI, 36, 'elem');
+      document.getElementById('vol-pos-lbl').textContent = sFrac.toFixed(2) + ' (' + posTxt + ')';
 
-      const toX = x => m.l + ((x - xMin) / (xMax - xMin)) * (W - m.l - m.r);
-      const toY = y => H - m.b - ((y - yMin) / (yMax - yMin)) * (H - m.t - m.b);
-      drawAxesGrid(ctx, W, H, m, xMin, xMax, yMin, yMax, toX, toY);
+      // Reference coordinate axes (drawn first so the solid occludes them)
+      const pad = 0.15 * Math.max(rad, 1);
+      const line3 = (P, Q, col, lw, dash) => {
+        const A = scr(view(P)), B = scr(view(Q));
+        ctx.save(); ctx.strokeStyle = col; ctx.lineWidth = lw; ctx.setLineDash(dash || []);
+        ctx.beginPath(); ctx.moveTo(A[0], A[1]); ctx.lineTo(B[0], B[1]); ctx.stroke(); ctx.restore();
+        return B;
+      };
+      const xLo = Math.min(0, axis === 'xaxis' ? a : c - Rmax) - pad, xHi = (axis === 'xaxis' ? bDraw : c + Rmax) + pad;
+      const yLoA = Math.min(0, axis === 'xaxis' ? -Rmax : yLo) - pad, yHiA = (axis === 'xaxis' ? Rmax : yHi) + pad;
+      ctx.font = 'bold 12px sans-serif';
+      let e = line3([xLo, 0, 0], [xHi, 0, 0], '#94A3B8', 1.2); ctx.fillStyle = '#64748B'; ctx.fillText('x', e[0] + 4, e[1] + 4);
+      e = line3([0, yLoA, 0], [0, yHiA, 0], '#94A3B8', 1.2); ctx.fillText('y', e[0] + 4, e[1] - 2);
 
-      ctx.save();
-      ctx.beginPath(); ctx.rect(m.l, m.t, W - m.l - m.r, H - m.t - m.b); ctx.clip();
-
-      // Axis of revolution line
-      ctx.strokeStyle = '#0F766E'; ctx.lineWidth = 1.8; ctx.setLineDash([6, 4]);
-      ctx.beginPath();
-      if (c.axisType === 'x') { ctx.moveTo(toX(xMin), toY(c.axisVal)); ctx.lineTo(toX(xMax), toY(c.axisVal)); }
-      else { ctx.moveTo(toX(c.axisVal), toY(yMin)); ctx.lineTo(toX(c.axisVal), toY(yMax)); }
-      ctx.stroke(); ctx.setLineDash([]);
-
-      // Swept silhouette & base generating region
-      if (c.axisType === 'x') {
-        ctx.fillStyle = 'rgba(29, 78, 216, 0.11)';
+      // Painter's algorithm with Lambert-style shading
+      faces.forEach(f => { f.z = (f.v[0][2] + f.v[1][2] + f.v[2][2] + f.v[3][2]) / 4; });
+      faces.sort((A, B) => A.z - B.z);
+      const STY = { solid: [29, 78, 216, 0.28], gen: [166, 25, 46, 0.62], cap: [166, 25, 46, 0.30], elem: [245, 184, 46, 0.95] };
+      faces.forEach(f => {
+        const [A, B, C, D] = f.v;
+        const u = [C[0] - A[0], C[1] - A[1], C[2] - A[2]], w = [D[0] - B[0], D[1] - B[1], D[2] - B[2]];
+        const n = [u[1] * w[2] - u[2] * w[1], u[2] * w[0] - u[0] * w[2], u[0] * w[1] - u[1] * w[0]];
+        const nl = Math.hypot(n[0], n[1], n[2]) || 1;
+        const sh = 0.5 + 0.5 * Math.abs(n[2]) / nl;
+        const st = STY[f.kind];
+        ctx.fillStyle = 'rgba(' + Math.round(st[0] * sh) + ',' + Math.round(st[1] * sh) + ',' + Math.round(st[2] * sh) + ',' + st[3] + ')';
         ctx.beginPath();
-        for (let i = 0; i <= 120; i++) {
-          const x = c.a + (i / 120) * (c.b - c.a);
-          if (i === 0) ctx.moveTo(toX(x), toY(c.f1(x))); else ctx.lineTo(toX(x), toY(c.f1(x)));
-        }
-        for (let i = 120; i >= 0; i--) {
-          const x = c.a + (i / 120) * (c.b - c.a);
-          ctx.lineTo(toX(x), toY(2 * c.axisVal - c.f1(x)));
-        }
+        f.v.forEach((V, i) => { const s = scr(V); if (i) ctx.lineTo(s[0], s[1]); else ctx.moveTo(s[0], s[1]); });
         ctx.closePath(); ctx.fill();
+        if (f.kind === 'elem') { ctx.strokeStyle = 'rgba(154, 103, 0, 0.55)'; ctx.lineWidth = 0.6; ctx.stroke(); }
+      });
 
-        ctx.strokeStyle = '#94A3B8'; ctx.lineWidth = 1.6; ctx.setLineDash([4, 4]);
-        ctx.beginPath();
-        for (let i = 0; i <= 120; i++) {
-          const x = c.a + (i / 120) * (c.b - c.a), ym = 2 * c.axisVal - c.f1(x);
-          if (i === 0) ctx.moveTo(toX(x), toY(ym)); else ctx.lineTo(toX(x), toY(ym));
-        }
-        ctx.stroke(); ctx.setLineDash([]);
+      // Axis of revolution (dashed teal) + generating boundary (burgundy)
+      ctx.fillStyle = '#0F766E';
+      if (axis === 'xaxis') { e = line3([xLo, 0, 0], [xHi, 0, 0], '#0F766E', 2, [7, 5]); ctx.fillText('axis y = 0', e[0] - 70, e[1] - 8); }
+      else { e = line3([c, yLoA, 0], [c, yHiA, 0], '#0F766E', 2, [7, 5]); ctx.fillText(axis === 'x1' ? 'axis x = 1' : 'axis x = 0', e[0] + 6, e[1] + 12); }
 
-        ctx.strokeStyle = '#A6192E'; ctx.lineWidth = 2.6; ctx.beginPath();
-        for (let i = 0; i <= 120; i++) {
-          const x = c.a + (i / 120) * (c.b - c.a);
-          if (i === 0) ctx.moveTo(toX(x), toY(c.f1(x))); else ctx.lineTo(toX(x), toY(c.f1(x)));
-        }
-        ctx.stroke();
+      ctx.strokeStyle = '#A6192E'; ctx.lineWidth = 2.2; ctx.beginPath();
+      outline.forEach((pt, i) => { const s = scr(view(rev(pt[0], pt[1], 0))); if (i) ctx.lineTo(s[0], s[1]); else ctx.moveTo(s[0], s[1]); });
+      ctx.closePath(); ctx.stroke();
 
-        // 2.5D Elliptical Disc / Washer / Frustum Slice at xp
-        const xp = c.a + Math.min(0.95, Math.max(0.05, probeFrac)) * (c.b - c.a);
-        const rOutPx = Math.abs(toY(c.f1(xp)) - toY(c.axisVal));
-        const rInPx = Math.abs(toY(c.f2(xp)) - toY(c.axisVal));
-        const tiltX = Math.min(14, Math.max(5, 0.22 * rOutPx));
+      ctx.fillStyle = '#334155'; ctx.font = '12px sans-serif';
+      ctx.fillText('Sweep θ = ' + Math.round(angDeg) + '°   (drag to orbit • double-click to reset view)', 10, 18);
+      if (R.inf) ctx.fillText('Region truncated at x = ' + GABRIEL_DRAW_B + ' for display', 10, 34);
 
-        ctx.fillStyle = 'rgba(245, 184, 46, 0.62)';
-        ctx.strokeStyle = '#9A6700'; ctx.lineWidth = 2;
-        ctx.beginPath(); ctx.ellipse(toX(xp), toY(c.axisVal), tiltX, Math.max(2, rOutPx), 0, 0, Math.PI * 2);
-        ctx.fill(); ctx.stroke();
+      // Volume & readout
+      const st = volSetup(S);
+      const ex = volExact(S);
+      const V = ex ? ex.v : volNumeric(S);
+      document.getElementById('vol-readout').textContent =
+        (Number.isFinite(V) ? 'V ≈ ' + V.toFixed(4) : 'V = +∞ (diverges)') + '  |  dV at ' + posTxt + ': ' + elemInfo;
 
-        if (rInPx > 1.5) {
-          ctx.fillStyle = '#FFFFFF';
-          ctx.strokeStyle = '#DC2626'; ctx.lineWidth = 1.6;
-          ctx.beginPath(); ctx.ellipse(toX(xp), toY(c.axisVal), Math.max(2, tiltX * (rInPx / rOutPx)), rInPx, 0, 0, Math.PI * 2);
-          ctx.fill(); ctx.stroke();
-        }
-      } else {
-        // Cylindrical Shell around x = axisVal
-        ctx.fillStyle = 'rgba(166, 25, 46, 0.16)';
-        ctx.beginPath();
-        for (let i = 0; i <= 80; i++) {
-          const x = c.a + (i / 80) * (c.b - c.a);
-          if (i === 0) ctx.moveTo(toX(x), toY(c.f1(x))); else ctx.lineTo(toX(x), toY(c.f1(x)));
-        }
-        for (let i = 80; i >= 0; i--) {
-          const x = c.a + (i / 80) * (c.b - c.a);
-          ctx.lineTo(toX(x), toY(c.f2(x)));
-        }
-        ctx.closePath(); ctx.fill();
-
-        ctx.strokeStyle = '#A6192E'; ctx.lineWidth = 2.6; ctx.beginPath();
-        for (let i = 0; i <= 80; i++) {
-          const x = c.a + (i / 80) * (c.b - c.a);
-          if (i === 0) ctx.moveTo(toX(x), toY(c.f1(x))); else ctx.lineTo(toX(x), toY(c.f1(x)));
-        }
-        ctx.stroke();
-
-        const xp = c.a + Math.min(0.93, Math.max(0.12, probeFrac)) * (c.b - c.a);
-        const rxPx = Math.abs(toX(xp) - toX(c.axisVal));
-        const ryTilt = Math.min(13, Math.max(4, 0.16 * rxPx));
-        const yTop = toY(c.f1(xp)), yBot = toY(c.f2(xp)), cx = toX(c.axisVal);
-
-        ctx.fillStyle = 'rgba(245, 184, 46, 0.35)';
-        ctx.strokeStyle = '#9A6700'; ctx.lineWidth = 1.8;
-        ctx.fillRect(cx - rxPx, yTop, 2 * rxPx, Math.max(2, yBot - yTop));
-        ctx.beginPath(); ctx.moveTo(cx - rxPx, yTop); ctx.lineTo(cx - rxPx, yBot);
-        ctx.moveTo(cx + rxPx, yTop); ctx.lineTo(cx + rxPx, yBot); ctx.stroke();
-
-        ctx.fillStyle = 'rgba(245, 184, 46, 0.65)';
-        ctx.beginPath(); ctx.ellipse(cx, yTop, Math.max(2, rxPx), ryTilt, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-        ctx.beginPath(); ctx.ellipse(cx, yBot, Math.max(2, rxPx), ryTilt, 0, 0, Math.PI); ctx.stroke();
+      const banner = document.getElementById('vol-banner');
+      if (rebuildSteps || !banner.innerHTML.trim()) {
+        const [cls, msg] = volBanner(S, st);
+        banner.className = 'status-banner status-' + cls;
+        banner.innerHTML = msg;
       }
-      ctx.restore();
-
-      const rd = pickEl('vol-readout', 'rev-readout', 'surf-readout');
-      if (rd) rd.textContent = c.readout;
 
       if (rebuildSteps) {
-        dispatchSteps(['vol', 'rev', 'solid', 'surf'], c.steps.map(s => ({ t: s.t, h: s.h() })));
+        let evalTex;
+        if (!Number.isFinite(V)) evalTex = 'V = +\\infty \\quad (\\text{Diverges!})';
+        else {
+          const pf = piFracTex(V);
+          evalTex = 'V = ' + (ex ? ex.f + (pf ? ' = ' + pf : '') : (pf || '')) + ' \\approx ' + V.toFixed(4);
+        }
+        const check = Number.isFinite(V)
+          ? '<div class="subtle-note">' + (ex ? 'Independent numerical check (Gauss–Legendre on cross-sections): ' : 'No closed form coded for this setup — numerical value: ') +
+            kTex('V \\approx ' + volNumeric(S).toFixed(4)) + '</div>'
+          : '';
+        const steps = [
+          { t: 'Identify the Element dV', h: st.elem },
+          { t: 'Construct the Definite Integral', h: kTex(st.setup, true) + (st.note ? '<div class="subtle-note">' + st.note + '</div>' : '') },
+          { t: 'Evaluate', h: kTex(evalTex, true) + check }
+        ];
+        if (S.key === 'gabriel' && axis === 'xaxis') {
+          steps.push({ t: "Painter's Paradox: Infinite Surface Area", h: kTex('S = 2\\pi\\int_1^{\\infty} \\frac{1}{x}\\sqrt{1 + \\frac{1}{x^4}}\\,dx \\;>\\; 2\\pi\\int_1^{\\infty} \\frac{dx}{x} = +\\infty', true) });
+        }
+        paintSteps('vol', steps);
       }
     }
     const renderRev = renderVol;
     const renderSurf = renderVol;
+
+    /* ---------- Animation ---------- */
+    function stopVolAnim(writeSlider) {
+      if (volView.raf) cancelAnimationFrame(volView.raf);
+      volView.raf = null;
+      if (writeSlider && volView.animAngle != null) {
+        document.getElementById('vol-angle').value = Math.max(15, Math.round(volView.animAngle / 5) * 5);
+      }
+      volView.animAngle = null;
+      const btn = document.getElementById('vol-anim-btn');
+      if (btn) btn.textContent = '▶ Animate 360°';
+      renderVol(false);
+    }
+
+    function toggleVolAnim() {
+      if (volView.raf) { stopVolAnim(true); return; }
+      const slider = document.getElementById('vol-angle');
+      let ang = parseFloat(slider.value);
+      if (!Number.isFinite(ang) || ang >= 355) ang = 15;
+      volView.animAngle = ang;
+      document.getElementById('vol-anim-btn').textContent = '❚❚ Pause';
+      let last = performance.now();
+      const tick = now => {
+        volView.animAngle = Math.min(360, volView.animAngle + (now - last) * 0.09);  // ≈ 90°/s
+        last = now;
+        if (volView.animAngle >= 360) { slider.value = 360; stopVolAnim(false); return; }
+        renderVol(false);
+        volView.raf = requestAnimationFrame(tick);
+      };
+      volView.raf = requestAnimationFrame(tick);
+    }
+
+    /* ---------- Drag-to-orbit wiring ---------- */
+    (function wireVolControls() {
+      const cv = document.getElementById('vol-canvas');
+      if (cv && !cv.dataset.orbitWired) {
+        cv.dataset.orbitWired = '1';
+        cv.style.touchAction = 'none';
+        cv.addEventListener('pointerdown', ev => {
+          volView.dragging = true; volView.lx = ev.clientX; volView.ly = ev.clientY;
+          cv.setPointerCapture(ev.pointerId); cv.style.cursor = 'grabbing';
+        });
+        cv.addEventListener('pointermove', ev => {
+          if (!volView.dragging) return;
+          volView.yaw += (ev.clientX - volView.lx) * 0.01;
+          volView.pitch = Math.max(-1.5, Math.min(1.5, volView.pitch + (ev.clientY - volView.ly) * 0.01));
+          volView.lx = ev.clientX; volView.ly = ev.clientY;
+          renderVol(false);
+        });
+        const end = () => { volView.dragging = false; cv.style.cursor = 'grab'; };
+        cv.addEventListener('pointerup', end);
+        cv.addEventListener('pointercancel', end);
+        cv.addEventListener('dblclick', () => { volView.yaw = -0.6; volView.pitch = 0.35; renderVol(false); });
+      }
+      const ang = document.getElementById('vol-angle');
+      if (ang) ang.addEventListener('input', () => { if (volView.raf) stopVolAnim(false); });
+    })();
 
     /* =========================================================
        BOUNDED VS. UNBOUNDED p-POWER IMPROPER EXPLORER
